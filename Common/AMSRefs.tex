@@ -1,0 +1,22 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 AMSRefs Setting File Made by Gau, Syu                %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ AMSRefs
+\usepackage[alphabetic,abbrev]{amsrefs}	%	A Refs Package for AMS
+%%	citation-order: ordered as the citation-order
+%%	alphabetic: generates alphabetic labels
+%%	y2k: use the full year instead of the last two digits of the year
+%%	shortalphabetic: generates a shorter alphabetic label using only the first letter of each author name
+%%	abbrev: abbrev: equivalent to requesting all four of the following options
+%%		initials: replace the given names of all authors, editors, and translators with their initials
+%%		short-journals: print short form instead of full form for journal names
+%%		short-months: print short version of month names (e.g., Jan. instead of January)
+%%		short-publishers: print short form instead of full form for publisher names
+%%	backrefs: causes “back-references” to be printed at the end of each bibliography entry to show what page it was cited on
+\newcommand{\CITE}[1]{%
+\hyperlink{#1}{{\upshape [\textbf{\red{#1}}]}}
+}

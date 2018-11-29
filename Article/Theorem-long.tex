@@ -1,0 +1,260 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Theorems Setting File Made by Gau, Syu                %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @	Known keys to \declaretheorem
+%%	[parent=<counter>] (alias: numberwithin, within) : reset whenever that counter is incremented
+%%	[sibling=<counter>] (alias: numberlike, sharenumber) : use this counter for numbering
+%%	[title=<TEX>] (alias: name, heading) : title of the theorem, default is the name of the environment
+%%	[numbered=<yes/no>] : will be numbered or not
+%%	[style=<theoremstyle>] : use the settings of this style
+%%	[refname=<string>] : the name of the theorem as used by \autoref, \cref and friends
+%%	[refname=<string1,string2>] : the second is the plural form used by \cref
+%%	[Refname=<string>] : the name of the theorem as used by \Autoref, \Cref and friends
+%%	[Refname=<string1,string2>] : the second is the plural form used by \Cref
+%
+% @ Known keys to \declaretheoremstyle
+%%	[spaceabove=<length>]
+%%	[spacebelow=<length>]
+%%	[headfont=<font switches>]
+%%	[bodyfont=<font switches>]
+%%	[headpunct=<TEX>] : theoremseparator
+%%	[postheadspace=<length>] : horizontal space inserted after the entire head of the theorem, before the body
+%%	[headindent=<length>] : horizontal space inserted before the head
+%%	[headformat=<TEX> or <keywords>] : see manuel
+%%	[headformat=margin] : number protude in the (left) margin
+%%	[headformat=swapnumber] : puts number before the name
+%
+% @ Thm-type
+\theoremstyle{margin}	%	Put the number at left margin
+\numberwithin{equation}{subsection}	%	reset eq. number for each section
+\Crefname{equation}{}{}
+%
+\declaretheorem[%
+title=Theorem,%
+numberlike=equation,%
+refname={theorem,theorems},%
+Refname={Theorem,Theorems}%
+]{theorem}
+%	theorem
+%
+\declaretheorem[%
+title=Theorem,%
+numbered=no%
+]{Thm}
+%	Thm: Theorem
+%
+\declaretheorem[%
+title=Proposition,%
+numberlike=equation,%
+refname={proposition,propositions},%
+Refname={Proposition,Propositions}%
+]{proposition}
+%	proposition
+%
+\declaretheorem[%
+title=Proposition,%
+numberlike=equation,%
+refname={proposition,propositions},%
+Refname={Proposition,Propositions}%
+]{prop}
+%	prop: Proposition
+%
+\declaretheorem[
+title=Proposition,%
+within=equation,%
+refname={proposition,propositions},%
+Refname={Proposition,Propositions}%
+]{sprop}
+%	sprop: (Sub)Proposition
+%         
+\declaretheorem[%
+title=Proposition,%
+numbered=no,%
+refname={proposition,propositions},%
+Refname={Proposition,Propositions}%
+]{Prop}
+%	prop: Proposition
+%   
+\declaretheorem[%
+title=Lemma,%
+numberlike=equation,%
+refname={lemma,lemmas},%
+Refname={Lemma,Lemmas}%
+]{lemma}
+%	lemma
+%
+\declaretheorem[%
+title=Lemma,%
+numberlike=equation,%
+refname={lemma,lemmas},%
+Refname={Lemma,Lemmas}%
+]{lem}
+%	lem: Lemma
+%
+\declaretheorem[%
+title=Lemma,%
+numberlike=sprop,%
+refname={lemma,lemmas},%
+Refname={Lemma,Lemmas}%
+]{slem}
+%	slem: (Sub)Lemma
+%
+\declaretheorem[%
+title=Lemma,%
+numbered=no,%
+refname={lemma,lemmas},%
+Refname={Lemma,Lemmas}%
+]{Lem}
+%	lem: Lemma
+%
+\declaretheorem[%
+title=Corollary,%
+numberlike=equation,%
+refname={corollary,corollaries},%
+Refname={Corollary,Corollaries}%
+]{corollary}
+%	corollary
+%
+\declaretheorem[%
+title=Corollary,%
+numberlike=equation,%
+refname={corollary,corollaries},%
+Refname={Corollary,Corollaries}%
+]{cor}
+%	cor: Corollary
+%
+\declaretheorem[%
+title=Corollary,%
+numberlike=sprop,%
+refname={corollary,corollaries},%
+Refname={Corollary,Corollaries}%
+]{scor}
+%	scor: (Sub)Corollary
+%
+% @ Defn-type
+\theorembodyfont{\upshape}	%	following envs will use upshape bodyfont
+%
+\declaretheorem[%
+title={},%
+numberlike=equation%
+]{para}
+%
+\declaretheorem[%
+title={},%
+numberlike=sprop%
+]{subpara}
+%	definition
+%
+\declaretheorem[%
+title={Definition},%
+numberlike=equation,%
+refname={definition,definitions},%
+Refname={Definition,Definitions}%
+]{defn}
+%	defn: Definition
+%
+\declaretheorem[%
+title={Definition},%
+numbered=no
+]{Defn}
+%	defn: Definition (nonum)
+%
+\declaretheorem[%
+title=Example,%
+numberlike=equation,%
+refname={example,examples},%
+Refname={Example,Examples}%
+]{example}
+%	example
+%
+\declaretheorem[%
+title=Example,%
+numberlike=equation,%
+refname={example,examples},%
+Refname={Example,Examples}%
+]{eg}
+%	eg: Example
+%
+\declaretheorem[%
+title=Example,%
+numberlike=sprop,%
+refname={example,examples},%
+Refname={Example,Examples}%
+]{seg}
+%	seg: (Sub)Example
+%
+\declaretheorem[%
+title=Example,%
+numbered=no%
+]{Eg}
+%	Eg: (unnumbered) Example
+%
+\declaretheorem[%
+title=Remark,%
+numberlike=theorem,%
+refname={remark,remarks},%
+Refname={Remark,Remarks}%
+]{remark}
+%	remark
+%
+\declaretheorem[%
+title=Remark,%
+numberlike=equation,%
+refname={remark,remarks},%
+Refname={Remark,Remarks}%
+]{rem}
+%	rem: Remark
+%
+\declaretheorem[%
+title=Remark,%
+numberlike=sprop,%
+refname={remark,remarks},%
+Refname={Remark,Remarks}%
+]{srem}
+%	srem: (Sub)Remark
+%
+\declaretheorem[%
+title=Remark,%
+numbered=no%
+]{Rem}
+%	Rem: (unnumbered) Remark
+%
+\declaretheorem[%
+title=Recall,%
+numbered=no%
+]{rec}
+%	rec: Recall
+%
+% @ Proof Env
+\def\qedsymbol{\ensuremath{\Box}}	%	desige the qed symbol
+%
+\declaretheoremstyle[%
+headfont=\sc,%
+bodyfont=\normalfont,%
+headpunct={:},%
+qed=\qedsymbol%
+]{nonumberproof}
+%
+\declaretheorem[%
+title=Proof,%
+numbered=no,%
+style=proof%
+]{proof}
+%	proof
+
+
+
+
+%%
+%@@@THMitems
+%%
+\newlist{proplist}{enumerate}{1}
+\setlist[proplist]{label=(\roman{proplisti}), ref=\theprop.(\roman{proplisti}),noitemsep}
+\newcounter{listprop}
+\Crefname{prop}{Proposition}{Propositions}
+\Crefname{listprop}{Proposition}{Propositions}
+\addtotheorempostheadhook[prop]{\crefalias{proplisti}{prop}}

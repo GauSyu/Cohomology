@@ -1,0 +1,41 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Decorate Setting File Made by Gau, Syu                 %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ Colors
+\usepackage{xcolor}		%	A packagefor colors
+\newcommand{\black}{\color{black}}
+\newcommand{\gray}{\color{gray}}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+\newcommand{\green}{\color{green}}
+\newcommand{\bfred}[1]{\textbf{\red #1}}
+\newcommand{\bfblue}[1]{\textbf{\blue #1}}
+\newcommand{\bired}[1]{\textbf{\it \red #1}}
+\newcommand{\biblue}[1]{\textbf{\it \blue #1}}
+\newcommand{\itred}[1]{\textit{\red #1}}
+\newcommand{\itblue}[1]{\textit{\blue #1}}
+%
+% @ Typefaces
+\usepackage{fontspec}	%	Provides an automatic and unified interface for loading fonts in LaTeX
+%	Note that one may need the corresponding fonts in system to enable settings like the followings:
+\newfontfamily{\Edward}{Edwardian Script ITC}
+%\newfontfamily{\Frak}{Euclid Fraktur}
+\newcommand{\Giant}{\fontsize{72pt}{\baselineskip}\selectfont}
+\newcommand{\giant}{\fontsize{27pt}{\baselineskip}\selectfont}
+%
+% @ MultiColumn
+\usepackage{multicol}	%	defines a multicols environment which typesets text in multiple columns
+%
+% @ Enumerate environment
+\usepackage{enumerate}
+%	This package gives the enumerate environment an optional argument which determines the style in which the counter is printed.
+\usepackage[shortlabels]{enumitem}
+\newlist{steps}{enumerate}{3}
+\setlist[steps,1]{label=\emph{Step \arabic*.}}
+\setlist[steps]{align=left, leftmargin=0pt, listparindent=\parindent, labelwidth=0pt, itemindent=!}
+\setlist[steps,2]{label=\emph{Step \arabic{stepsi}.\arabic*.}}
+\setlist[steps,3]{label=\emph{\alph*.}}

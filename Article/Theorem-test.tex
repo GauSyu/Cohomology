@@ -1,0 +1,48 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Theorems Setting File Made by Gau, Syu                %
+%                                version = 2018April                              %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @	Known keys to \declaretheorem
+%%	[parent=<counter>] (alias: numberwithin, within) : reset whenever that counter is incremented
+%%	[sibling=<counter>] (alias: numberlike, sharenumber) : use this counter for numbering
+%%	[title=<TEX>] (alias: name, heading) : title of the theorem, default is the name of the environment
+%%	[numbered=<yes/no>] : will be numbered or not
+%%	[style=<theoremstyle>] : use the settings of this style
+%%	[refname=<string>] : the name of the theorem as used by \autoref, \cref and friends
+%%	[refname=<string1,string2>] : the second is the plural form used by \cref
+%%	[Refname=<string>] : the name of the theorem as used by \Autoref, \Cref and friends
+%%	[Refname=<string1,string2>] : the second is the plural form used by \Cref
+%
+% @ Known keys to \declaretheoremstyle
+%%	[spaceabove=<length>]
+%%	[spacebelow=<length>]
+%%	[headfont=<font switches>]
+%%	[bodyfont=<font switches>]
+%%	[headpunct=<TEX>] : theoremseparator
+%%	[postheadspace=<length>] : horizontal space inserted after the entire head of the theorem, before the body
+%%	[headindent=<length>] : horizontal space inserted before the head
+%%	[headformat=<TEX> or <keywords>] : see manuel
+%%	[headformat=margin] : number protude in the (left) margin
+%%	[headformat=swapnumber] : puts number before the name
+%
+% @ Thm-type
+\theoremstyle{margin}	%	Put the number at left margin
+\numberwithin{equation}{subsection}	%	reset eq. number for each section
+\Crefname{equation}{}{}
+%
+\declaretheorem[%
+title=Theorem,%
+numberlike=equation,%
+refname={theorem,theorems},%
+Refname={Theorem,Theorems}%
+]{prop}
+
+\newlist{proplist}{enumerate}{1}
+\setlist[proplist]{label=(\roman{proplisti}), ref=\theprop.(\roman{proplisti}),noitemsep}
+\newcounter{listprop}
+\Crefname{prop}{Proposition}{Propositions}
+\Crefname{listprop}{Proposition}{Propositions}
+\addtotheorempostheadhook[prop]{\crefalias{proplisti}{prop}}

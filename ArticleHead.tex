@@ -1,0 +1,97 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              A Common Setting File Made by Gau, Syu               %
+%                                version = 2018.April                     %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ PRELOAD
+%\RequirePackage{luatex85}	
+%%	"luatex85" is needed for xy-envs if the typesetting engine is lualatex
+%
+% @ Document Class Settings
+\documentclass[UTF-8,11pt,a4paper]{article}
+%%		UTF-8: use UTF-8 encode
+%%		11pt: main font size, 10pt is dedault
+%%		a4paper: paper size
+%
+% @ Layout Settings
+\usepackage{marginnote}
+\usepackage{fancyhdr}		%	header and footer
+\usepackage{indentfirst}	%	indent at each first line
+\usepackage{pdfpages}		%	input pages from given pdf files.
+\input{Common/Decorate}	%	colors, typefaces etc.
+% @ Latex Graphics
+\input{Common/Graphics}
+%
+% @ Indexes, Glossaries and Refs
+\input{Common/Index}	%	index settings
+%\input{Common/Glossaries}	%	glossary settings
+\input{Common/BibTeX}
+%\input{Common/AMSRefs}	% AMSRef settings, NEED manual modifications
+%
+% @ Chapters and Sections
+\input{Article/Sections2}	%	section settings for articles
+%
+% @ Math Support
+%\usepackage{stix}					%	The STIX fonts are a suite of uni­code OpenType fonts con­tain­ing a com­plete set of math­e­mat­i­cal glyphs
+\usepackage[leqno]{amsmath}
+%	Standard AMS Package & AMS Theorem Env
+%%	leqno means put number of formulas on the left
+%
+\usepackage{mathtools}
+%	provides a series of packages designed to enhance the appearance of documents containing a lot of mathematics
+%
+\usepackage{hyperref}	%	basic package for hyperrefs
+% @@@@@@@@@@@@@ MUST Put hyperref AFTER amsmath and BEFORE cleveref
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+%	Pacakage for for handling theorem-like environments
+%%	[thmmarks] enables the automatical placement of endmarks
+%%	[thref] enables the extended reference features
+%%	[hyperref] provides compability with the hyperref-package
+%%	[amsthm] provides compatibility with the theorem-layout commands of the amsthm-package
+%%	[standard] uses the amssymb and latexsym (automatically loaded) packages and defines the frequently used environments in english and german documents
+%
+\usepackage{thmtools}
+%	a collection of packages that is designed to provide an easier interface to theorems, and to facilitate some more advanced tasks
+%
+%
+%
+% @ fix the bug in aliasctr.sty
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@counteralias}
+ {\@ifdefinable{c@#1}}
+ {\expandafter\@ifdefinable\csname c@#1\endcsname}
+ {}{}
+\makeatother
+%
+%
+%
+% @ Math Fonts
+\usepackage{amssymb}		%	defined math symbols in msam and mabm, amsfonts is automatically included
+%\usepackage{eucal}				%	makes \mathcal use Euler script instead of the usual Computer Modern calligraphic alphabet
+%\usepackage{mathrsfs}		%	support for using RSFS fonts (\mathscr) in maths
+\usepackage[cal=euler,scr=boondox]{mathalfa}
+%	make \mathcal use Euler script and \mathscr use boondoxo (from Stix with Calligraphic Oblique)
+\usepackage{mathdots}		%	commands to produce dots in math that respect font size
+\usepackage{upgreek}		%	upright Greek letters
+\usepackage{manfnt}			%	Knuth's ‘manual’ font
+\usepackage{stmaryrd}		%	St Mary Road symbols for theoretical computer science
+%
+% @ Abbrevated Command for Letters
+\input{Common/Letters-cal}			%	\mathcal{A} -> \Aa
+\input{Common/Letters-bb}			%	\mathbb{A} -> \AA
+\input{Common/Letters-frak}			%	\mathfrak{a} -> \aa
+\input{Common/Letters-scr}			%	\mathscr{A} -> \Aaa
+%\input{Common/Letters-scr2}		%	\mathscr{A} -> \scA
+\input{Common/Letters-frakcap}	%	\mathfrak{A} -> \AAa
+\input{Common/Letters-frakC}	%	\mathfrak{A} -> \frA
+\input{Common/Letters-rm}		%	\mathrm{a} -> \aaa
+%
+% @ Notations
+\input{Common/Arrows}			%	Alternative commands for arrows
+\input{Common/Functions}		%	Functions and Map Descriptions
+\input{Common/Operators}		%	Math Operators
+\input{Common/Names}			%	Math Names
+%\input{Letters_and_Notations}

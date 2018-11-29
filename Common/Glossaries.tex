@@ -1,0 +1,32 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Glossaries Setting File Made by Gau, Syu               %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ MakeGlossaries
+    \usepackage[
+               symbols,                %list of symbols
+              %nonumberlist,           %do not show page numbers
+               seeautonumberlist,      %
+               hyperfirst=false,       %
+               toc,                    %show listings as entries in table of contents
+               section=chapter,        %use section level for toc entries
+               counter=section         %countered by section
+               ]{glossaries}
+    % & Add new glossary listing
+        \altnewglossary{categories}{cat}{Categories}
+    % & Enable hyperref on gls
+        \glsenablehyper
+    % & Make glossaries
+        \makeglossaries
+
+    % & <Example> Usage of glossaryentry
+    %   \newglossaryentry{<\label>}
+    %                    {name=<\what occurs in the glossary>,
+    %                     description=<\>,
+    %                     text=<\what occurs in the context>,
+    %                     sort=<\How this term by sorted>,
+    %                     type=<\>}
+

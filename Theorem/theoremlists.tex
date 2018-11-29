@@ -1,0 +1,19 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Theorems Setting File Made by Gau, Syu                %
+%                                version = 2018April                       %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ refer items in lists inside thm envs
+%
+\newlist{thmlist}{enumerate}{1}
+\setlist[thmlist]{label=(\roman{thmlisti}), ref=\thetheorem.(\roman{thmlisti}),noitemsep}
+\newcounter{listthm}
+\Crefname{listthm}{Theorem}{Theorems}
+\addtotheorempostheadhook[theorem]{\crefalias{thmlisti}{theorem}}
+\newlist{proplist}{enumerate}{1}
+\setlist[proplist]{label=(\roman{proplisti}), ref=\theproposition.(\roman{proplisti}),noitemsep}
+\newcounter{listprop}
+\Crefname{listprop}{}{}
+\addtotheorempostheadhook[proposition]{\crefalias{proplisti}{proposition}}

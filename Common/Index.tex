@@ -1,0 +1,29 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   Index Setting File Made by Gau, Syu                   %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ MakeIndex
+\makeindex
+%
+% @ Indexed Terminology
+\usepackage{xifthen}			%	provides \isempty test
+\newcommand{\termin}[2][]{%
+\ifthenelse{\isempty{#1}}%
+{\emph{\textbf{{#2}}}\index{#2}}% if #1 is empty
+{\emph{\textbf{{#1}}}\index{#2}}% if #1 is not empty
+}	%	Used as: \termin[arg1]{arg2}
+%%		arg1 is optional, it is what this command display, default is same as arg2
+%%		arg2 is what this command generates in the Index table
+\newcommand{\bfredin}[2][]{%
+\ifthenelse{\isempty{#1}}%
+{\bfred{{#2}}\index{#2}}% if #1 is empty
+{\bfred{{#1}}\index{#2}}% if #1 is not empty
+}	%	Same as above, except the layout style
+\newcommand{\bfbluein}[2][]{%
+\ifthenelse{\isempty{#1}}%
+{\bfblue{{#2}}\index{#2}}% if #1 is empty
+{\bfblue{{#1}}\index{#2}}% if #1 is not empty
+}	%	Same as above, except the layout style

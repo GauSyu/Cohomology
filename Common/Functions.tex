@@ -1,0 +1,49 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      Notations File Made by Gau, Syu                       %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ Functions
+\newcommand{\norm}[1]{\lVert #1\rVert}    %	Norm
+\newcommand{\dual}[1]{{#1}^{\wedge}}      %	Dual
+\newcommand{\codual}[1]{{#1}^{\vee}}      %	Codual
+\newcommand{\pfrac}[2]{\frac{\partial{#1}}{\partial{#2}}}		%	fraction of partial differentials
+\newcommand{\bfrac}[2]{\left(\frac{#1}{#2}\right)}					%	Legendre cymbol
+\newcommand{\udsum}[3]{\left.{#1}\right|^{#2}_{#3}}				%	1^2_3
+\newcommand{\local}[2]{\left.{#1}\right|_{#2}}						%	Local #1 at #2
+%
+\newcommand{\markar}[1]{\stackrel{{#1}}{\longrightarrow}}	%	marked rightarrow
+\newcommand{\markal}[1]{\stackrel{{#1}}{\longleftarrow}}	%	marked leftarrow
+\newcommand{\iso}[1]{\stackrel{#1}{\cong}}								%	marked isomorphism
+\newcommand{\defeq}{\stackrel{\text{def}}{=}}							%	definition equality
+\newcommand{\defen}{\stackrel{\text{def}}{\iff}}						%	definition condition
+%
+\newcommand{\tdtlog}[1]{t\frac{\rm d}{{\rm d} t}\log\left({#1}\right)}
+\newcommand{\kongwei}{\underline{\hphantom{X}}}
+%
+\newcommand{\tp}[1]{\prescript{\rm t}{}{#1}}
+%
+% @ Map Descriptions
+\newcommand{\mapdes}[4]
+{
+	\begin{align*}
+	#1 & \longrightarrow #2 \\
+	#3 & \longmapsto #4
+	\end{align*}
+}
+\newcommand{\longmapdes}[5]
+{
+	\begin{align*}
+	#1\colon  #2 & \longrightarrow  #3 \\
+	#4 & \longmapsto  #5
+	\end{align*}
+}
+\newcommand{\isodes}[4]
+{
+	\begin{align*}
+	#1 & \cong  #2 \\
+	#3 & \leftrightarrow  #4
+	\end{align*}
+}

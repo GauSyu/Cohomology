@@ -1,0 +1,15 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Theorems Setting File Made by Gau, Syu                %
+%                                version = 2018April                       %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ refer items in lists inside thm envs
+%
+\newlist{proplist}{enumerate}{1}
+\setlist[proplist]{label=(\roman{proplisti}), ref=\theprop.(\roman{proplisti}),noitemsep}
+\newcounter{listprop}
+\Crefname{prop}{Proposition}{Propositions}
+\Crefname{listprop}{Proposition}{Propositions}
+\addtotheorempostheadhook[prop]{\crefalias{proplisti}{prop}}

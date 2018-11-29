@@ -1,0 +1,6059 @@
+%!Mode:: "TeX:UTF-8"
+%	Commone Head File
+\input{ArticleHead}
+%	Theorem Environments
+\input{Theorem/margin-section-eq}	
+\input{ArticleHead-after}
+\input{Theorem/theoremlists}
+%
+%	PDF File Information
+%
+\hypersetup{
+pdftitle={Homological Algebra},%标题
+pdfauthor={Xu Gao},            %作者
+%pdfproducer={XeLaTeX},        %制作工具
+bookmarksopen=true,         %书签自动打开
+colorlinks=true,                       %是否采用彩色超链接
+citecolor=red,                       %文献引用的颜色
+filecolor=black,                       %文件链接颜色
+linkcolor=black,                       %内部链接颜色
+urlcolor=darkgray                         %网页与电邮链接颜色
+}
+%	Bib
+\bibliography{references}
+%
+%	TITLE
+%
+\title{
+Note on\\ \texttt{\Huge Homological Algebra}
+}
+\author{Xu Gao}
+\date{
+Last update:
+\today
+}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This note is on homological algebra with a 
+homotopy-theoretical perspective and aims to 
+introduce a framework for homotopy theory 
+based on the notion of dg-categories. 
+Such a framework, as I know, is a special case 
+of the full general machinery of infinite-category 
+theory and thus should be thought as well-known 
+fact or even common sense. 
+\end{abstract}
+\tableofcontents
+
+%	MainText
+\clearpage
+
+\section{Homotopy theory for topological spaces}
+Before going to the main topics of this note, 
+let's take a glance to the homotopy theory. 
+One can refer to either a standard textbook on algebraic 
+topology like \cite{Hatcher}, or a homotopy-first 
+textbook like \cite{ATfromHomotopy}, or the wonderful 
+textbook \cite{may1999concise}. 
+For further reading, refer \cite{may2012more}.
+
+\para{
+Let $f,g\colon X\to Y$ be two (continues) maps between 
+topological spaces, a \bfblue{(left) homotopy} 
+$\Phi\colon f\then g$ is a commutative diagram 
+(in the category of topological spaces) of the form 
+\[
+\begin{tikzcd}
+X\ar[dr,"{f}"]\ar[d,"{(\id,\delta_0)}"']&\\
+X\times I\ar[r,"{\Phi}"description]&Y\\
+X\ar[ur,"{g}"']\ar[u,"{(\id,\delta_1)}"]
+\end{tikzcd}
+\]
+where $I$ is the unit interval $[0,1]$ and $\delta_0$ 
+(resp. $\delta_1$) is the inclusion $\{0\}\into I$ 
+(resp. $\{1\}\into I$).
+If such a homotopy exists, then we say $f$ and $g$ are 
+\bfblue{homotopic}, denoted by $f\simeq g$. 
+Let $x_0\in X$ and $y_0\in Y$ be base points and suppose 
+$f$ and $g$ preserve the base point. Then $\Phi$ 
+is called a \bfblue{based homotopy} if $\Phi(x_0,t)=y_0$ 
+for all $t\in I$. 
+More generally, let $A\subset X$ and $B\subset Y$ be 
+subspaces and $\local{f}{A}=\local{g}{A}$ and 
+$f(A)\subset B$. Then $\Phi$ is called a 
+\bfblue{relative homotopy} or \bfblue{homotopy rel $A$} 
+if $\Phi(x,t)=f(x)$ for all $x\in A$.
+To emphasize the base point $x_0$, or the subspace $A$, 
+we use the notations $f\simeq_{x_0}g$ or $f\simeq_{A}g$ 
+to denote that $f$ and $g$ are \bfblue{based homotopic} 
+or \bfblue{homotopic rel $A$}.
+
+The set $\Map(X,Y)$ of all continues maps from $X$ 
+to $Y$, equipped with the compact-open topology, is 
+called the \bfblue{mapping space} from $X$ to $Y$. 
+If $X$ is a good topological space, for instant 
+a locally compact Hausdorff space, then there is a 
+natural bijection 
+\[
+\Map(Z\times X,Y)\cong\Map\big(Z,\Map(X,Y)\big),
+\] 
+where $Z\times X$ carries the product topology. 
+If this is the case, then the exponential law implies that 
+there is a natural bijection between the set of homotopy 
+classes of maps $X\to Y$ and the set of path-components of 
+$\Map(X,Y)$. This set will be denoted by $[X,Y]$, 
+called the \bfblue{free homotopy class set}.
+
+Let $A\subset X$ and $B\subset Y$ be subspaces. The 
+\bfblue{product} of the pairs $(X,A)$ and $(Y,B)$ is 
+the pair $(X\times Y,X\times B\cup A\times Y)$.
+The subspace $\Map(X,A;Y,B)$ of $\Map(X,Y)$ consists of 
+those maps $f\colon X\to Y$ satisfying $f(A)\subset B$. 
+It is called the \bfblue{(relative) mapping space} 
+from $(X,A)$ to $(Y,B)$. 
+There is a special subspace of it, which consists of those 
+factoring through $B$, thus can be identified to 
+$\Map(X,B)$.
+Again, if $(X,A)$ is good enough, 
+then there is a natural bijection 
+\[
+\Map\big(Z\times X,Z\times A\cup C\times X;Y,B\big)\cong
+\Map\big(Z,C;\Map(X,A;Y,B),\Map(X,B)\big). 
+\]
+Let $(Z.C)$ be $(I,\varnothing)$, 
+then we see that if $(X,A)$ is good enough, then 
+there is a natural bijection between the set of 
+relative homotopy classes of maps $(X,A)\to (Y,B)$ 
+and the set of path-components of $\Map(X,A;Y,B)$. 
+This set is denoted by $[X,A;Y,B]$, 
+called the \bfblue{relative homotopy class set}.
+
+Let $(X,x_0)$ and $(Y,y_0)$ are pointed spaces, i.e. 
+topological spaces with a base point. 
+The subspace $\Map(X,x_0;Y,y_0)$ is simply denoted by 
+$\Map_{\ast}(X,Y)$, called the \bfblue{(based) mapping space}. 
+(In many case, the base point is clear or irrelevant to the 
+discussion, we should simplify our notation by just write $X$ 
+instead of $(X,x_0)$.) 
+If $X$ is good enough, from the previous paragraph, 
+there is a natural bijection between the set of 
+based homotopy classes of based maps $X\to Y$ 
+and the set of path-components of $\Map_{\ast}(X,Y)$. 
+This set will be denoted by $[X,Y]_{\ast}$, or $\<X,Y\>$, 
+called the \bfblue{based homotopy class set}. 
+Beside the Cartesian product, 
+there is another \emph{tensor product} of pointed spaces, 
+which is the \bfblue{smash product} $X\wedge Y$: 
+it is precisely the pointed space obtained from the pair
+$(X\times Y,X\vee Y)$ by modulo the later, 
+where $X\vee Y$ is the wedge sum. 
+There is a natural base point of $\Map_{\ast}(X,Y)$, that 
+is the map $\widetilde{y_0}\colon X\to\{y_0\}$. 
+In the case $X$ is good enough, there is a natural bijection 
+\[
+\Map_{\ast}(Z\wedge X,Y)\cong\Map_{\ast}(Z,\Map_{\ast}(X,Y)).
+\]
+
+}
+
+\para{
+Before going further, notice that the natural objection
+\[
+\Map(X\times I,Y)\cong\Map\big(X,\Map(I,Y)\big)
+\]
+gives another equivalent definition of homotopy: 
+let $f,g\colon X\to Y$ be two maps between 
+topological spaces, a \bfblue{right homotopy} 
+$\Phi\colon f\then g$ is a commutative diagram of the form 
+\[
+\begin{tikzcd}
+& Y\\
+X\ar[r,"{\Phi}"description]\ar[ur,"{f}"]\ar[dr,"{g}"']&
+\Map(I,Y)\ar[u,"{\ev_0}"']\ar[d,"{\ev_1}"]\\
+& Y
+\end{tikzcd}
+\]
+where $\ev_0$ (resp. $\ev_1$) is the evaluation at $0\in I$ 
+(resp. $1\in I$).
+}
+
+\para{
+One can also define the notion of based homotopy using pure 
+diagrammatic language. 
+Write $Y_{+}$ for the pointed space obtained as the union of 
+$Y$ and a disjoint base point $\ast$. Note that if $X$ is a 
+pointed space, then $X\wedge Y_{+}$ can be identified with 
+the one obtained from the pair $(X\times Y,\{\ast\}\times Y)$ 
+and $\Map_{\ast}(Y_{+},X)$ can be identified as $\Map(Y,X)$ 
+specified the base point to be the map collapsing to the 
+base point of $X$.
+Let $f,g\colon X\to Y$ be two based maps between pointed spaces. 
+A \bfblue{based homotopy} $\Phi\colon f\then g$ can be defined 
+as a commutative diagram of the form
+\[
+\begin{tikzcd}
+X\ar[dr,"{f}"]\ar[d,"{\id\wedge\delta_0}"']&\\
+X\wedge I_{+}\ar[r,"{\Phi}"description]&Y\\
+X\ar[ur,"{g}"']\ar[u,"{\id\wedge\delta_1}"]
+\end{tikzcd}
+\]
+where inclusions $\delta_i$ are viewed as $\{i\}_{+}\into I_{+}$. 
+Using the natural bijection for pointed spaces, a 
+\bfblue{based right homotopy} can be defined as the same 
+commutative diagram for right homotopy with additional requirement 
+that all maps involved must be based.
+\begin{Rem}
+The functor $Y\mapsto Y_{+}$ is in fact the left adjoint of 
+the forgetful functor from $\Top$ to $\Top_{\ast}$, the category 
+of pointed spaces with based maps. 
+\end{Rem}
+}
+
+\para{
+The topological spaces with continuous maps form a category $\Top$.
+However, this category lost informations since it 
+ignores the topologies on the mapping spaces. 
+A better category is the one obtained by replacing every 
+mapping space by the corresponding homotopy class set\footnote{
+There is an issue that the notion of homotopy class sets, 
+although can be defined for arbitrary topological spaces, 
+does not behave well unless the topological space is good 
+enough. Therefore, it is better to work on a subcategory 
+of $\Top$ consisting of \emph{good topological spaces}, or on 
+a \emph{convenient category of topological spaces} instead of $\Top$. 
+For the purpose of this note, we ignore this issue.
+}.
+This can be done since homotopy respect the composition 
+of maps. The result category is called 
+\bfblue{the homotopy category $\Hh$}. 
+Two topological spaces are said to be 
+\bfblue{(strong) homotopy equivalent} 
+if they are isomorphic in $\Hh$.
+
+Similar discussion apply to relative and pointed spaces.
+}
+
+\para{
+Let $(X,x_0)$ be a pointed space. Then a 
+\bfblue{(based) loop} on $(X,x_0)$ is a 
+base-point-preserving map from $(S^1,\ast)$, where 
+$\ast$ is a fixed base point of $S^1$, to it. 
+$\Map_{\ast}(S^1,X)$ is called the 
+\bfblue{loop space} on it, denoted by $\Omega(X,x_0)$ 
+or simply $\Omega X$. 
+There is a natural ``multiplication'' on this space: 
+any two such loops can be concatenated to obtain a 
+third loop. Although this ``multiplication'' is not 
+associative, it does induce an associative 
+multiplication on the quotient set $\pi_1(X,x_0)$ 
+of it by modulo the based homotopies. 
+The set $\pi_1(X,x_0)$ then carries a group structure 
+and is called the \bfblue{fundamental group} of $(X,x_0)$.
+
+Similarly, one can define the \bfblue{$n$-th homotopy group} 
+as $\pi_n(X,x_0)=[S^n,X]_{\ast}$ with the addition induced 
+by $c\colon S^n\to S^n\vee S^n$ where $c$ collapses 
+a equator $S^{n-1}$ (containing the base point) in $S^n$ 
+to the base point.
+As the notation suggests, $\pi_0(X,x_0)$ should be 
+$[S^0,X]_{\ast}$, where $S^0$ is the $0$-sphere, 
+i.e. the set of two points with one of them being 
+the base point. Note that there is no natural group structure 
+on it anymore. Since $S^0$ is merely a set of two points 
+and one of them must be mapped to $x_0$, the space 
+$\Map_{\ast}(S^0,X)$ is homeomorphic to $\Map(\pt,X)$ and 
+hence $X$ itself. Thus $\pi_0(X,x_0)$ actually has nothing 
+to do with $x_0$ and is precisely the set of path-components 
+of $X$. 
+%For this reason, this set is often simply denoted by $\pi_0(X)$. $\pi_n(X,x_0)$ to $\pi_n(X)$.
+
+Note that for $(X,A)$ a pair of space and subspace and $(Y,y_0)$ 
+a pointed space, there is a canonical bijection 
+$[X,A;Y,y_0]\cong[X/A,[A];Y,y_0]$. 
+Thus the $n$-the homotopy group can also be defined as 
+$[I^n,\partial I^n;X,x_0]$ with the addition induced by 
+concatenation (there are $n$ different ways to do this, 
+but by the \emph{Eckmann-Hilton argument}, they all give the 
+same commutative binary operation on the homotopy class set).
+This characterization is easier to compute. 
+}
+
+\para{
+Note that we have a natural bijection 
+\[
+\Map_{\ast}(X\wedge S^1,Y) \cong 
+\Map_{\ast}(X,\Omega Y)
+\]
+for any pointed spaces $X$ and $Y$. 
+Let $\Sigma X$ denote the pointed space $X\wedge S^1$. 
+It is called the \bfblue{suspension} of $X$. 
+From this we get
+\[
+\pi_n(X) = [\Sigma^nS^0,X]_{\ast} = \pi_0(\Omega^nX).
+\]
+
+}
+
+\para{
+We can always view the loop space $\Omega(X,x_0)$ as a subspace of 
+$\Map(I,X)$ by identify it as $\Map(I,\partial I;X,x_0)$. 
+Note that there are two canonical maps from $\Map(I,X)$ to 
+$X$: one maps $f\colon I\to X$ to $f(0)$, another to $f(1)$. 
+If we ignore the issue that concatenation is not strict 
+associative, those data defines a \emph{topological groupoid}. 
+To fix this issue, we can consider $[I,X]$ instead of
+$\Map(I,X)$. Then the result construction is a \emph{groupoid}, 
+called the \bfblue{fundamental groupoid} of $X$ and denoted 
+by $\Pi_1(X)$. If $X$ is good enough 
+(locally path-connected and locally simply-connected),
+then $[I,X]$ has a natural topology on it and 
+$\Pi_1(X)$ becomes a \emph{topological groupoid}.
+
+In any case, using those two maps, we obtain a bundle 
+$[I,X]\to X\times X$ whose fiber at any point $(x_0,x_0)$
+in the diagonal is precisely $\pi_1(X,x_0)$. 
+Thus, if we pullback it along the diagonal map 
+$\Delta\colon X\to X\times X$, we obtain a bundle above $X$, 
+or equivalently a sheaf on $X$. 
+This is another realization of the notion of 
+\emph{fundamental groupoid}. 
+
+It is clear that the fundamental groupoid $\Pi_1(X)$ encodes 
+the information of homotopies between points, i.e. paths 
+connecting them, and is essentially 
+(up to equivalences of categories)
+determined by $\pi_0(X)$ and $\pi_1(X,x_0)$ with $x_0$ go 
+through a presenting system of $\pi_0(X)$.
+}
+
+\para{
+Then one may try to obtain a higher analogy of fundamental 
+groupoids. That is a \emph{functorial} construction $\Pi(X)$ 
+for each topological space $X$, which encodes the information 
+of not only homotopies between points, but homotopies between 
+homotopies, homotopies between those between homotopies and so on.
+Moreover, $\Pi(X)$ must be essentially determined by 
+$\pi_0(X)$ and $\pi_n(X,x_0)$ for all $n$ with $x_0$ go through 
+a presenting system of $\pi_0(X)$. 
+This object is called the \bfblue{homotopy type} 
+or \bfblue{fundamental $\infty$-groupoid} of $X$. 
+
+The later terminology suggests it should be an $\infty$-groupoid, 
+i.e. an $\infty$-category with all morphisms invertible. 
+Ideally, for a given topological space $X$, its points should 
+be the objects of $\Pi(X)$, homotopies between them should be 
+$1$-morphisms of $\Pi(X)$, homotopies between $1$-morphisms 
+should be $2$-morphisms and so on.  
+Conversely, there is a requirement of $\infty$-category theory 
+called the \bfblue{homotopy hypothesis}, which states that 
+the $\infty$-category of $\infty$-groupoid is equivalent 
+(in the sense of $\infty$-category theory)
+to the $\infty$-category of homotopy types. 
+
+A na\"{i}ve approach is just define an $\infty$-groupoid as 
+a topological space and an $\infty$-category as 
+a category enriched over $\Hh$. However, this does not work 
+due to the reason below.
+}
+
+\para{
+Let $f\colon X\to Y$ be a map between topological spaces. 
+We can view it as a based map by choosing a base point 
+$x_0$ of $X$. Then, by composing with $f$, we obtain 
+natural maps $\Map_{\ast}(S^n,X)\to\Map_{\ast}(S^n,Y)$ 
+and hence homomorphisms $f_\ast\colon\pi_n(X)\to\pi_n(Y)$ 
+for all $n$.
+$f$ is called a \bfblue{weak homotopy equivalence} if 
+$f_\ast$ is an isomorphism for all $n$ and 
+all choices of base point. 
+Two topological spaces are said to be 
+\bfblue{weak homotopy equivalent}, or have the same 
+\bfblue{(weak) homotopy type} if there is a zigzag 
+of weak homotopy equivalences between them. 
+By the homotopy hypothesis, if $f\colon X\to Y$ 
+is weak homotopy equivalence, then the induces morphism 
+$f_{\ast}\colon\Pi(X)\to\Pi(Y)$ must be an equivalent 
+of $\infty$-groupoid, or an isomorphism in $\Hh$.
+
+It is not difficult to show that homotopy equivalences are 
+weak homotopy equivalences. However, the converse is not true. 
+Therefore to get the correct $\infty$-category theory, 
+the homotopy category $\Hh$ should be modified such that 
+two topological spaces are weak homotopy equivalent if 
+and only if they are isomorphic in $\Hh$.
+
+One way to do this is to restrict $\Hh$ to a suitable subcategory 
+such that: 
+\begin{enumerate}[1)]
+\item in this subcategory, every weak homotopy equivalence 
+becomes an isomorphism;
+\item every topological space is weak homotopy equivalent 
+to an object in this subcategory.
+\end{enumerate}
+}
+
+\para{
+There is a special class of topological spaces called 
+\bfblue{CW complexes}. For which we have 
+\begin{description}
+\item[Whitehead theorem] Every weak homotopy equivalence 
+between CW complexes is a strong homotopy equivalence.
+\item[CW approximation] Every topological space admits a 
+weak homotopy equivalence from a CW complex to it.
+\item[Cellular approximation] Every maps of CW complexes 
+is homotopic to a cellular map, i.e. preserving the skeletons.
+\end{description}
+
+Thus, a good modification of $\Hh$ is to restrict it to 
+the subcategory of CW complexes.
+
+With this modification, we can built an $\infty$-category 
+theory satisfying the homotopy hypothesis. 
+To summary\footnote{
+But there is still some pathological issue in this framework. 
+A really workable definition needs to replace $\Top$ by a 
+convenient category of topological spaces.
+}:
+\begin{enumerate}
+\item \bfblue{The homotopy category $\Hh$} is the category 
+of CW complexes whose morphisms are homotopy classes of 
+maps between CW complexes. Furthermore, such a morphism 
+can be presented by a cellular map.
+\item Hence, an \bfblue{$\infty$-groupoid} is a CW complex and 
+an \bfblue{$\infty$-category} is a category enriched over $\Hh$. 
+This definition gives naturally a notion of 
+\bfblue{homotopy category} of an $\infty$-category, 
+which is the ordinary category obtained by apply the 
+\emph{change of base categories} $\pi_0\colon\Hh\to\Set$.
+\item The \bfblue{fundamental $\infty$-groupoid} of a topological 
+space is then the CW approximation of it.
+\end{enumerate}
+
+The above version of $\infty$-category theory provided a 
+good framework to study homotopy theory and has the advantage 
+that it is pretty geometric. 
+However, it also has some disadvantages: it is not algebraic 
+enough for general application and the constructions in CW 
+complex theory involves cumbersome and irrelevant choices. 
+Another well-developed $\infty$-category theory can be find in 
+\cite{HTT}. An axiomatic approach to $\infty$-category theory 
+can be find in a book in progress \cite{ICWM}.
+}
+
+\para{
+Leaving the general $\infty$-category theory aside, let's 
+return to the homotopy theory of topological spaces. 
+First of first, the category $\Top$ of topological spaces 
+now can be viewed as an $\infty$-category. 
+Note that, in our setting, the \bfblue{Hom space} from $X$ to $Y$ 
+is not $\Map(X,Y)$, but its CW approximation. 
+Let's denote it by $\HHom(X,Y)$.
+}
+
+\para{
+A significant feature of $\infty$-category theory is it admits 
+\bfblue{homotopy limits} and \bfblue{homotopy colimits}. 
+To see the difference between those notions and 
+\emph{limits/colimits}, 
+let's consider a simple diagram: $\bullet\to\bullet$.
+A digram of this shape in $\Top$ is just a continuous map 
+$f\colon X\to Y$. It is easy to see that the limit (resp. colimit) 
+of it is just $X$ (resp. $Y$). 
+
+However, when consider homotopy limit of it, one looks at 
+the category of \emph{homotopy triangle above} $f$.
+An object of this category is a space $T$ (called the \emph{vertex})
+together with a triangle 
+\[
+\begin{tikzcd}
+T\ar[d]\ar[dr,""{name=U,below}]
+&\\
+X\ar[Rightarrow,from=U]\ar[r,"{f}"']&Y
+\end{tikzcd}
+\]
+where the bold arrow denoted a homotopy. 
+If $S\to T$ is a continuous map, then by composing it with a 
+homotopy triangle above $f$ with vertex $T$, we obtain a homotopy 
+triangle above $f$ with vertex $S$. A \emph{morphism} between 
+homotopy triangles is such a continuous map.
+Then the \emph{homotopy limit} of the diagram $X\markar{f}Y$
+is the terminal object in this category.
+
+To spell out the homotopy limit, we translate the homotopy triangles 
+into usual commutative diagrams
+\[
+\begin{tikzcd}
+& Y \\
+T\ar[d]\ar[ur]\ar[r] & 
+\Map(I,Y)\ar[u,"{\ev_0}"']\ar[d,"{\ev_1}"] \\
+X\ar[r,"{f}"] & Y
+\end{tikzcd}
+\]
+which is equivalent to the following diagram.
+\[
+\begin{tikzcd}
+T\ar[d]\ar[r] & 
+\Map(I,Y)\ar[d,"{\ev_1}"] \\
+X\ar[r,"{f}"] & Y
+\end{tikzcd}
+\]
+Therefore, the homotopy limit of the diagram $X\markar{f}Y$ is 
+the pullback of $\ev_1\colon\Map(I,Y)\to Y$ along $f$. 
+More concretely, it is the space
+\[
+Nf:=\big\{(x,\gamma)\in X\times\Map(I,Y):f(x)=\gamma(1)\big\}
+\]
+equipped with the subspace topology. 
+This space is called the \bfblue{mapping path space} of $f$.
+It is clear that $Nf$ is not homeomorphic to $X$ in general. 
+However, they are homotopy equivalent.
+
+The similar story happens to the dual situation, where the homotopy 
+triangle is eventually translated into the following diagram.
+\[
+\begin{tikzcd}
+X\ar[r,"{f}"]\ar[d,"{\delta_0}"'] & Y\ar[d]\\
+X\times I\ar[r] & T \\
+\end{tikzcd}
+\]
+Therefore, the homotopy colimit of the diagram $X\markar{f}Y$ is 
+the pushout of $\delta_0\colon X\to X\times I$ along $f$.
+More concretely, it is the quotient space
+\[
+\Cyl(f):=X\times I\coprod Y/\sim,
+\]
+where $\sim$ is generated by $(x,0)\sim f(x)$.
+This space is called the \bfblue{mapping cylinder} of $f$.
+It is clear that $\Cyl(f)$ is not homeomorphic to $X$ in general. 
+However, they are homotopy equivalent.
+}
+\begin{Rem}
+Note that in the above diagrams, one can invert the orientation of $I$, 
+i.e. switch $\ev_0$ and $\ev_1$ (resp. $\delta_0$ and $\delta_1$), 
+while the resulting space is homeomorphic to the one defined there.
+\end{Rem}
+
+\para{
+However, the \emph{homotopy limits/colimits} are even not 
+limits/colimits in the homotopy category. 
+To see this, let's consider the diagram 
+$\bullet\to\bullet\from\bullet$. 
+A diagram of this shape in $\Top$ is a pair of continuous maps 
+$X\markar{f}Y\markal{g}Z$. Then a \emph{homotopy square to} it 
+is such a diagram
+\[
+\begin{tikzcd}
+T\ar[d]\ar[r] & Z\ar[d,"{g}"]
+\ar[dl,Rightarrow,dashed] \\
+X\ar[r,"{f}"'] & Y
+\end{tikzcd}
+\]
+where the dashed arrow denote a homotopy. 
+Such a homotopy diagram is equivalent to the 
+following commutative diagram.
+\[
+\begin{tikzcd}
+Z\ar[r,"{g}"]& Y \\
+T\ar[d]\ar[u]\ar[r] & 
+\Map(I,Y)\ar[u,"{\ev_0}"']\ar[d,"{\ev_1}"] \\
+X\ar[r,"{f}"] & Y
+\end{tikzcd}
+\]
+Hence, the homotopy limit of the diagram $X\markar{f}Y\markal{g}Z$ 
+is the fiber product of $Nf$ and $Ng$ over $\Map(I,Y)$, that is 
+the space
+\[
+X\times_Y^hZ:=
+\big\{(x,\gamma,z)\in X\times\Map(I,Y)\times Z:
+f(x)=\gamma(1),g(z)=\gamma(0)\big\}.
+\]
+This space is called the \bfblue{homotopy fiber product}, 
+or the \bfblue{homotopy pullback} of $g$ along $f$.
+
+Dually, one can consider the digram $X\markal{f}Y\markar{g}Z$ 
+and the homotopy colimit of it is the fiber coproduct of 
+$\Cyl(f)$ and $\Cyl(g)$ under $Y\times I$, which is 
+the quotient space
+\[
+X\amalg_Y^hZ:=X\coprod(Y\times I)\coprod Z/\sim,
+\]
+where $\sim$ is generated by $f(y)\sim(y,0)$ and $(y,1)\sim g(y)$. 
+This is called the \bfblue{homotopy fiber coproduct}. the \bfblue{homotopy pushout} of $f$ along $g$.
+}
+
+\para{
+Now, let's consider a special case of previous constructions: 
+where $Z$ is the singleton $\pt$.
+In this case, we can identify $X\times_Y^h\pt$ with the space
+\[
+\Fib(f):=
+\big\{(x,\gamma)\in X\times\Map(I,Y):
+f(x)=\gamma(1),\gamma(0)=\ast\big\},
+\]
+where $\ast$ is the image of $\pt$ in $Y$. 
+This space is called the \bfblue{homotopy fiber} of $f$ 
+at the point $\ast\in Y$. 
+We can identify $X\amalg_Y^h\pt$ as the quotient space
+\[
+\Cofib(f):=X\coprod(Y\times I)/\sim,
+\]
+where $\sim$ is generated by $f(y)\sim(y,0)$ and $(y,1)\sim(y',1)$. 
+This space is called the \bfblue{homotopy cofiber} of $f$, 
+or the \bfblue{mapping cone} of $f$ with notation $Cf$.
+}
+
+\para{
+Let's consider a even more special case: both $X$ and $Z$ are singleton 
+$\pt$ and mapping to the same point $\ast$ of $Y$. 
+In this case, we can surprisingly identify $\pt\times_Y^h\pt$ with 
+the loop space $\Omega Y$ by viewing $Y$ as the pointed space with 
+the base point $\ast$. It is clear that the loop space of a topological 
+space is in general not contractible. 
+
+Besides, we can identify $\pt\amalg_Y^h\pt$ as the quotient space
+\[
+SY:=Y\times I/\sim,
+\]
+where $\sim$ is generated by $(y,i)\sim(y',i)$ for $i=0,1$. 
+This space is called the \bfblue{unreduced suspension} of $Y$. 
+Let $Y=S^1$, it is clear that $SS^1=S^2$, which is not contractible. 
+Note that if $Y$ is pointed as a base point $\ast$, then $SY$ admits 
+a distinguish subspace $\{\ast\}\times I$ and the quotient by modulo 
+this subspace is the pointed space $\Sigma Y$.
+}
+
+\para{
+Recall that if $D\colon\Ii\to\Cc$ is a diagram in a category $\Cc$, 
+then there are natural isomorphisms of sets
+\begin{align*}
+\Hom_{\Cc}(-,\lim D) &\cong \lim\Hom_{\Cc}(-,D), \\
+\Hom_{\Cc}(\colim D,-) &\cong \lim\Hom_{\Cc}(D,-).
+\end{align*}
+Analogously, if $D\colon\Ii\to\Cc$ is a diagram in a $\infty$-category 
+$\Cc$, then there should be natural equivalences of 
+(functors to) $\infty$-groupoids\footnote{
+However, the right-hand side is not a CW complex in general. 
+Hence one needs to replace it by its CW approximation and makes 
+the statements meaningful only for weak homotopy equivalences. 
+Consequently, the notions of homotopy limits/colimits make sense 
+only up to weak homotopy equivalences.
+}
+\begin{align*}
+\HHom_{\Cc}(-,\holim D) &\simeq \holim\HHom_{\Cc}(-,D), \\
+\HHom_{\Cc}(\hocolim D,-) &\simeq \holim\HHom_{\Cc}(D,-).
+\end{align*}
+Therefore, since we have worked out the homotopy limits/colimits 
+of previous diagrams, we can make the following definitions in an 
+arbitrary $\infty$-category $\Cc$.
+\begin{proplist}
+\item Let $f\colon X\to Y$ be a morphism in $\Cc$. 
+Then a \bfblue{mapping path object} is an object $Nf$ inducing a 
+natural equivalence of $\infty$-groupoids
+\[
+\HHom_{\Cc}(T,Nf) \simeq N\HHom_{\Cc}(T,f),
+\]
+where the continuous map 
+$\HHom_{\Cc}(T,f)\colon\HHom_{\Cc}(T,X)\to\HHom_{\Cc}(T,Y)$ 
+is given by composing with $f$, for each object $T$ of $\Cc$. 
+Dually, a \bfblue{mapping cylinder object} is an object $\Cyl(f)$ 
+inducing a 
+natural equivalence of $\infty$-groupoids
+\[
+\HHom_{\Cc}\big(\Cyl(f),T\big) \simeq P\HHom_{\Cc}(f,T)
+\]
+for each object $T$ of $\Cc$. 
+\item Let $X\markar{f}Y\markal{g}Z$ be two morphisms in $\Cc$. 
+Then a \bfblue{homotopy fiber product} is a object $X\times_Y^hZ$ 
+inducing a natural equivalence of $\infty$-groupoids
+\[
+\HHom_{\Cc}(T,X\times_Y^hZ) \simeq 
+\HHom_{\Cc}(T,X)\times_{\HHom_{\Cc}(T,Y)}^h\HHom_{\Cc}(T,Z),
+\]
+where the right-hand side is obtained from the diagram
+\[
+\HHom_{\Cc}(T,X)\markar{f_{\ast}}
+\HHom_{\Cc}(T,Y)\markal{g_{\ast}}\HHom_{\Cc}(T,Z),
+\]
+for each object $T$ of $\Cc$.
+\item As special cases of previous, we have the notions of 
+\bfblue{homotopy fiber} and \bfblue{loop space object} 
+(also called \bfblue{looping}) in $\Cc$.
+\item Let $X\markal{f}Y\markar{g}Z$ be two morphisms in $\Cc$. 
+Then a \bfblue{homotopy fiber coproduct} is a object $X\amalg_Y^hZ$ 
+inducing a natural equivalence of $\infty$-groupoids
+\[
+\HHom_{\Cc}(X\amalg_Y^hZ,T) \simeq 
+\HHom_{\Cc}(X,T)\times_{\HHom_{\Cc}(Y,T)}^h\HHom_{\Cc}(Z,T),
+\]
+where the right-hand side is obtained from the diagram
+\[
+\HHom_{\Cc}(X,T)\markar{f^{\ast}}
+\HHom_{\Cc}(Y,T)\markal{g^{\ast}}\HHom_{\Cc}(Z,T),
+\]
+for each object $T$ of $\Cc$.
+\item As special cases of previous, we have the notions of 
+\bfblue{homotopy cofiber} and \bfblue{suspension object} in $\Cc$.
+\end{proplist}
+}
+
+\para{
+%From now on, without specification otherwise, the base point of a 
+%pointed space is denoted by $\ast$.
+Apply the previous to 
+the $\infty$-category $\Top_{\ast}$, we obtain the 
+following constructions.
+\begin{proplist}
+\item The \bfblue{mapping path space} 
+of a based map $f\colon (X,x_0)\to (Y,y_0)$ 
+is the same space as $Nf$ with the 
+base point $(x_0,\widetilde{y_0})$, 
+where $\widetilde{y_0}$ is the constant path at $y_0$.
+\item The \bfblue{(reduced) mapping cylinder} 
+of a based map $f\colon (X,x_0)\to (Y,y_0)$ is the quotient space
+\[
+\Cyl(f):=X\times I\coprod Y/\sim,
+\]
+where $\sim$ is generated by $(x,0)\sim f(x)$ and 
+$(x_0,t)\sim(x_0,t')$, 
+with the base point the class of $(x_0,0)$.
+\item The \bfblue{homotopy fiber product} 
+of a pair of based maps $(X,x_0)\markar{f}(Y,y_0)\markal{g}(Z,z_0)$ is 
+the same space as $X\times_Y^hZ$ with the base point 
+$(x_0,\widetilde{y_0},z_0)$.
+\item In particular, the \bfblue{homotopy fiber} of a based map 
+$f\colon (X,x_0)\to (Y,y_0)$ is the same space as $\Fib(f)$ with 
+the base point $(x_0,\widetilde{y_0})$.
+\item In particular, the \bfblue{looping} of pointed space $(X,x_0)$ 
+is the loop space $\Omega X$ with the based point the constant loop 
+at $x_0$.
+\item The \bfblue{(reduced) homotopy fiber coproduct} 
+of based maps $(X,x_0)\markal{f}(Y,y_0)\markar{g}(Z,z_0)$ is 
+the quotient space
+\[
+X\amalg_Y^hZ:=X\coprod(Y\times I)\coprod Z/\sim,
+\]
+where $\sim$ is generated by $f(y)\sim(y,0)$, $(y,1)\sim g(y)$ 
+and $(y_0,t)\sim(y_0,t')$, with the base point the class of $(y_0,t)$.
+\item In particular, the \bfblue{(reduced) homotopy cofiber} of a based map 
+$f\colon (X,x_0)\to (Y,y_0)$ is the quotient space
+\[
+\Cofib(f):=X\coprod(Y\times I)/\sim,
+\]
+where $\sim$ is generated by $f(y)\sim(y,0)$, $(y,1)\sim(y',1)$ 
+and $(y_0,t)\sim(y_0,t')$, with the base point the class of $(y_0,t)$.
+\item In particular, the \bfblue{(reduced) suspension} 
+of pointed space $(X,x_0)$ is the suspension $\Sigma X$.
+\end{proplist}
+}
+
+\para{
+Let $f\colon X\to Y$ be a map between topological spaces. 
+The preimage $f^{-1}(y_0)$ of $y_0\in Y$ is called the 
+\bfblue{fiber} of $X$ at the point $y_0$. 
+Viewing $f$ as a based map by specifying $y_0$ as the base 
+point of $Y$, the notion of fiber 
+is similar to the notion of kernel: 
+let $f\colon A\to B$ be a homomorphism between abelian groups, 
+then the kernel is the preimage $f^{-1}(0)$.
+
+Note that in the category of pointed spaces, the singleton 
+$\pt$ is both an initial and terminal object, hence is 
+a \emph{zero object}. 
+Let $\mathcal{C}$ be a category having pullbacks and 
+a zero object ${\bf0}$. 
+For $f\colon A\to B$ a morphism in $\Cc$, its \bfblue{kernel} 
+is the pullback of the zero morphism ${\bf0}\to B$ along $f$.
+\[
+\begin{tikzcd}
+\Ker(f)\ar[d]\ar[r] & {\bf0}\ar[d] \\
+A\ar[r,"{f}"] & B
+\end{tikzcd}
+\]
+Dually, if $\mathcal{C}$ has pushouts, the \bfblue{cokernel} 
+of $f$ is the pushout of the zero morphism $A\to{\bf0}$ along $f$. 
+\[
+\begin{tikzcd}
+A\ar[d]\ar[r,"{f}"] & B\ar[d]\\
+{\bf0}\ar[r] & \Coker(f)
+\end{tikzcd}
+\]
+A sequence $A\markar{f}B\markar{g}C$ is called a 
+\bfblue{left exact sequence} if $A$ is the kernel of $g$, a 
+\bfblue{right exact sequence} if $C$ is the cokernel of $f$ 
+and a \bfblue{short exact sequence} if both of previous are true.
+
+In the category of pointed sets, or pointed spaces, we further have 
+the notion of \emph{exact sequence}: 
+a sequence $X\markar{f}Y\markar{g}Z$ is said to be \bfblue{exact}
+at $Y$ if $\im(f)=\ker(g)$.
+}
+
+\para{
+Let $\Cc$ be a category with terminal object $\pt$. 
+Then the category under $\pt$ has a zero object $\pt\to\pt$. 
+This category is denoted by \bfblue{$\Cc_{\ast}$}. 
+An object $x_0\colon\pt\to X$ in $\Cc_{\ast}$ is called a 
+\bfblue{pointed object} in $\Cc$, 
+viewed as an object $X$ in $\Cc$ with the \bfblue{base point} $x_0$. 
+A morphism in $\Cc_{\ast}$ is called a \bfblue{based morphism}. 
+
+Suppose $\Cc$ has limits and colimits. Then we have the followings. 
+\begin{proplist}
+\item 
+The forgetful functor sending each pointed object $(X,x_0)$ to $X$ has 
+a left adjoint $+\colon\Cc\to\Cc_{\ast}$ sending each object $X$ to 
+the pointed object $(X_{+},\ast)$, where $X_{+}$ is the coproduct of 
+$X$ and $\pt$ and $\ast$ is the morphism $\pt\to X\amalg\pt$.
+\item 
+Therefore the limits of pointed objects can be computed in the category 
+$\Cc$: it is precisely the limit together with the unique morphism 
+obtained from the base points by the universal property.
+\item 
+Secondly, the colimits of pointed objects are obtained by apply the 
+functor $+$ to the colimits of their underlying objects.
+\item 
+The coproduct of two pointed objects $X,Y$ is called the 
+\bfblue{wedge sum} of them, denoted by $X\vee Y$. 
+Clearly, there is canonical morphism $X\times Y\to X\vee Y$. 
+The cokernel of this morphism is called the \bfblue{smash product} 
+and denoted by $X\wedge Y$. 
+\end{proplist}
+
+Suppose $\Cc$ is further \emph{Cartesian closed}, i.e. the functor
+$X\times-$ has a right adjoint $[X,-]$. 
+\begin{proplist}[resume]
+\item Then the smash product gives $\Cc_{\ast}$ a closed symmetric 
+monoidal structure: the unit is $\pt_{+}$ and the internal Hom object 
+$[X,Y]_{\ast}$ is obtained as the pullback of the morphism 
+$\pt\to[\pt,Y]$ along $[X,Y]\to[\pt,Y]$ with the base point obtained 
+from the morphism $\pt\to[X,Y]$ whose adjunct is the composition 
+$\pt\times X\to\pt\to Y$.
+\end{proplist}
+}
+
+\para{
+Now, let $\Cc$ be a $\infty$-category having terminal object $\pt$. 
+Then we can define the $\infty$-category $\Cc_{\ast}$ of 
+pointed objects as previous. 
+Suppose $\Cc$ has homotopy pullbacks and homotopy pushouts. 
+A sequence $X\markar{f}Y\markar{g}Z$ of is called a 
+\bfblue{fibration sequence} if $X$ is a homotopy fiber of $g$ and a 
+\bfblue{cofibration sequence} if $Z$ is a homotopy cofiber of $f$. 
+Unlike left/right exact sequences, fibration/cofibration sequences are 
+automatically long.
+
+Indeed, 
+let $f\colon X\to Y$ be a based morphism of pointed objects in $\Cc$.
+Then, we have the fibration sequence 
+\[
+\Fib(f)\markar{i}X\markar{f}Y.
+\]
+Consider the \emph{reversed} homotopy fiber $\bar\Fib(i)$ of $i$. 
+To see what does this means and why we need this, 
+look at the following diagram
+\[
+\begin{tikzcd}
+\bar\Fib(i)\ar[r]\ar[d]&
+\Fib(f)\ar[r]\ar[d,"{i}"']\ar[dl,Rightarrow,dashed]&
+\pt\ar[d]\ar[dl,Rightarrow,dashed]\\
+\pt\ar[r]&X\ar[r,"{f}"]&Y
+\end{tikzcd}
+\]
+where the right square exhibits $\Fib(f)$ as the homotopy fiber of $f$ 
+while the left square, 
+instead of exhibiting $\bar\Fib(i)$ as the homotopy fiber of $i$ which 
+is the homotopy pullback of $\pt\to X$ along $i$, 
+exhibits $\bar\Fib(i)$ as the homotopy pullback of $i$ along 
+$\pt\to X$. 
+Note that, by pasting the two squares, the rectangle becomes a homotopy 
+square and exhibits $\bar\Fib(i)$ as the homotopy pullback of 
+$\pt\to Y$ along itself, i.e. the \emph{loop space object} $\Omega Y$. 
+Note that, by our construction, 
+the reversed homotopy fiber and the homotopy fiber are 
+canonically isomorphic\footnote{
+In fact, since the notions of homotopy limits only make sense 
+up to weak homotopy equivalences, 
+the statement here is literally wrong. 
+However, it is true that the constructions of 
+reversed homotopy fiber 
+(which is given by just invert $I$ in the construction of 
+the homotopy fiber) 
+and the homotopy fiber given in 
+$\Top$ and $\Top_{\ast}$ are canonically homeomorphic.}.
+Therefore we have anther fibration sequence
+\[
+\Omega Y\To\Fib(f)\markar{i}X.
+\]
+If we keep going, obtaining the following diagram
+\[
+\begin{tikzcd}
+\Omega X\ar[r]\ar[d,"{-\Omega f}"']&
+\pt\ar[d]\ar[dl,Rightarrow,dashed]&\\
+\Omega Y\ar[r]\ar[d]&
+\Fib(f)\ar[r]\ar[d,"{i}"']\ar[dl,Rightarrow,dashed]&
+\pt\ar[d]\ar[dl,Rightarrow,dashed]\\
+\pt\ar[r]&X\ar[r,"{f}"]&Y
+\end{tikzcd}
+\]
+where the $-\Omega f$ denotes the \emph{reversed} loop morphism. 
+The reversion appear due to the reversed homotopy in the left-below 
+square.
+
+Therefore, if we have a fibration sequence $X\markar{f}Y\markar{g}Z$, 
+then we have a \emph{long fibration sequence}
+\[
+\cdots\To
+\Omega X\markar{-\Omega f}\Omega Y\markar{-\Omega g}\Omega Z
+\To X\markar{f}Y\markar{g}Z.
+\]
+
+The similar story applies to cofibration sequences. 
+If we have a cofibration sequence $X\markar{f}Y\markar{g}Z$, 
+then we have a \emph{long cofibration sequence}
+\[
+X\markar{f}Y\markar{g}Z\To
+\Sigma X\markar{-\Sigma f}\Sigma Y\markar{-\Sigma g}\Sigma Z
+\To\cdots.
+\]
+
+}
+
+\para{
+Let $f\colon X\to Y$ be a morphism in $\Cc_{\ast}$. 
+The adjunction of $\Sigma$ and $\Omega$ gives rise to the 
+following commutative diagram.
+\[
+\adjustbox{scale=0.9,center}{
+\begin{tikzcd}
+& \Sigma\Omega\Fib(f)\ar[r]\ar[d] & 
+\Sigma\Omega X\ar[r]\ar[d] & 
+\Sigma\Omega Y\ar[r]\ar[d] & 
+\Sigma\Omega\Cofib(f)\ar[r]\ar[d] & 
+\Sigma\Omega\Sigma X\ar[d] \\
+\Omega Y\ar[r]\ar[d] & 
+{\Fib(f)}\ar[r]\ar[d] & 
+X\ar[r]\ar[d] & 
+Y\ar[r]\ar[d] & 
+{\Cofib(f)}\ar[r]\ar[d] & 
+{\Sigma X} \\
+\Omega\Sigma\Omega Y\ar[r] & 
+\Omega\Sigma\Fib(f)\ar[r] & 
+\Omega\Sigma X\ar[r] & 
+\Omega\Sigma Y\ar[r] & 
+\Omega\Sigma\Cofib(f) &
+\end{tikzcd}
+}
+\]
+Considering the following homotopy commutative diagram:
+\[
+\begin{tikzcd}
+\Fib(f)\ar[r]\ar[d]&
+\pt\ar[d]\ar[dl,Rightarrow,dashed]\\
+X\ar[r]\ar[d]&
+Y\ar[d]\ar[dl,Rightarrow,dashed]\\
+\pt\ar[r]&
+\Cofib(f)
+\end{tikzcd}
+\]
+one see that there are homotopy equivalence:
+\[
+\Fib(f)\markar{\sim}\Omega\Cofib(f),\qquad
+\Sigma\Fib(f)\markar{\sim}\Cofib(f).
+\]
+Together with the triangle identities for the $\Sigma\dashv\Omega$, 
+we obtain the following commutative diagram
+\[
+\adjustbox{scale=0.9,center}{
+\begin{tikzcd}
+& \Sigma\Omega\Fib(f)\ar[r]\ar[d] & 
+\Sigma\Omega X\ar[r]\ar[d] & 
+\Sigma\Omega Y\ar[r]\ar[d] & 
+\Sigma\Fib(f)\ar[r]\ar[d] & 
+\Sigma X\ar[d,equal] \\
+\Omega Y\ar[r]\ar[d,equal] & 
+{\Fib(f)}\ar[r]\ar[d] & 
+X\ar[r]\ar[d] & 
+Y\ar[r]\ar[d] & 
+{\Cofib(f)}\ar[r]\ar[d] & 
+{\Sigma X} \\
+\Omega Y\ar[r] & 
+\Omega\Cofib(f)\ar[r] & 
+\Omega\Sigma X\ar[r] & 
+\Omega\Sigma Y\ar[r] & 
+\Omega\Sigma\Cofib(f) &
+\end{tikzcd}
+}
+\]
+where the top row is the suspension of a fiber sequence 
+and the bottom row is the looping of a cofiber sequence.
+}
+
+\para{
+It turns out that the functor 
+$[Z,-]_{\ast}\colon\Top_{\ast}\to\Set_{\ast}$ 
+is left exact for any pointed space $Z$. 
+In particular, $\pi_0$ is left exact. 
+So, if we have a fiber sequence of pointed spaces
+\[
+\cdots\To\Omega^2 Z\To
+\Omega X\markar{-\Omega f}\Omega Y\markar{-\Omega g}\Omega Z
+\To X\markar{f}Y\markar{g}Z.
+\]
+Notice that $\pi_0(\Omega^nX)=\pi_n(X)$.
+Then we get a long exact sequence of pointed sets
+\begin{multline*}
+\cdots\To
+\pi_2(X)\markar{f_{\ast}}\pi_2(Y)\markar{g_{\ast}}\pi_2(Z)\To \\
+\pi_1(X)\markar{f_{\ast}}\pi_1(Y)\markar{g_{\ast}}\pi_1(Z)
+\To \pi_0(X)\markar{f_{\ast}}\pi_0(Y)\markar{g_{\ast}}\pi_0(Z).
+\end{multline*}
+Moreover, since $\pi_0$ is left exact, the above maps 
+preserve group structures if there exists one.
+
+For $\Cc$ an $\infty$-category and $C$ any object in $\Cc_{\ast}$, 
+the functor $\HHom_{\Cc_{\ast}}(C,-)$ is left exact, i.e. preserves 
+homotopy limits. 
+Hence, if we have a fiber sequence of pointed objects
+\[
+\cdots\To\Omega^2 Z\To
+\Omega X\markar{-\Omega f}\Omega Y\markar{-\Omega g}\Omega Z
+\To X\markar{f}Y\markar{g}Z.
+\]
+Then we get a fiber sequence of pointed spaces
+\begin{multline*}
+\cdots\To\HHom_{\Cc_{\ast}}(C,\Omega^2 Z)\To 
+\HHom_{\Cc_{\ast}}(C,\Omega X)\markar{f_{\ast}}
+\HHom_{\Cc_{\ast}}(C,\Omega Y)\markar{g_{\ast}}\\
+\HHom_{\Cc_{\ast}}(C,\Omega Z)
+\To \HHom_{\Cc_{\ast}}(C,X)\markar{f_{\ast}}
+\HHom_{\Cc_{\ast}}(C,Y)\markar{g_{\ast}}
+\HHom_{\Cc_{\ast}}(C,Z),
+\end{multline*}
+and thus a long exact sequence of pointed sets
+\begin{multline*}
+\cdots\To\pi_0\HHom_{\Cc_{\ast}}(C,\Omega^2 Z)\To\\
+\pi_0\HHom_{\Cc_{\ast}}(C,\Omega X)\markar{f_{\ast}}
+\pi_0\HHom_{\Cc_{\ast}}(C,\Omega Y)\markar{g_{\ast}}
+\pi_0\HHom_{\Cc_{\ast}}(C,\Omega Z)\\
+\To\pi_0\HHom_{\Cc_{\ast}}(C,X)\markar{f_{\ast}}
+\pi_0\HHom_{\Cc_{\ast}}(C,Y)\markar{g_{\ast}}
+\pi_0\HHom_{\Cc_{\ast}}(C,Z),
+\end{multline*}
+where the maps preserve (possibly exist) group structures. 
+To simplify notation, denote $\pi_0\HHom_{\Cc_{\ast}}(-,-)$ by 
+$\<-,-\>$ if there is no ambiguity.
+Dually, the functor $\HHom_{\Cc_{\ast}}(-,C)$ 
+sends homotopy colimits to homotopy limits. 
+Hence, if we have a cofiber sequence of pointed objects
+\[
+X\markar{f}Y\markar{g}Z\To
+\Sigma X\markar{-\Sigma f}\Sigma Y\markar{-\Sigma g}\Sigma Z
+\To\Sigma^2 X\To\cdots.
+\]
+Then we get a fiber sequence of pointed spaces
+\begin{multline*}
+\cdots\To\HHom_{\Cc_{\ast}}(\Sigma^2 X,C)\To 
+\HHom_{\Cc_{\ast}}(\Sigma Z,C)\markar{g^{\ast}}
+\HHom_{\Cc_{\ast}}(\Sigma Y,C)\markar{f^{\ast}}\\
+\HHom_{\Cc_{\ast}}(\Sigma X,C)
+\To \HHom_{\Cc_{\ast}}(Z,C)\markar{g^{\ast}}
+\HHom_{\Cc_{\ast}}(Y,C)\markar{f^{\ast}}
+\HHom_{\Cc_{\ast}}(X,C),
+\end{multline*}
+and thus a long exact sequence of pointed sets
+\begin{multline*}
+\cdots\To
+\<\Sigma^2 X,C\>\To
+\<\Sigma Z,C\>\markar{g^{\ast}}
+\<\Sigma Y,C\>\markar{f^{\ast}}\\
+\<\Sigma X,C\>\To
+\<Z,C\>\markar{g^{\ast}}
+\<Y,C\>\markar{f^{\ast}}
+\<X,C\>,
+\end{multline*}
+where the maps preserve (possibly exist) group structures.
+The above two exact sequences are related by the following
+identification of pointed sets
+\[
+\pi_0\HHom_{\Cc_{\ast}}(\Sigma^n X,Y)=
+\pi_0\HHom_{\Cc_{\ast}}(X,\Omega^n Y)=
+\pi_n\HHom_{\Cc_{\ast}}(X,Y).
+\]
+
+}
+
+\para{
+Let $\Cc$ be an $\infty$-category. 
+An \bfblue{$\Omega$-spectrum} $\EE$ is 
+a sequence of pointed objects $\{E_n\}_{n\in\NN}$ 
+together with weak equivalences $f_n\colon E_n\to\Omega E_{n+1}$. 
+Here $f_n$ is a weak equivalence means 
+$f_{n\ast}\colon 
+\pi_n\HHom_{\Cc_{\ast}}(C,E_n)\to
+\pi_n\HHom_{\Cc_{\ast}}(C,\Omega E_{n+1})$ 
+are isomorphisms for all $n$ and pointed object $C$.
+
+Then, once we have a cofibration sequence $X\to Y\to Z$, we have 
+long exact sequences of pointed sets
+\begin{multline*}
+\cdots\To
+\<\Sigma Z,E_n\>\To
+\<\Sigma Y,E_n\>\To
+\<\Sigma X,E_n\>\\
+\To
+\<Z,E_n\>\To
+\<Y,E_n\>\To
+\<X,E_n\>,
+\end{multline*}
+for all $n$. 
+By the adjunction $\Sigma\dashv\Omega$ and the definition of 
+$\Omega$-spectrum, we deduce a long exact sequence of abelian groups
+\begin{multline*}
+\cdots\To
+\<Z,E_{n-1}\>\To
+\<Y,E_{n-1}\>\To
+\<X,E_{n-1}\>\\
+\To
+\<Z,E_n\>\To
+\<Y,E_n\>\To
+\<X,E_n\>\To\\
+\<Z,E_{n+1}\>\To
+\<Y,E_{n+1}\>\To
+\<X,E_{n+1}\>\To\cdots.
+\end{multline*}
+Let $H^n(X,\EE)$ denote $\<X,E_n\>$. Then using above discussion, 
+it is easy to show that $H^n(-,\EE)$ defines a generalized cohomology 
+theory, i.e it satisfies analogy of Eilenberg-Steenrod axioms.
+This functor is called the \bfblue{intrinsic cohomology} with 
+coefficient $\EE$.
+
+Note that at the beginning of the long exact sequence we have
+\[
+H^0(Z,\EE)\To H^0(Y,\EE)\To H^0(X,\EE)\To\cdots
+\]
+but that not all, we further have
+\begin{multline*}
+\cdots\To
+\<\Sigma Z,E_0\>\To
+\<\Sigma Y,E_0\>\To
+\<\Sigma X,E_0\>\\
+\To
+H^0(Z,\EE)\To H^0(Y,\EE)\To H^0(X,\EE).
+\end{multline*}
+Note that 
+\[
+\<\Sigma^n(-),E_0\> = 
+\pi_n\HHom_{\Cc_{\ast}}(-,E_0).
+\]
+Hence we conclude that if we want to extend the intrinsic cohomology 
+to negative degrees so that we have long exact sequence tending to both 
+directions, then we have to put
+\[
+H^{-n}(-,\EE) = \pi_n\HHom_{\Cc_{\ast}}(-,E_0).
+\]
+In other words, \emph{negative cohomology groups are homotopy groups}.
+}
+
+
+
+
+
+
+
+
+
+\clearpage
+\section{Chain complexes}
+\para{
+Let $I$ be a set and $\Cc$ a category. 
+An \bfblue{$I$-graded object} in $\Cc$ is a functor from $I$, 
+viewed as a discrete category, to $\Cc$. 
+Hence the category of $I$-graded objects is denoted by $\Cc^{I}$. 
+In plain words, an $I$-graded object is 
+a family of objects $\{X_i\}_{i\in I}$ in $\Cc$ indexed by $I$. 
+We denote it by $X_{\bullet}$ or simply $X$ if there is no ambiguity. 
+A $\ZZ$-graded object is simply called a \bfblue{graded object} 
+and the category $\Cc^{\ZZ}$ will be denoted by $\Gr(\Cc)$. 
+A \bfblue{morphism} between $I$-graded objects $f\colon X\to Y$ is thus 
+a family of morphisms $\{f\colon X_i\to Y_i\}_{i\in I}$ 
+in $\Cc$ indexed by $I$. In other words, 
+\[
+\Hom_{\Cc^I}(X,Y)=\prod_{i\in I}\Hom_{\Cc}(X_i,Y_i).
+\]
+Let $\iota\colon\Cc\to\Cc^I$ be the functor sending each object 
+$Y$ to the $I$-graded object $\underline{Y}$ whose each degree is $Y$. 
+Then we have a functor 
+\[
+\Hom_{\Cc^I}(X,\iota)\colon\Cc\To\Set.
+\]
+Suppose $\Cc$ has direct sums, then 
+the above functor can be represented by the direct sum
+\[
+\bigoplus_{i\in I}X_i.
+\]
+We call it the representative of $X$ and denoted also by $X$.
+}
+
+\para{
+Now, suppose $G$ is a commutative monoid. 
+Let $X$ be a $G$-graded object and $g$ an element of $G$. 
+The \bfblue{$g$-twisted object} of $X$ is the $G$-graded object 
+$X(g)$ defined as
+\[
+X(g)_u:=X_{g+u},\quad\forall u\in G.
+\]
+Let $X, Y$ be two $G$-graded objects. 
+A morphism from $X$ to $Y(g)$ is called a
+\bfblue{$g$-twisted morphism} from $X$ to $Y$. 
+The $0$-twisted morphisms are the usual morphisms can called 
+\bfblue{homogeneous morphisms}.
+The $G$-graded set defined by
+\[
+\Hom(X,Y)_g := \Hom_{\Cc^G}(X,Y(g))
+\]
+is called the \bfblue{$G$-graded Hom}.
+}
+
+\para{
+Now, suppose $\Aa$ is an \emph{abelian tensor category}. 
+For $A,B$ two $G$-graded objects in $\Aa$, 
+their \bfblue{tensor product} is defined by
+\[
+(A\otimes B)_{g} := \bigoplus_{u+v = g}(A_u\otimes B_v),
+\quad\forall g\in G.
+\]
+In this way, $\Aa^G$ becomes an abelian tensor category. 
+If furthermore $\Aa$ is \emph{closed}, admitting internal Hom 
+bifunctor $[-,-]\colon\Aa^{\opp}\times\Aa\to\Aa$. 
+Then $\Aa^G$ can be viewed as a $\Aa$-enriched category by setting the \emph{Hom-object} as
+\[
+\inHom_{\Aa^G}(A,B) := \prod_{g\in G}[A_g,B_g].
+\]
+Moreover, we define the \bfblue{internal $G$-graded Hom-object} by
+\[
+[A,B]_g := \inHom_{\Aa^G}(A,B(g)).
+\]
+The internal $G$-graded Hom-objects turn to be the 
+\emph{internal Hom-objects} in $\Aa^G$ and we have the following 
+(enriched) adjunctions:
+\begin{align*}
+\Hom_{\Cc^G}(A\otimes B,C) & \cong \Hom_{\Cc^G}(A,[B,C]), \\
+\inHom_{\Cc^G}(A\otimes B,C) & \cong \inHom_{\Cc^G}(A,[B,C]), \\
+[A\otimes B,C] & \cong [A,[B,C]].
+\end{align*}
+(However, to prove the above statements, one needs to deal with 
+$\Aa^{G}$-enrichment first and then apply the obverse 
+\emph{change of base categories} $\Aa^{G}\to\Aa$.)
+}
+
+\para{
+Let $\Cc$ be a category admitting a \emph{zero object} $0$. 
+\begin{proplist}
+\item 
+A \bfblue{chain complex} in $\Cc$ is 
+a graded object endowed with a $(-1)$-twisted endomorphism $\partial$, 
+called the \bfblue{boundary operator} or \bfblue{codifferential},
+such that $\partial\circ\partial=0$.
+We use the notation $X_{\bullet}$ to indicate it is 
+a chain complex.
+\item 
+Dually, a \bfblue{cochain complex} in $\Cc$ is 
+a graded object endowed with a $1$-twisted endomorphism $\di$, 
+called the \bfblue{differential} or \bfblue{coboundary operator},
+such that $\di\circ\di=0$.
+We use the notation $X^{\bullet}$ to indicate it is 
+a cochain complex.
+\item 
+Let $X_{\bullet}$, $Y_{\bullet}$ be two chain complexes. 
+A \bfblue{chain morphism} 
+$f\colon X_{\bullet}\to Y_{\bullet}$ between them
+is a homogeneous morphism such that the following diagrams commute.
+\[
+\begin{tikzcd}
+\cdots\ar[r] & X_n\ar[r,"{\partial_n}"]\ar[d,"{f_n}"] &
+X_{n-1}\ar[d,"{f_{n-1}}"]\ar[r] & \cdots \\
+\cdots\ar[r] & Y_n\ar[r,"{\partial_n}"] & Y_{n-1} \ar[r] & \cdots
+\end{tikzcd}
+\]
+\item 
+Dually, let $X^{\bullet},Y^{\bullet}$ be two cochain complexes. 
+A \bfblue{cochain morphism} 
+$f\colon X^{\bullet}\to Y^{\bullet}$ between them 
+is a homogeneous morphism such that the following diagrams commute.
+\[
+\begin{tikzcd}
+\cdots\ar[r] & X^n\ar[r,"{\di^n}"]\ar[d,"{f^n}"] &
+X^{n+1}\ar[d,"{f^{n+1}}"]\ar[r] & \cdots \\
+\cdots\ar[r] & Y^n\ar[r,"{\di^n}"] & Y^{n+1} \ar[r] & \cdots
+\end{tikzcd}	
+\]
+\end{proplist}
+
+The category of chain complexes (resp. cochain complexes) in $\Cc$ 
+with chain morphisms (resp. cochain morphisms) between them is 
+denoted by $\Ch_{\ast}(\Cc)$ (resp. $\Ch^{\ast}(\Cc)$).
+Note that this category also has a zero object $\underline{0}$
+whose each degree is $0$.
+}
+
+\para{
+A chain complex $X_{\bullet}$ is said to be 
+\begin{itemize}
+\item 
+\bfblue{connective} if $X_n=0$ for all $n<0$;
+\item 
+\bfblue{coconnective} if $X_n=0$ for all $n>0$;
+\item 
+\bfblue{bounded above} if $X_n=0$ for sufficiently large $n$;
+\item 
+\bfblue{bounded below} if $X_n=0$ for sufficiently small $n$;
+\item 
+\bfblue{bounded} if it is both bounded above and bounded below.
+\end{itemize}
+The full subcategory of $\Ch_{\ast}(\Cc)$ 
+spanned by connective 
+(resp. coconnective, 
+bounded above, 
+bounded below, 
+bounded) chain complexes 
+is denoted by 
+$\Ch_c(\Cc)$ or $\Ch_{\ge0}(\Cc)$ 
+(resp. $\Ch_{\le0}(\Cc)$, 
+$\Ch_-(\Cc)$, 
+$\Ch_+(\Cc)$, 
+$\Ch_b(\Cc)$).
+
+Dually, a cochain complex $X^{\bullet}$ is said to be 
+\begin{itemize}
+\item 
+\bfblue{coconnective} if $X^n=0$ for all $n<0$;
+\item 
+\bfblue{connective} if $X^n=0$ for all $n>0$;
+\item 
+\bfblue{bounded above} if $X^n=0$ for sufficiently large $n$;
+\item 
+\bfblue{bounded below} if $X^n=0$ for sufficiently small $n$;
+\item 
+\bfblue{bounded} if it is both bounded above and bounded below.
+\end{itemize}
+The full subcategory of $\Ch^{\ast}(\Cc)$ 
+spanned by connective 
+(resp. coconnective, 
+bounded above, 
+bounded below, 
+bounded) chain complexes 
+is denoted by 
+$\Ch^c(\Cc)$ or $\Ch^{\le0}(\Cc)$ 
+(resp. $\Ch^{\ge0}(\Cc)$, 
+$\Ch^-(\Cc)$, 
+$\Ch^+(\Cc)$, 
+$\Ch^b(\Cc)$).
+}
+
+\para{
+Any chain complex $X_{\bullet}$ can be transformed into  
+a cochain complex by 
+\[
+X^n:=X_{-n},\qquad
+\di^n:=\partial_{-n}
+\]
+and \emph{vice versa}. 
+Thus we can identify the following two categories
+\[
+\Ch_{\ast}(\Cc) \cong \Ch^{\ast}(\Cc)
+\]
+and safely use the notation \bfblue{$\Ch(\Cc)$} 
+instead of $\Ch_{\ast}(\Cc)$ or $\Ch^{\ast}(\Cc)$ 
+to denote those categories.
+In this sense, we can safely use the terminology \bfblue{complex} 
+to indicate both chain complexes and cochain complexes, 
+and \bfblue{morphism of complexes} to indicate
+both chain morphisms and cochain morphisms.
+
+On the other hand, one can see that chain complexes in $\Cc$ 
+are the same as cochain complexes in $\Cc^{\opp}$, hence
+\[
+\Ch_{\ast}(\Cc)^{\opp} = \Ch^{\ast}(\Cc^{\opp}).
+\]
+So we can canonically identify $\Ch(\Cc^{\opp})$ and $\Ch(\Cc)^{\opp}$.
+
+Restricting the full subcategories mentioned before, 
+we have the following natural isomorphisms
+\begin{align*}
+\Ch_{\ge0}(\Cc)^{\opp} &= \Ch^{\ge0}(\Cc^{\opp}) \cong \Ch_{\le0}(\Cc^{\opp}),
+\\
+\Ch_{\le0}(\Cc)^{\opp} &= \Ch^{\le0}(\Cc^{\opp}) \cong \Ch^{\ge0}(\Cc^{\opp}).
+\end{align*}
+Therefore, we can identify 
+connective (resp. coconnective) chain complexes with 
+connective (resp. coconnective) cochain complexes 
+and call simply call them 
+\emph{connective (resp. coconnective) complexes}. 
+In practice, the terminology 
+\bfblue{connective complexes} 
+often refers to connective chain complexes 
+while \bfblue{coconnective complexes} 
+to coconnective cochain complexes.
+
+We also have the following natural isomorphisms
+\begin{align*}
+\Ch_-(\Cc)^{\opp} &= \Ch^-(\Cc^{\opp}) \cong \Ch_+(\Cc^{\opp}),
+\\
+\Ch_+(\Cc)^{\opp} &= \Ch^+(\Cc^{\opp}) \cong \Ch_-(\Cc^{\opp}),
+\\
+\Ch_b(\Cc)^{\opp} &= \Ch^b(\Cc^{\opp}) \cong \Ch_b(\Cc^{\opp}).
+\end{align*}
+Hence, we can identify 
+bounded above (resp. bounded below) chain complexes with 
+bounded below (resp. bounded above) cochain complexes.
+In this sense bounded above and bounded below chain complexes are 
+dual notions while the notion of bounded complexes is self-dual.
+
+We say a complex $X_{\bullet}$ is \bfblue{concentrated} 
+at degree $n_1,\cdots,n_k$ if $X_i=0$ unless $i=n_1,\cdots,n_k$. 
+It is clear that concentrated complexes are bounded complexes 
+and \emph{vice versa}.
+}
+
+\para{
+There are many ways to embed $\Cc$ into the category $\Ch(\Cc)$. 
+Let $X$ be an object in $\Cc$. 
+\begin{proplist}
+\item 
+The complex $\underline{X}_{\bullet}$ has $X$ at its every degree 
+and $0$ as its boundary operator.
+\item 
+The complex $X[n]$ concentrated at degree $-n$ with component $X$. 
+\item 
+We simply denote $X[0]$ by $X$ if there is no ambiguity.
+\end{proplist}
+The notation $X[n]$ suggests that this complex is obtained by apply 
+a \bfblue{translation of degree $n$} functor to the complex $X$. 
+
+In the case $\Cc$ is an additive category, 
+the functor $[n]$ is defined as follows. 
+Let $X_{\bullet}$ be a complex. 
+Then the complex $X[n]_{\bullet}$ is defined by
+\[
+X[n]_i:=X_{n+i},\qquad
+\partial_{X[n]}:=(-1)^n\partial_{X},\qquad
+\forall i\in\ZZ.
+\]
+Let $f$ be a chain morphism. 
+Then the chain morphism $f[n]$ is defined by 
+$f[n]_i=f_{n+i}$ for all $i\in\ZZ$.
+}
+\begin{Rem}
+Note that the functor $[n]$ on $\Ch^{\ast}(\Cc)$ is 
+usually defined by
+\[
+X[n]^i:=X^{n+i},\qquad
+\di^{X[n]}:=(-1)^n\di^{X},\qquad
+\forall i\in\ZZ.
+\]
+Under this setting, we encounter that
+\[
+X[n]^{\bullet} \neq X[n]_{-\bullet},
+\marginnote{\dbend}
+\]
+which goes against our identification! 
+
+One should rather think the functor $[n]$ as an 
+extension of $(n)$ from the category of graded objects 
+(which can be viewed as complexes with zero differentials) 
+to the category of complexes. 
+So $X[n]$ is not a complex unless we specify it is 
+a chain complex or cochain complex.
+\end{Rem}
+
+\para{
+When $\Cc=\Ab$, the category of abelian groups, 
+we simply denote $\Ch(\Ab)$ by $\Ch$. 
+More generally, let $k$ be a ring and 
+$\Cc=k\Mod$, the category of $k$-modules, 
+we simply denote $\Ch(k\Mod)$ by $\Ch(k)$. 
+The notations for subcategories $\Ch_{?}$ and $\Ch^{?}$ 
+($?$ equals $c,\ge0,\le0,+,-,b$) are similar.
+}
+
+\para{
+From now on, let $\Aa$ be an abelian category. 
+When $\Aa$ is $\Ab$ or $k\Mod$, 
+we can talk about \emph{elements} of an object. 
+For general abelian tensor category, 
+a \bfblue{global element} of an object 
+refers to a morphism from the unit to it, 
+and a \bfblue{(general) element} refers to a morphism from 
+arbitrary object.
+
+Let $(C_{\bullet},\partial)$ be a chain complex in $\Aa$.
+\begin{proplist}
+\item 
+The $n$-th \bfblue{cycle object} of $C_{\bullet}$ 
+is $Z_n(C) := \Ker\partial_n$, 
+whose elements are called \bfblue{$n$-cycles}.
+\item 
+The $n$-th \bfblue{boundary object} of $C_{\bullet}$ 
+is $B_n(C) := \Image\partial_{n+1}$, 
+whose elements are called \bfblue{$n$-boundaries}.
+\end{proplist}
+Since $\partial\circ\partial = 0$, 
+the inclusion $B_n(C)\mono C_n$ factors through $Z_n(C)$. 
+\begin{proplist}[resume]
+\item 
+The cokernel of the resulted inclusion $B_n(C)\mono Z_n(C)$ 
+is called the $n$-th \bfblue{homology object} of $C_{\bullet}$ 
+and denoted by $H_n(C)$. 
+The elements of $H_n(C)$ are called \bfblue{homology classes}. 
+\end{proplist} 
+
+Dually, let $(C^{\bullet},\di)$ be a cochain complex in $\Aa$.
+\begin{proplist}[resume]
+\item 
+The $n$-th \bfblue{cocycle object} of $C^{\bullet}$ 
+is $Z^n(C) := \Ker\di_n$, 
+whose elements are called \bfblue{$n$-cocycles}.
+\item 
+The $n$-th \bfblue{coboundary object} of $C^{\bullet}$ 
+is $B^n(C) := \Image\di_{n-1}$, 
+whose elements are called \bfblue{$n$-coboundaries}.
+\end{proplist}
+Since $\di\circ\di = 0$, 
+the inclusion $B^n(C)\mono C^n$ factors through $Z^n(C)$. 
+\begin{proplist}[resume]
+\item 
+The cokernel of the resulted inclusion $B^n(C)\mono Z^n(C)$ 
+is called the $n$-th \bfblue{cohomology object} 
+of $C^{\bullet}$ 
+and denoted by $H^n(C)$. 
+The elements of $H^n(C)$ are called \bfblue{cohomology classes}. 
+\end{proplist} 
+The above constructions extend to the following additive functors
+\begin{align*}
+Z_{\bullet}, B_{\bullet}, H_{\bullet}\colon&
+\Ch_{\ast}(\Aa)\To\Aa^{\ZZ}, \\
+Z^{\bullet}, B^{\bullet}, H^{\bullet}\colon&
+\Ch^{\ast}(\Aa)\To\Aa^{\ZZ}.
+\end{align*}
+In particular, any chain morphism 
+$f\colon C_{\bullet}\to D_{\bullet}$ 
+(resp. cochain morphism $f\colon C^{\bullet}\to D^{\bullet}$)
+induces a homogeneous morphism 
+\[
+H(f)\colon H_{\bullet}(C)\to H_{\bullet}(D).\qquad
+(\text{resp. }H(f)\colon H^{\bullet}(C)\to H^{\bullet}(D))
+\]
+Obviously, if $f$ is an isomorphism, then so is $H(f)$. But the converse may not be true.
+A chain morphism (resp. cochain morphism) $f$ is called a \bfblue{quasi-isomorphism} if 
+$H(f)$ is an isomorphism. 
+A chain complex $C_{\bullet}$ (resp. cochain complex $C^{\bullet}$) 
+is said to be \bfblue{acyclic} if 
+it is \emph{quasi-isomorphic} to $0$.
+}
+
+\para{
+Since complexes is a special kind of diagrams, 
+the limits and colimits in $\Ch(\Aa)$ are computed degree-wisely. 
+Note that 
+filtered colimits commute with finite limits and all colimits, 
+hence by the construction of the functors 
+$B_{\bullet}, Z_{\bullet}$ and $H_{\bullet}$ 
+(resp. $B^{\bullet}, Z^{\bullet}$ and $H^{\bullet}$), 
+they preserve filtered colimits.
+}
+
+\para{
+Suppose $\Aa$ is an abelian tensor category. 
+Let $C_{\bullet}$, $D_{\bullet}$ be two complexes. 
+Then there exists a natural boundary operator $\partial$ on 
+the tensor product $(C\otimes D)_{\bullet}$ of their underlying 
+graded objects. 
+The resulted complex is called the \bfblue{Koszul product} of 
+$C_{\bullet}$ and $D_{\bullet}$. 
+By its construction, we only need to define the following morphisms
+\[
+C_{p}\otimes D_{q} \markar{\partial_{p,q}^{(1)}} C_{p-1}\otimes D_{q},\qquad
+C_{p}\otimes D_{q} \markar{\partial_{p,q}^{(2)}} C_{p}\otimes D_{q-1}.
+\]
+Note that the condition $\partial\circ\partial = 0$ requires that the following two morphisms must be negative to each other.
+\begin{align*}
+C_{p}\otimes D_{q} &\markar{\partial_{p,q}^{(2)}} C_{p}\otimes D_{q-1} \markar{\partial_{p,q-1}^{(1)}} C_{p-1}\otimes D_{q-1},\\
+C_{p}\otimes D_{q} &\markar{\partial_{p,q}^{(1)}} C_{p-1}\otimes D_{q} \markar{\partial_{p-1,q}^{(2)}} C_{p-1}\otimes D_{q-1}.
+\end{align*}
+The common convention is
+\[
+\partial_{p,q}^{(1)} := \partial_{p}\otimes\id_{D_q},\qquad
+\partial_{p,q}^{(2)} := (-1)^{p}\id_{C_p}\otimes\partial_{q}.
+\]
+In element notation, it reads
+\[
+\partial(x\otimes y) = 
+\partial x\otimes y + (-1)^{|x|}x\otimes\partial y,
+\]
+where $|x|$ denotes the degree of $x$.
+Then one can verify that the above construction makes $\Ch(\Aa)$ 
+into an abelian tensor category with the unit $\unit$,  
+which is $\unit[0]_{\bullet}$ with $\unit$ the unit of $\Aa$, 
+and with the non-trivial braiding 
+$\gamma(C,D)_{\bullet}\colon
+(C\otimes D)_{\bullet}\to (D\otimes C)_{\bullet}$ 
+whose component in each degree is 
+\[
+(-1)^{pq}\gamma(C_p,D_q)\colon C_p\otimes D_q\To D_q\otimes C_p,
+\]
+where $\gamma$ is the braiding in $\Aa$.
+}
+\begin{Rem}
+One can see that $C[n]_{\bullet}$ 
+is precisely $(\unit[n]\otimes C)_{\bullet}$.
+This could be a reason why one may dislike the common convention. 
+However, if we use $(C\otimes D)_{\bullet}$ 
+to denote what usually means $(D\otimes C)_{\bullet}$, 
+then (using the element notation) the boundary operator reads as 
+\[
+\partial(x\otimes y) = 
+(-1)^{|y|}\partial x\otimes y + x\otimes\partial y.
+\]
+In a middle way, we use the notation 
+\bfblue{$(C\otimes^{\gamma}D)_{\bullet}$} 
+to denote $(D\otimes C)_{\bullet}$.
+To illustrate how the braiding 
+$(C\otimes D)_{\bullet}\to (C\otimes^{\gamma}D)_{\bullet}$ 
+works, let's accept the following formal rule for element notation
+\[
+\blue
+x\otimes^{\gamma}y:=\gamma(x\otimes y)=(-1)^{|x||y|}y\otimes x,
+\]
+It is often the case that elements of $C\otimes D$ are written as $xy$. 
+If this is that case, elements of $C\otimes^{\gamma}D$ can be 
+written as $x^{\gamma}y$ and the rule above reads 
+\[
+x^{\gamma}y=(-1)^{|x||y|}yx.
+\]
+
+Since the two tensor structures 
+$\otimes$ and $\otimes^{\gamma}$ are isomorphic, 
+it doesn't matter which we use as long as we don't mix them.
+The $\otimes$-convention is intuitive when 
+you do algebraic calculation while the 
+$\otimes^{\gamma}$-convention is convenient 
+to spell out formulas in homotopy theory.
+
+Note that, under $\otimes^{\gamma}$-convention, 
+we have $C[n]_{\bullet}=(C\otimes^{\gamma}\unit[n])_{\bullet}$.
+\end{Rem}
+\begin{Rem}
+The \bfblue{Koszul product} of two cochain complexes
+$C^{\bullet}$ and $D^{\bullet}$ is 
+\begin{align*}
+(C\otimes D)^n &=\bigoplus_{p+q=n}C^p\otimes D^q,\\
+\di(x\otimes y) &= \di x\otimes y + (-1)^{|x|}x\otimes\di y.
+\end{align*}
+We have $C[n]^{\bullet} = (\unit[n]\otimes C)^{\bullet}$, 
+where $\unit[n]$ is a cochain complex version.
+\end{Rem}
+
+\para{
+Suppose further $\Aa$ is a closed abelian tensor category. 
+Let $C_{\bullet}$, $D_{\bullet}$ be two complexes. 
+Then there exists a natural boundary operator $\partial$ on 
+the internal Hom $[C,D]_{\bullet}$ of their underlying 
+graded objects. 
+The resulted complex is called the \bfblue{Koszul Hom complex} of 
+$C_{\bullet}$ and $D_{\bullet}$. 
+By its construction, we only need to define the following morphisms
+\[
+[C_{p},D_{q}] \markar{\partial_{-p,q}^{(1)}} [C_{p+1},D_{q}],\qquad
+[C_{p},D_{q}] \markar{\partial_{-p,q}^{(2)}} [C_{p},D_{q-1}].
+\]
+Note that the condition $\partial\circ\partial = 0$ requires that the following two morphisms must be negative to each other.
+\begin{align*}
+[C_{p},D_{q}] &\markar{\partial_{-p,q}^{(2)}} [C_{p},D_{q-1}] \markar{\partial_{-p,q-1}^{(1)}} [C_{p+1},D_{q-1}],\\
+[C_{p},D_{q}] &\markar{\partial_{-p,q}^{(1)}} [C_{p+1},D_{q}] \markar{\partial_{-p-1,q}^{(2)}} [C_{p+1},D_{q-1}].
+\end{align*}
+The common convention is
+\[
+\partial_{-p,q}^{(1)} := -(-1)^{-p+q}[\partial_{p+1},D_q],\qquad
+\partial_{-p,q}^{(2)} := [C_{p},\partial_{q}].
+\]
+In element notation, it reads
+\[
+(\partial f)(x) = \partial f(x) - (-1)^{|f|}f(\partial x).
+\]
+Then one can verify that this construction together 
+with previous ones makes $\Ch(\Aa)$ 
+a closed abelian tensor category.
+}
+\begin{Rem}
+The functor $-\otimes^{\gamma}C$, i.e. $C\otimes-$ admits 
+a right adjoint $\<C,-\>$ which gives another, 
+although equivalent to the above one, 
+closed abelian tensor category structure.
+The complex $\<C,D\>_{\bullet}$ 
+(called the \bfblue{left Koszul Hom complex}) is defined as follows. 
+Its components are the same as $[C,D]_{\bullet}$ and the boundary 
+operator reads
+\[
+(\partial f)(x) = (-1)^{|x|}\big(\partial f(x) - f(\partial x)\big).
+\]
+The Koszul Hom complex has the advantages that the signature 
+is independent on where the ``function'' $f$ acts on, 
+hence is conventional if one only focus on those elements. 
+On the other hand, the left Koszul Hom complex 
+has the advantages that the signature only depends on 
+where ``function'' $f$ acts on, 
+hence is conventional if one only focus on how those functions act. 
+Note that those two complexes are canonically isomorphic 
+since we have the braiding isomorphism  $\gamma$. 
+Indeed, the isomorphism reads
+\[
+f\longmapsto
+\big(
+x\mapsto (-1)^{|f||x|}f(x)
+\big).
+\]
+So we are free to use one of them for best fulfill our purpose.
+\end{Rem}
+\begin{Rem}
+The \bfblue{Koszul Hom complex} $[C,D]^{\bullet}$ of two cochain complexes
+$C_{\bullet}$ and $D_{\bullet}$ is
+\begin{align*}
+[C,D]^n &= \prod_{-p+q=n}[C^p,D^q] \\
+(\di f)(x) &= \di f(x)- (-1)^{|f|}f(\di x),
+\end{align*}
+and the differential for \bfblue{left Koszul Hom complex} $\<C,D\>^{\bullet}$ 
+is
+\[
+(\di f)(x) = (-1)^{|x|}(\di f(x) - f(\di x)).
+\]
+\end{Rem}
+
+\para{
+Let $\Aa$ be an abelian tensor category. 
+We have seen that so is $\Ch(\Aa)$. 
+Moreover, since the full subcategories $\Ch_{?}(\Aa)$ and $\Ch^{?}(\Aa)$ 
+with $?$ equals $+,-,b$ are closed under 
+finite limits and colimits and Koszul product, 
+they are also abelian tensor categories. 
+As for the full subcategories $\Ch_{?}(\Aa)$ and $\Ch^{?}(\Aa)$ 
+with $?$ equals $\ge0,\le0$, we use the following proposition.
+}
+
+\begin{prop}
+%\addcontentsline{toc}{subsection}{{\protect\numberline{}}Subcategories of special complexes}
+Let $\Aa$ be an abelian category. Then
+\begin{proplist}
+\item the inclusion $\Ch_{\ge0}(\Aa)\into\Ch(\Aa)$ admits a left adjoint $\sk_{\ge0}$ and a right adjoint $\tau_{\ge0}$ and hence is exact;
+\item the inclusion $\Ch_{\le0}(\Aa)\into\Ch(\Aa)$ admits a right adjoint $\sk_{\le0}$ and a left adjoint $\tau_{\le0}$ and hence is exact.
+\end{proplist}
+In particular, $\Ch_{\ge0}(\Aa)$ and $\Ch_{\le0}(\Aa)$ are abelian categories.
+\end{prop}
+\begin{proof}
+The functors $\sk_{\ge0}$ and $\tau_{\ge0}$ are defined as follows.
+\begin{align*}
+\sk_{\ge0}(C)_n & =
+\begin{cases}
+C_n & n\ge0,\\
+0 & n<0;
+\end{cases} \\
+\tau_{\ge0}(C)_n & =
+\begin{cases}
+C_n & n>0,\\
+Z_0(C) & n=0,\\
+0 & n<0.
+\end{cases}
+\end{align*}
+Notice that, for any chain complex $C_{\bullet}$,
+we have canonical chain morphisms
+\[
+\pi'_C\colon C_{\bullet}\To\sk_{\ge0}(C)_{\bullet},\qquad\qquad
+i_C\colon \tau_{\ge0}(C)_{\bullet}\To C_{\bullet}.
+\]
+On the other hand, for any connective chain complex $C_{\bullet}$,
+we have $Z_0(C)=C_0$. Therefore
+\[
+\sk_{\ge0}(C)_{\bullet} = \tau_{\ge0}(C)_{\bullet} = C_{\bullet}.
+\]
+Those identities and previous chain morphisms give rise to the 
+units and counits for the adjunctions.
+
+The functors $\sk_{\le0}$ and $\tau_{\le0}$ are defined as follows.
+\begin{align*}
+\sk_{\le0}(C)_n & =
+\begin{cases}
+C_n & n\le0,\\
+0 & n>0;
+\end{cases} \\
+\tau_{\le0}(C)_n & =
+\begin{cases}
+C_n & n<0,\\
+C_0/B_0(C) & n=0,\\
+0 & n>0.
+\end{cases}
+\end{align*}
+Notice that, for any chain complex $C_{\bullet}$,
+we have canonical chain morphisms
+\[
+i'_C\colon \sk_{\le0}(C)_{\bullet}\To C_{\bullet},\qquad\qquad
+\pi_C\colon C_{\bullet}\To\tau_{\le0}(C)_{\bullet}.
+\]
+On the other hand, for any connective chain complex $C_{\bullet}$,
+we have $B_0(C)=0$. Therefore
+\[
+\sk_{\le0}(C)_{\bullet} = \tau_{\le0}(C)_{\bullet} = C_{\bullet}.
+\]
+Those identities and previous chain morphisms give rise to the 
+units and counits for the adjunctions.
+\end{proof}
+\begin{Rem}
+The complex $\tau_{\ge0}(C)_{\bullet}$ (resp. $\tau_{\ge0}(C)_{\bullet}$) 
+is called the 
+\bfblue{$0$-th truncation from below} 
+(resp. \bfblue{$0$-th truncation from above})
+of $C_{\bullet}$. 
+One can similarly define $n$-th truncation functors 
+$\tau_{\ge n}$ and $\tau_{\le n}$.
+\end{Rem}
+
+\para{
+Let $\unit$ be the unit of $\Aa$. 
+Consider the chain complex $I_{\bullet}$ defined as
+\[
+\cdots\To0\To\unit\markar{(-\id,\id)}\unit\oplus\unit\To0\To\cdots
+\]
+where $\unit\oplus\unit$ is of degree $0$.
+This complex is called the \bfblue{standard interval complex}.
+To justify this terminology and give an intuition, consider that 
+the topological interval $[0,1]$ admits 
+the following cellular decomposition:
+it has a $1$-cell \emph{the interior} $e=(0,1)$ and 
+two $0$-cells \emph{the endpoints} $v_0=0$ and $v_1=1$. 
+Then the associated cellular chain complex is the connective complex
+\[
+\cdots\To0\To\ZZ e\markar{\partial}\ZZ v_0\oplus\ZZ v_1,
+\]
+where $\partial(e)=v_1-v_0$.
+To illustrate, we formally write the complex $I_{\bullet}$ as
+\[
+\cdots\To0\To\unit{e}\markar{\partial^I}\unit{v_0}\oplus\unit{v_1}
+\To0\To\cdots.
+\]
+
+Let $C_{\bullet}$ be a complex. 
+Let's spell out the complex $(I\otimes C)_{\bullet}$.
+First,
+\[
+(I\otimes C)_{n}=
+C_{n-1}{e}\oplus C_n{v_0}\oplus C_n{v_1}.
+\]
+To illustrate, an element $(f,x,y)$ of this object is written as 
+$f\colon x\sendto y$, called a \bfblue{copath} in $C_{n}$. 
+Then the boundary operator $\partial^{I\otimes C}_n$ is induced by 
+\[
+\partial^I\otimes\id_C, \quad
+\id_{I_0}\otimes\partial^C_n, \quad\text{and}\quad
+-\id_{I_1}\otimes\partial^C_{n-1}.
+\]
+To spell out this boundary operator more concretely, 
+let's use the following notation.
+Let $A_j,B_i$ ($1\le j\le n, 1\le i\le m$) 
+be objects in $\Aa$, then the matrix
+\[
+\begin{pmatrix}
+f_{11} & \cdots & f_{1n} \\
+\vdots & \ddots & \vdots \\
+f_{m1} & \cdots & f_{mn}
+\end{pmatrix}
+\]
+denotes the morphism 
+$\bigoplus_{1\le j\le n}A_j\to \bigoplus_{1\le i\le m}B_i$ 
+induced by the following morphisms
+\[
+f_{ij}\colon A_j\to B_i,\qquad
+1\le j\le n, 1\le i\le m.
+\]
+Using this notation, the boundary operators can be written as
+\[
+\partial^{I\otimes C}_n=
+\begin{pmatrix}
+-\partial^C_{n-1} & 0 & 0 \\
+-1 & \partial^C_n & 0 \\
+1 & 0 & \partial^C_n
+\end{pmatrix}.
+\]
+Withing element notation, this reads
+\[
+\partial(f\colon x\sendto y) = 
+\big(
+-\partial f\colon 
+-f + \partial x \sendto
+f + \partial y
+\big).
+\]
+
+On the other hand, let's spell out the complex 
+$\<I,C\>_{\bullet}$. First,
+\[
+\<I,C\>_{n}=
+[\unit{e},C_{n+1}]\oplus[\unit{v_0},C_n]\oplus[\unit{v_1},C_n]=:
+C_{n+1}{e^{\ast}}\oplus C_n{v_0^{\ast}}\oplus C_n{v_1^{\ast}}.
+\]
+To illustrate, an element $(f,x,y)$ of this object is written as 
+$f\colon x\sendto y$, called a \bfblue{path} in $C_{n}$. 
+Then the boundary operator $\partial^{\<I,C\>}_n$ is induced by 
+\[
+-[I_1,\partial^C_{n+1}],\quad
+[I_0,\partial^C_{n}],\quad\text{and}\quad
+[\partial^I,C_n].
+\]
+Using matrix notation, the boundary operators can be written as
+\[
+\partial^{\<I,C\>}_n=
+\begin{pmatrix}
+-\partial^C_{n+1} & -1 & 1 \\
+0 & \partial^C_n & 0 \\
+0 & 0 & \partial^C_n
+\end{pmatrix}.
+\]
+Withing element notation, this reads
+\[
+\partial(f\colon x\sendto y) = 
+\big(-\partial f - x + y \colon 
+\partial x\sendto\partial y\big).
+\]
+
+}
+
+\para{
+Dually, one can consider the 
+\bfblue{co-interval complex} $\hat{I}^{\bullet}$.
+It is actually motivated by the cellular cochain complex of 
+the interval $[0,1]$:
+\[
+\ZZ v_0^{\ast}\oplus\ZZ v_1^{\ast}
+\markar{\di}\ZZ e^{\ast}\To0\To\cdots,
+\]
+where $\di$ is the morphism $(-\id,\id)$.
+To illustrate, we formally write the complex $\hat{I}^{\bullet}$ as
+\[
+\unit v_0^{\ast}\oplus\unit v_1^{\ast}
+\markar{\di_I}\unit e^{\ast}\To0\To\cdots,
+\]
+Apply the equivalence between cochain complexes and chain complexes, 
+one can see that this complex is precisely $\<I,\unit\>^{\bullet}$, 
+i.e. it is the \emph{weak dual} of $I^{\bullet}$.
+
+Moreover, let $C^{\bullet}$ be a complex. 
+Then the complex $(\hat{I}\otimes C)^{\bullet}$ is
+\[
+(\hat{I}\otimes C)^{n}=
+C^{n-1}{e^{\ast}}\oplus C^n{v_0^{\ast}}\oplus C^n{v_1^{\ast}}
+\]
+with differential 
+\[
+\di_{\hat{I}\otimes C}^n=
+\begin{pmatrix}
+-\di_C^{n-1} & -1 & 1 \\
+0 & \di_C^n & 0 \\
+0& 0 & \di_C^n
+\end{pmatrix}.
+\]
+Withing element notation, this reads
+\[
+\di(f\colon x\sendto y) = 
+\big(-\di f -x + y \colon 
+\di x\sendto\di y\big).
+\]
+Apply the equivalence between cochain complexes and chain complexes, 
+one can see that this complex is precisely $\<I,C\>^{\bullet}$.
+
+On the other hand, the complex $\<\hat{I},C\>^{\bullet}$ is 
+\[
+\<\hat{I},C\>^n=
+C^{n+1}{e^{\ast\ast}}\oplus C^n{v_0^{\ast\ast}}\oplus C^n{v_1^{\ast\ast}}
+\]
+with differential 
+\[
+\di_{\<\hat{I},C\>}^n=
+\begin{pmatrix}
+-\di_C^{n+1} & 0 & 0 \\
+-1 & \di_C^n & 0 \\
+1 & 0 & \di_C^n
+\end{pmatrix}.
+\]
+Withing element notation, this reads
+\[
+\di(f\colon x\sendto y) = 
+\big(-\di f \colon 
+-f + \di x\sendto f + \di y\big).
+\]
+Apply the equivalence between cochain complexes and chain complexes, 
+one can see that this complex is precisely $(I\otimes C)^{\bullet}$.
+
+The reason for the aboves is that $\hat{I}^{\bullet}$ is indeed 
+the \emph{strong dual} of $I_{\bullet}$. 
+To see this, let's translate $\hat{I}^{\bullet}$ into a chain complex. 
+Then the chain complex $(\hat{I}\otimes I)_{\bullet}$ is 
+concentrated at degree $1,0,-1$ with components
+\begin{align*}
+(\hat{I}\otimes I)_{1} &= 
+\unit{v_0^{\ast} e}\oplus\unit{v_1^{\ast} e}, \\
+(\hat{I}\otimes I)_{0} &= 
+\unit{e^{\ast} e}\oplus
+\unit{v_0^{\ast} v_0}\oplus\unit{v_1^{\ast} v_0}\oplus
+\unit{v_0^{\ast} v_1}\oplus\unit{v_1^{\ast} v_1}, \\
+(\hat{I}\otimes I)_{-1} &= 
+\unit{e^{\ast} v_0}\oplus\unit{e^{\ast} v_1}.
+\end{align*}
+The boundary operators are presented by matrices as
+\[
+\partial_1=
+\begin{pmatrix}
+-1 & 1  \\
+-1 & 0  \\
+0 & -1  \\
+1 & 0  \\
+0 & 1 
+\end{pmatrix},\qquad
+\partial_0=
+\begin{pmatrix}
+1 & -1 & 1 & 0 & 0 \\
+-1 & 0 & 0 & -1 & 1
+\end{pmatrix}.
+\]
+Then the \bfblue{evaluation} 
+$\ev\colon \hat{I}\otimes I\to\unit$ 
+is the chain morphism given by 
+\[
+\ev_0=
+\begin{pmatrix}
+-1 & 1 & 0 & 0 & 1
+\end{pmatrix},
+\]
+which can be illustrated by the rule
+\[
+\ev(x^{\ast}y)=(-1)^{|x||y|}\delta_{x,y}:=
+\begin{cases}
+(-1)^{|x||y|} & x=y,\\
+0 & x\neq y.
+\end{cases}
+\]
+The \bfblue{unit morphism} 
+$\iota'\colon \unit\to I\otimes^{\gamma}\hat{I}$ 
+is the chain morphism given by 
+\[
+\iota'_0=
+{\begin{pmatrix}
+1 & 1 & 0 & 0 & 1
+\end{pmatrix}}^{\rm t},
+\]
+where ${\rm t}$ denotes the transpose of a matrix. 
+
+On the other hand, 
+since braiding $\hat{I}\otimes I\to I\otimes\hat{I}$ can be 
+illustrated by the following rule
+\[
+\gamma(x^{\ast}y) = (-1)^{|x||y|}yx^{\ast},
+\]
+it follows that 
+the chain complex $(I\otimes\hat{I})_{\bullet}$ is 
+concentrated at degree $1,0,-1$ with components
+\begin{align*}
+(I\otimes\hat{I})_{1} &= 
+\unit{ev_0^{\ast}}\oplus\unit{ev_1^{\ast}}, \\
+(I\otimes\hat{I})_{0} &= 
+\unit{ee^{\ast}}\oplus
+\unit{v_0v_0^{\ast}}\oplus\unit{v_1v_0^{\ast}}\oplus
+\unit{v_0v_1^{\ast}}\oplus\unit{v_1v_1^{\ast}}, \\
+(I\otimes\hat{I})_{-1} &= 
+\unit{v_0e^{\ast}}\oplus\unit{v_1e^{\ast}},
+\end{align*}
+and the boundary operators are presented by matrices as
+\[
+\partial_1=
+\begin{pmatrix}
+1 & -1  \\
+-1 & 0  \\
+1 & 0  \\
+0 & -1  \\
+0 & 1 
+\end{pmatrix},\qquad
+\partial_0=
+\begin{pmatrix}
+-1 & -1 & 0 & 1 & 0 \\
+1 & 0 & -1 & 0 & 1
+\end{pmatrix}.
+\]
+Then the \bfblue{evaluation} 
+$\ev'\colon \hat{I}\otimes^{\gamma}I\to\unit$ 
+is the chain morphism given by 
+\[
+\ev'_0=
+\begin{pmatrix}
+1 & 1 & 0 & 0 & 1
+\end{pmatrix},
+\]
+which can be illustrated by the rule
+\[
+\ev'(xy^{\ast})=\delta_{x,y}:=
+\begin{cases}
+1 & x=y,\\
+0 & x\neq y.
+\end{cases}
+\]
+The \bfblue{unit morphism} 
+$\iota\colon \unit\to I\otimes\hat{I}$ 
+is the chain morphism given by 
+\[
+\iota_0=
+{\begin{pmatrix}
+-1 & 1 & 0 & 0 & 1
+\end{pmatrix}}^{\rm t},
+\]
+where ${\rm t}$ denotes the transpose of a matrix. 
+Then one can verify that the data
+\emph{$(\ev,\iota)$ exhibits $\hat{I}$ 
+as a strong dual of $I$} while 
+\emph{$(\ev',\iota')$ exhibits $I$ 
+as a strong dual of $\hat{I}$}.
+}
+\begin{Rem}
+In a tensor category $\Cc$, an object $X$ is \bfblue{dualizable} if 
+it has a \bfblue{strong dual} $X^{\ast}$, 
+which is another object in $\Cc$, and a \bfblue{(strong) duality}, 
+which is a pair of morphisms $\ev\colon X^{\ast}\otimes X\to\unit$ 
+(called the \bfblue{evaluation}) and 
+$\iota\colon\unit\to X\otimes X^{\ast}$ satisfying the following 
+commutative diagrams
+\[
+\adjustbox{scale=0.9,center}{
+\begin{tikzcd}
+X^{\ast}\otimes (X\otimes X^{\ast})\ar[r,"{\cong}"]& 
+(X^{\ast}\otimes X)\otimes X^{\ast}\ar[d,"{\ev\otimes\id}"]\\
+X^{\ast}\otimes\unit\ar[u,"{\id\otimes\iota}"]\ar[r,"{\cong}"]& 
+\unit\otimes X^{\ast}
+\end{tikzcd}\qquad
+\begin{tikzcd}
+(X\otimes X^{\ast})\otimes X\ar[r,"{\cong}"]& 
+X\otimes (X^{\ast}\otimes X)\ar[d,"{\id\otimes\ev}"]\\
+\unit\otimes X\ar[u,"{\iota\otimes\id}"]\ar[r,"{\cong}"]& 
+X\otimes\unit
+\end{tikzcd}
+}
+\]
+where the horizontal isomorphisms are the canonical ones.
+
+Suppose $\Cc$ is further closed. 
+Then the \bfblue{weak dual} of an object $X$ is precisely the 
+object $[X,\unit]$. If $X$ is dualizable, then 
+the weak dual is also the strong dual $X^{\ast}$. 
+If this is the case, then for any object $Y$, we have a
+canonical isomorphism
+\[
+Y\otimes X^{\ast} \Isom [X,Y].
+\]
+
+\end{Rem}
+
+\para{
+There are two natural chain morphisms from $\unit$ to $I$: 
+$s_i$ ($i=0,1$) sends $\unit$ to the factor $\unit{v_i}$ in 
+the $0$-th degree of $I$.
+Then for any complex $C$, we have canonical morphisms of complexes
+\begin{align*}
+\iota_i\colon& C\To(I\otimes C)\quad(i=0,1),\\
+\ev_i\colon& \<I, C\>\To
+\<\unit,C\>\cong C \quad(i=0,1).
+\end{align*}
+To illustrate, let's spell out them by element notation:
+\begin{gather*}
+\iota_0(x) = (0\colon x\sendto 0),\qquad
+\iota_1(y) = (0\colon 0\sendto y),\\
+\ev_0(f\colon x\sendto y) = x,\qquad
+\ev_1(f\colon x\sendto y) = y.
+\end{gather*}
+
+}
+
+\para{
+Let $f,g\colon C\to D$ be two morphisms of complexes.
+As in algebraic topology, 
+a \bfblue{(left) homotopy} $\Phi\colon f\then g$ between them 
+is a commutative diagram of complexes as left hand side 
+and a \bfblue{right homotopy} is a commutative diagram as right hand side.
+\[
+\begin{tikzcd}
+C\ar[dr,"{f}"]\ar[d,"{\iota_0}"']&\\
+(I\otimes C)\ar[r,"{\Phi}"description]&D\\
+C\ar[ur,"{g}"']\ar[u,"{\iota_1}"]
+\end{tikzcd}
+\qquad\qquad
+\begin{tikzcd}
+& D\\
+C\ar[r,"{\Phi}"description]\ar[ur,"{f}"]\ar[dr,"{g}"']&
+{\<I,D\>}\ar[u,"{\ev_0}"']\ar[d,"{\ev_1}"]\\
+& D
+\end{tikzcd}
+\]
+
+Applying the previous conventions to chain complexes, 
+a left homotopy is of the form
+\[
+\Phi_n=
+\begin{pmatrix}
+\phi_{n-1} & f_n & g_n
+\end{pmatrix},
+\]
+and the fact $\Phi$ is a chain morphism is then equivalent to 
+that the $1$-twisted morphism $\phi_{\bullet}$ 
+satisfies the following equality:
+\[
+g_n - f_n = \partial_n\circ\phi_n + \phi_{n-1}\circ\partial_n.
+\]
+Dually, a right homotopy $\Phi\colon f\then g$ is of the form
+\[
+\Phi_n = 
+{\begin{pmatrix}
+\phi_{n} & f_n & g_n
+\end{pmatrix}}^{\rm t},
+\]
+and the fact that $\Phi$ is a chain morphism is then equivalent to 
+that the $1$-twisted morphism $\phi_{\bullet}$ 
+satisfies the same equality as above.
+This equality can be illustrated as the following diagram.
+\[
+\begin{tikzcd}[column sep=large, row sep=huge]
+\cdots\ar[r] & 
+C_{n+1}\ar[r,"{\partial_{n+1}}"]
+\ar[d,shift right,"{f_{n+1}}"']
+\ar[d,shift left,pos=0.4,"{g_{n+1}}"] &
+C_n\ar[r,"{\partial_n}"]
+\ar[d,shift right,"{f_n}"']
+\ar[d,shift left,"{g_n}"]
+\ar[dl,"{\phi_n}"description] &
+C_{n-1}\ar[r]
+\ar[d,shift right,pos=0.6,"{f_{n-1}}"']
+\ar[d,shift left,"{g_{n-1}}"] 
+\ar[dl,"{\phi_{n-1}}"description] & \cdots \\
+\cdots\ar[r] & 
+D_{n+1} \ar[r,"{\partial_{n+1}}"] & 
+D_n \ar[r,"{\partial_n}"] & 
+D_{n-1} \ar[r] & \cdots
+\end{tikzcd}
+\]
+A $1$-twisted morphism $\phi_{\bullet}$ as above 
+is called a \bfblue{chain homotopy}
+from $f$ to $g$, also denoted by $\phi\colon f\then g$.
+
+Similarly, applying to cochain complexes, 
+a left homotopy is of the form
+\[
+\Phi^n=
+\begin{pmatrix}
+\phi^{n+1} & f^n & g^n
+\end{pmatrix},
+\]
+and the fact $\Phi$ is a chain morphism is then equivalent to 
+that the $(-1)$-twisted morphism $\phi^{\bullet}$ 
+satisfies the following equality:
+\[
+g^n - f^n = \di^n\circ\phi^n + \phi^{n+1}\circ\di^n.
+\]
+Dually, a right homotopy $\Phi\colon f\then g$ is of the form
+\[
+\Phi^n = 
+{\begin{pmatrix}
+\phi^{n} & f^n & g^n
+\end{pmatrix}}^{\rm t},
+\]
+and the fact that $\Phi$ is a chain morphism is then equivalent to 
+that the $(-1)$-twisted morphism $\phi^{\bullet}$ 
+satisfies the same equality as above.
+This equality can be illustrated as the following diagram.
+\[
+\begin{tikzcd}[column sep=large, row sep=huge]
+\cdots\ar[r] & 
+C^{n-1}\ar[r,"{\di^{n-1}}"]
+\ar[d,shift right,"{f^{n-1}}"']
+\ar[d,shift left,pos=0.4,"{g^{n-1}}"] &
+C^n\ar[r,"{\di^n}"]
+\ar[d,shift right,"{f^n}"']
+\ar[d,shift left,"{g^n}"]
+\ar[dl,"{\phi^n}"description] &
+C^{n+1}\ar[r]
+\ar[dl,"{\phi^{n+1}}"description]
+\ar[d,shift right,pos=0.6,"{f^{n+1}}"']
+\ar[d,shift left,"{g^{n+1}}"]  & \cdots \\
+\cdots\ar[r] & 
+D^{n-1} \ar[r,"{\di^{n-1}}"] & 
+D^n \ar[r,"{\di^n}"] & 
+D^{n+1} \ar[r] & \cdots
+\end{tikzcd}
+\]
+A $(-1)$-twisted morphism $\phi^{\bullet}$ as above 
+is called a \bfblue{cochain homotopy}
+from $f$ to $g$, also denoted by $\phi\colon f\then g$.
+
+Note that these notions are equivalent and 
+we'll not distinguish them if no necessary.
+}
+\begin{Rem}
+The above definitions form the basic blocks of 
+the machinery of homotopy theory. 
+Obviously, if we replace the above $\otimes^{\gamma}$-version 
+of closed tensor structure by $\otimes$-version, 
+we can still obtained an equivalent theory. 
+However, the concrete formulas would become cumbersome and 
+looks far from the those in usual text of 
+homological algebra.
+\end{Rem}
+
+\para{
+Two (co)chain maps $f,g\colon C\tto D$ 
+are said to be \bfblue{homotopic}, denoted by $f\simeq g$,
+if there exists a (co)chain homotopy $\Phi\colon f\then g$. 
+A (co)chain morphism $f\colon C\to D$ 
+is called a \bfblue{homotopy equivalence}
+if there exists another (co)chain morphism 
+$g\colon D\to C$ 
+such that $g\circ f\simeq \id_C$ and 
+$f\circ g\simeq \id_D$.
+Two (co)chain complexes $C$ and $D$ 
+are said to be \bfblue{homotopy equivalent} 
+if there exists a (co)chain homotopy equivalence 
+$f\colon C\to D$. 
+
+In this way, we can form a new category 
+\bfblue{$K(\Aa)$} as follows:
+\begin{itemize}
+\item 
+the objects of $K(\Aa)$ are as of $\Ch(\Aa)$,
+\item 
+the Hom set $\Hom_{K(\Aa)}(C,D)$ is the quotient set 
+of $\Hom_{\Ch(\Aa)}(C,D)$ modulo homotopies.
+\end{itemize}
+This category is called the \bfblue{homotopy category} of 
+$\Ch(\Aa)$ or $\Aa$ if there are no ambiguities.
+In the same way, we have subcategories $K_{?}(\Aa)$ and $K^{?}(\Aa)$  
+with $?$ equals $c,\ge0,\le0,+,-,b$.
+
+Given two homotopies $\Phi\colon f\then g$ and $\Psi\colon g\then h$, 
+then the \bfblue{vertical composition} of them is 
+more or less the sum of them:
+\[
+\Psi\dotplus\Phi:=(\phi+\psi,f,h).
+\] 
+Note that $\Psi\dotplus\Phi\neq\Phi\dotplus\Psi$, 
+the later even doesn't make sense. 
+Under this composition rule, the inverse of a homotopy 
+$\Phi\colon f\then g$ is the homotopy $-\Phi\colon g\then f$ defined as
+\[
+-\Phi:=(-\phi,g,f).
+\]
+
+Given two homotopies $\Phi,\Psi$ as below:
+\[
+\begin{tikzcd}[column sep=large, row sep=large]
+{C}
+\ar[r,bend left,"{f}",""{name=a,below}]
+\ar[r,bend right,"{g}"',""{name=b}]
+\ar[Rightarrow,from=a,to=b,"{\Phi}"]&
+{D}
+\ar[r,bend left,"{f'}",""{name=a,below}]
+\ar[r,bend right,"{g'}"',""{name=b}]
+\ar[Rightarrow,from=a,to=b,"{\Psi}"]&{E}
+\end{tikzcd}
+\]
+the \bfblue{horizontal composition} is defined as
+\[
+\Psi\ast\Phi := \Psi\circ g \dotplus f'\circ\Phi,
+\]
+where the composition $f'\circ\Phi$ should be consider as given by 
+\[
+(I\otimes C)_{\bullet}\markar{\Phi}
+D_{\bullet}\markar{f'}E_{\bullet}\quad\text{or}\quad
+(\hat{I}\otimes C)^{\bullet}\markar{\Phi}
+D^{\bullet}\markar{f'}E^{\bullet},
+\]
+while the composition $\Psi\circ g$ given by
+\[
+C_{\bullet}\markar{g}
+D_{\bullet}\markar{\Psi}\<I,E\>_{\bullet}\quad\text{or}\quad
+C^{\bullet}\markar{g}
+D^{\bullet}\markar{\Psi}\<\hat{I},E\>^{\bullet}.
+\]
+Therefore, the definition can be reads as
+\[
+\Psi\ast\Phi:= \big(f'\circ\phi + \psi\circ g,f'\circ f,g'\circ g\big).
+\]
+
+Treat homotopies between chain morphisms as $2$-morphisms, 
+we obtain a $2$-category structure on $\Ch(\Aa)$. 
+Further, we can involves composition rules of 
+homotopies between $2$-morphisms, and 
+homotopies between those homotopies, etc. 
+Conceptually, we should obtain an $\infty$-category structure.
+
+However, this structure is, if it exists, at least not strict. 
+To see this, consider the following diagram.
+\[
+\begin{tikzcd}[column sep=large, row sep=large]
+{C}
+\ar[r,bend left=75,"{f}",""{name=a,below}]
+\ar[r,,"{g}"description,""{name=b},""{name={a'},below}]
+\ar[r,bend right=75,"{h}"',""{name={b'}}]
+\ar[Rightarrow,from=a,to=b,"{\Phi}"]
+\ar[Rightarrow,from={a'},to={b'},"{\Psi}"]&
+{D}
+\ar[r,bend left=75,"{f'}",""{name=a,below}]
+\ar[r,,"{g'}"description,""{name=b},""{name={a'},below}]
+\ar[r,bend right=75,"{h'}"',""{name={b'}}]
+\ar[Rightarrow,from=a,to=b,"{\Phi'}"]
+\ar[Rightarrow,from={a'},to={b'},"{\Psi'}"]&{E}
+\end{tikzcd}
+\]
+There are two ways to compose them:
+\[
+(\Psi'\dotplus\Phi')\ast(\Psi\dotplus\Phi)\qquad\text{and}\qquad
+\Psi'\ast\Psi\dotplus\Phi'\ast\Phi.
+\]
+The \bfblue{interchange law} in the axioms of $2$-category says
+that the above two compositions are the same. 
+However, they do not equal. 
+In fact, there is a homotopy $\Theta$ between them 
+(viewed as chain morphisms) 
+given by the $1$-twisted morphism
+\[
+\theta= (\phi'\circ\psi,0,0)\colon
+I\otimes C\To E,
+\]
+or equivalently the $2$-twisted morphism
+\[
+\phi'\circ\psi \colon C\To E.
+\]
+
+}
+
+\para{
+Passing to the homotopy category $K(\Aa)$, 
+one may expect the \emph{interchange law} 
+as well as more \emph{coherence law} holds strictly. 
+However, even the notion of homotopies itself is 
+lack of sense. 
+Two chain morphisms present 
+the same morphism in $K(\Aa)$ if and only if there is 
+a homotopy between them. 
+But such a homotopy is not unique, 
+even up to homotopy! 
+Indeed there are non-homotopic $2$-morphisms 
+between chain morphisms.
+Consequently, the notion of homotopies between morphisms in 
+$K(\Aa)$ is not well-defined!
+}
+
+\para{
+Recall that in the homotopy theory for topological spaces, 
+the key step to build a workable framework is 
+to define a suitable notion of $\infty$-groupoids 
+as well as the category of them. 
+In particular, we choose CW complexes as such a model in \S\ 1.
+
+Let $C_{\bullet}, D_{\bullet}$ be two chain complexes. 
+First note that
+\begin{proplist}
+\item 
+A chain morphism $f\colon C_{\bullet}\to D_{\bullet}$ 
+is a homogeneous morphism between 
+the underlying graded objects satisfying certain properties, 
+hence an element in $\Hom_{\Gr(\Aa)}(C,D)$.
+\item 
+A homotopy is determined by a $1$-twisted morphism, 
+hence an element in $\Hom_{\Gr(\Aa)}(C,D(1))$.
+\item 
+A homotopy between homotopies is determined by a $2$-twisted morphism, 
+hence an element in $\Hom_{\Gr(\Aa)}(C,D(2))$.
+\end{proplist}
+Invested by the above, one may expect the \emph{Hom-space}, i.e. 
+the $\infty$-groupoid encoding the higher homotopies of chain morphisms
+from $C_{\bullet}$ to $D_{\bullet}$ is the complex 
+\bfblue{$\HHom_{\Ch_{\ast}(\Aa)}(C,D)_{\bullet}$} whose underlying 
+graded abelian group is precisely $\Hom_{\Gr(\Aa)}(C,D)_{\bullet}$ 
+and the boundary operator reads
+\[
+\partial(f) = \partial^D\circ{f}-(-1)^{|f|}f\circ\partial^C.
+\]
+This complex is called the \bfblue{Hom-complex}. 
+
+Similarly, let $C^{\bullet}, D^{\bullet}$ be two chain complexes. 
+Then we also have the \bfblue{Hom-complex} 
+\bfblue{$\HHom_{\Ch^{\ast}(\Aa)}(C,D)^{\bullet}$} with differential 
+\[
+\di(f) = \di^D\circ{f}-(-1)^{|f|}f\circ\di^C.
+\]
+It is natural to ask: after identify chain complexes and cochain complexes, 
+what's the relation between the above two complexes?
+Let's spell out their components first:
+\begin{align*}
+\HHom_{\Ch_{\ast}(\Aa)}(C,D)_n &= 
+\prod_{-p+q=n}\Hom_{\Aa}(C_p,D_q), \\
+\HHom_{\Ch^{\ast}(\Aa)}(C,D)^n &= 
+\prod_{-p+q=n}\Hom_{\Aa}(C^p,D^q).
+\end{align*}
+Therefore
+\begin{align*}
+\HHom_{\Ch^{\ast}(\Aa)}(C,D)_n &= 
+\HHom_{\Ch^{\ast}(\Aa)}(C,D)^{-n} \\&=
+\prod_{-p+q=-n}\Hom_{\Aa}(C^p,D^q) \\&=
+\prod_{-p+q=-n}\Hom_{\Aa}(C_{-p},D_{-q}) \\&=
+\prod_{-p+q=n}\Hom_{\Aa}(C_p,D_q) =
+\HHom_{\Ch_{\ast}(\Aa)}(C,D)_n.
+\end{align*}
+Then one can verify that they are the same complex, 
+hence can be simply denoted by $\HHom_{\Ch(\Aa)}(C,D)$.
+}
+
+\para{
+Recall that, for a pointed topological space $(X,x_0)$, its $n$-th homotopy group 
+$\pi_n(X,x_0)$ is defined as either the set of homotopy classes of based maps 
+$S^n\to X$ or the set of homotopy classes of maps $(I^n,\partial I^n)\to(X,x_0)$.
+
+The complex corresponding to the \emph{$n$-cube} $I^n$ is 
+$I^{\otimes n}_{\bullet}$, 
+the $n$-fold Koszul product of $I_{\bullet}$.
+Let's spell out this complex concretely. 
+To do this, let's introduce the following notion:
+\begin{itemize}
+\item 
+An object $M$ in $\Aa$ is \bfblue{free} if it is isomorphic to 
+a direct sum of copies of $\unit$. 
+A \bfblue{basis} of a free object $M$ is an isomorphism 
+from a direct sum of copies of $\unit$ to it. 
+In particular, an \bfblue{member of the basis} is a component 
+$\unit\to M$ of this isomorphism. In this way, we can always present a basis 
+as the collection of its members.
+\end{itemize}
+The complex $I_{\bullet}$ has the basis $\{v_0,v_1\}$ at degree $0$ 
+and the basis $\{e\}$ at degree $1$. 
+Using this \emph{basis notation}, the boundary operator can be written as 
+\[
+\partial(e) = v_1-v_0.
+\]
+Let $\alpha$ be a \bfblue{$\{v_0,v_1,e\}$-string}, i.e 
+a sequence of letters consisting of $v_0$, $v_1$ and $e$. 
+Then the \bfblue{length} of $\alpha$ is the number of letters in it 
+and the \bfblue{total degree} $|\alpha|$ is the sum of degrees of the letters 
+(where $v_0$, $v_1$ are of degree $0$ and $e$ is of degree $1$).
+Therefore
+\begin{itemize}
+\item 
+$I^{\otimes n}_{i}$ has basis consisting of 
+$\{v_0,v_1,e\}$-strings of length $n$ and degree $i$;
+\item 
+the boundary operator reads
+\[
+\partial(\alpha\beta)=(\partial\alpha)\beta+(-1)^{|\alpha|}\alpha(\partial\beta).
+\]
+
+\end{itemize}
+
+Since $\partial I^n$ is $n$-cube without its unique $n$-cell, 
+the corresponding complex $\partial I^{\otimes n}_{\bullet}$ should be the complex 
+$I^{\otimes n}_{\bullet}$ without its top degree 
+$I^{\otimes n}_n=\unit{ee\cdots e}$.
+
+Note that the $n$-sphere $S^n$ has a cellular decomposition: 
+the $0$-cell is its base point and 
+the $n$-cell is all outside that point. 
+Using this cellular decomposition, 
+the complex corresponding to $S^n$ is the complex 
+$\unit\oplus\unit[-n]$, where the first factor presents the base point.
+
+Let $C_{\bullet}$ be a complex. 
+A \bfblue{(cubic) $n$-loop} in $C_{\bullet}$ is a chain morphism 
+$\gamma\colon I^{\otimes n}_{\bullet}\to C_{\bullet}$ such that 
+the composition of it with the canonical inclusion 
+$\partial I^{\otimes n}_{\bullet}\into I^{\otimes n}_{\bullet}$ 
+is $0$. 
+Likewise, a \bfblue{(spheric) $n$-loop} in $C_{\bullet}$ is 
+a chain morphism 
+$\gamma\colon \unit\oplus\unit[-n]\to C_{\bullet}$ such that 
+the composition of it with the canonical inclusion 
+$\unit\into\unit\oplus\unit[-n]$ is $0$. 
+It is clear that both of them are equivalent to a morphism 
+$\gamma_n\colon\unit\to C_{n}$ such that $\partial\circ\gamma_n=0$. 
+In other words, 
+\[
+\gamma_n\in Z_n\HHom_{\Ch(\Aa)}(\unit,C).
+\] 
+On the other hand, 
+a homotopy $H\colon \gamma \then \eta$ between two $n$-loops 
+is determined by a morphism $h\colon\unit\to C_{n+1}$ such that 
+$\partial\circ h = \eta_n-\gamma_n$, i.e.
+\[
+\eta_n-\gamma_n\in B_n\HHom_{\Ch(\Aa)}(\unit,C).
+\]
+Therefore we have canonical isomorphisms
+\[
+\pi_n(C):=
+\{\text{homotopy classes of $n$-loops in $C$ }\}
+\cong
+H_n\HHom_{\Ch(\Aa)}(\unit,C).
+\]
+This abelian group is called the 
+\bfblue{$n$-th homotopy group} of $C_{\bullet}$.
+}
+
+\begin{Rem}
+Be aware that $\pi_n(C)$ is in general not the underlying 
+abelian group of $H_n(C)$, i.e. 
+$\pi_n(C)\neq\Hom_{\Aa}(\unit,H_n(C))$. 
+The reason is that the functor $\Hom_{\Aa}(\unit,-)$ is in general 
+not exact. As an example, consider the category of abelian sheaves 
+on a general topological space.
+\end{Rem}
+
+\para{
+The above procession works for general homotopies:
+\begin{proplist}
+\item 
+By a \bfblue{boundary condition} of $C_{\bullet}$, 
+we mean a chain morphism from $\partial I^{\otimes n}_{\bullet}$ 
+to $C_{\bullet}$.
+By a \bfblue{$n$-cell} attaching to $C_{\bullet}$ 
+via a boundary condition $\delta$, 
+we mean a chain morphism from $I^{\otimes n}_{\bullet}$ 
+to $C_{\bullet}$ whose restriction to 
+$\partial I^{\otimes n}_{\bullet}$ is $\delta$.
+Then it is clear that 
+the set of all $n$-cells attaching to $C_{\bullet}$ 
+via a boundary condition $\delta$ equals to the coset
+\[
+\{\text{$n$-loop in $C_{\bullet}$}\} + \delta.
+\]
+\item 
+Let $\delta\colon\partial I^{\otimes n}_{\bullet}\to C_{\bullet}$ 
+be a boundary condition. 
+By a \bfblue{homotopy rel $\delta$}, 
+we mean a homotopy whose restriction to 
+$\partial I^{\otimes n}_{\bullet}$ is $I\otimes\delta$. 
+Then it is clear that the quotient set of 
+all $n$-cells attaching to $C_{\bullet}$ 
+via a boundary condition $\delta$ 
+up to homotopy rel $\delta$ 
+equals to the coset
+\[
+\pi_n(C) + \delta.
+\]
+\item 
+With above notions, 
+a chain morphism from $C_{\bullet}$ to $D_{\bullet}$ 
+can be viewed as a $0$-cell attaching to $[C,D]_{\bullet}$ 
+via the empty boundary condition and a homotopy is 
+a homotopy rel nothing. Hence
+\begin{align*}
+\Hom_{\Ch(\Aa)}(C,D) \cong 
+Z_0\HHom_{\Ch(\Aa)}(C,D),\\
+\Hom_{K(\Aa)}(C,D) \cong 
+H_0\HHom_{\Ch(\Aa)}(C,D).
+\end{align*}
+\item 
+A given pair of chain morphisms from $C_{\bullet}$ to $D_{\bullet}$ 
+can be viewed as a boundary condition 
+$\partial I_{\bullet}\to[C,D]_{\bullet}$. 
+Then a homotopy between them is a 
+$1$-cell attaching to $[C,D]_{\bullet}$ via that boundary condition 
+and a $2$-homotopy between such homotopies is 
+a homotopy rel that boundary condition.
+Hence 
+\begin{align*}
+\{\text{homotopy between given chain morphisms}\} \cong 
+Z_1\HHom_{\Ch(\Aa)}(C,D),\\
+\{\text{homotopy class of above}\} \cong 
+H_1\HHom_{\Ch(\Aa)}(C,D).
+\end{align*}
+\item 
+A given pair of homotopies can be viewed as a boundary condition 
+$\partial I^{\otimes 2}_{\bullet}\to[C,D]_{\bullet}$, 
+where the $1$-degree encodes the two homotopies and 
+$0$-degree the domain and codomains of them. 
+Then a $2$-homotopy between them is a 
+$2$-cell attaching to $[C,D]_{\bullet}$ via that boundary condition 
+and a $3$-homotopy between such $2$-homotopies is 
+a homotopy rel that boundary condition.
+Hence 
+\begin{align*}
+\{\text{$2$-homotopy between given homotopies}\} \cong 
+Z_2\HHom_{\Ch(\Aa)}(C,D),\\
+\{\text{homotopy class of above}\} \cong 
+H_2\HHom_{\Ch(\Aa)}(C,D).
+\end{align*}
+\item 
+In general, a given pair of $(n-1)$-homotopies can be viewed as 
+a boundary condition 
+$\partial I^{\otimes n}_{\bullet}\to[C,D]_{\bullet}$, 
+where the components with basis consisting of 
+strings starting with $v_0$ (resp. $v_1$) comes from 
+the first (resp. second) $(n-1)$-homotopy. 
+Then a $n$-homotopy between them is a 
+$n$-cell attaching to $[C,D]_{\bullet}$ via that boundary condition 
+and a $(n+1)$-homotopy between such $n$-homotopies is 
+a homotopy rel that boundary condition.
+Hence 
+\begin{align*}
+\{\text{$n$-homotopy between given homotopies}\} \cong 
+Z_n\HHom_{\Ch(\Aa)}(C,D),\\
+\{\text{homotopy class of above}\} \cong 
+H_n\HHom_{\Ch(\Aa)}(C,D).
+\end{align*}
+\[
+\cdots
+\quad
+\begin{tikzcd}
+I^{\otimes n-1}\otimes C\ar[d]\ar[dr]&\\
+I^{\otimes n}\otimes C\ar[r]&D\\
+I^{\otimes n-1}\otimes C\ar[u]\ar[ur]&
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+I^{\otimes n}\otimes C\ar[d]\ar[dr]&\\
+I^{\otimes n+1}\otimes C\ar[r]&D\\
+I^{\otimes n}\otimes C\ar[u]\ar[ur]&
+\end{tikzcd}
+\quad
+\cdots
+\]
+\end{proplist}
+}
+
+\para{
+It is straightforward to show that 
+both the \emph{evaluation} $\hat{I}\otimes I\to\unit$ 
+and the \emph{unit moprhism} $\unit\to I\otimes\hat{I}$ are 
+quasi-isomorphisms. 
+In this way, we may think $\hat{I}_{\bullet}$ 
+as $I^{\otimes -1}_{\bullet}$ 
+and more generally $\hat{I}^{\otimes n}_{\bullet}$
+as $I^{\otimes -n}_{\bullet}$ for any natural number $n$.
+Then the previous discussion still works.
+
+In details. The complex $\hat{I}_{\bullet}$ has the basis 
+$\{v_0^{\ast},v_1^{\ast}\}$ at degree $0$ and the basis 
+$\{e^{\ast}\}$ at degree $-1$. 
+The boundary operator of $I^{\otimes -1}_{\bullet}$ reads
+\[
+\partial(v_0^{\ast})=e^{\ast},\qquad
+\partial(v_1^{\ast})=e^{\ast}.
+\]
+Then, the complex $I^{\otimes -n}_{\bullet}$ 
+can be described as follows.
+\begin{itemize}
+\item 
+$I^{\otimes -n}_i$ has a basis of 
+$\{v_0^{\ast},v_1^{\ast},e^{\ast}\}$-strings 
+of length $n$ and degree $i$;
+\item 
+the boundary operator reads
+\[
+\partial(\alpha\beta)=(\partial\alpha)\beta+(-1)^{|\alpha|}\alpha(\partial\beta).
+\]
+\end{itemize}
+Then the complex $\partial I^{\otimes -n}_{\bullet}$ is 
+the complex $I^{\otimes -n}_{\bullet}$ without its bottom degree 
+$I^{\otimes -n}_{-n}=\unit{e^{\ast}e^{\ast}\cdots e^{\ast}}$.
+
+We can also define the complex corresponding to $S^{-n}$ 
+as the complex $\unit\oplus\unit[n]$, 
+where the first factor presents the base point.
+
+Then, one can define the notions of 
+\bfblue{cubic} and \bfblue{spheric $(-n)$-loops} 
+as before and verify the similar statements:
+\begin{proplist}
+\item 
+a $(-n)$-loop in $C_{\bullet}$ is equivalent to 
+an element in $Z_{-n}\HHom_{\Ch(\Aa)}(\unit,C)$;
+\item 
+two $(-n)$-loops are homotopic if they are different by 
+an element in $B_{-n}\HHom_{\Ch(\Aa)}(\unit,C)$;
+\item 
+$\pi_{-n}(C) = H_{-n}\HHom_{\Ch(\Aa)}(\unit,C)$.
+\end{proplist}
+}
+
+\para{
+Through the identification of cochain complexes and chain complexes, 
+the above statements can be translated as:
+\begin{proplist}
+\item 
+a $n$-loop in $C^{\bullet}$ is equivalent to 
+an element in $Z^{-n}\HHom_{\Ch(\Aa)}(\unit,C)$;
+\item 
+two $n$-loops of $C^{\bullet}$ are homotopic if they are different by 
+an element in $B^{-n}\HHom_{\Ch(\Aa)}(\unit,C)$.
+\end{proplist}
+Then we can have similar statements for general homotoies, hence
+\begin{align*}
+\{\text{$n$-homotopy between given homotopies}\} \cong 
+Z^{-n}\HHom_{\Ch(\Aa)}(C,D),\\
+\{\text{homotopy class of above}\} \cong 
+H^{-n}\HHom_{\Ch(\Aa)}(C,D).
+\end{align*}
+
+In this way, we can think the Hom-complex $\HHom_{\Ch(\Aa)}(C,D)$ 
+\emph{encodes homotopy informations into its connective truncation.}
+If one remember how homotopy groups can be viewed as negative-degree 
+intrinsic cohomology groups. Then one would agree that it is more 
+natural to view the complex $\HHom_{\Ch(\Aa)}(C,D)$ as a cochain complex.
+}
+
+\para{
+From previous observation, 
+we can encode the $\infty$-category structure on $\Ch(\Aa)$ 
+into the Hom-complexes. 
+To summarize, we have the followings.
+\begin{proplist}
+\item 
+A \bfblue{$n$-morphism} from $C$ to $D$ 
+is a $(1-n)$-cocycle, i.e. $(n-1)$-cycle, of $\HHom_{\Ch(\Aa)}(C,D)$.
+\item 
+A \bfblue{$n$-homotopy} between $n$-morphisms
+$\phi\colon f\then g$ 
+is an element of $\HHom_{\Ch(\Aa)}(C,D)^{-n}$ 
+such that $\di\phi = g-f$.
+\item 
+The composition rules are encoded into the bilinear map
+\[
+\HHom_{\Ch(\Aa)}(D,E)\otimes\HHom_{\Ch(\Aa)}(C,D)
+\To\HHom_{\Ch(\Aa)}(C,E)
+\]
+induced from the bilinear maps
+\[
+\Hom\big(D(q),E(p+q)\big)\otimes
+\Hom\big(C,D(q)\big)
+\To\Hom\big(C,E(p+q)\big)
+\]
+given by $g\otimes f\mapsto g\circ f$.
+\item 
+The identity morphism is encoded into a homomorphism from $\ZZ$ 
+to $\HHom_{\Ch(\Aa)}(C,C)$ defined by 
+$1\mapsto\id_{C}$.
+\item 
+The coherent axioms are encoded into the commutative diagrams
+\[
+\adjustbox{scale=0.7,center}{
+\begin{tikzcd}
+\HHom_{\Ch(\Aa)}(E,F)\otimes\HHom_{\Ch(\Aa)}(D,E)
+\otimes\HHom_{\Ch(\Aa)}(C,D)
+\ar[r]\ar[d]
+&
+\HHom_{\Ch(\Aa)}(E,F)\otimes\HHom_{\Ch(\Aa)}(C,E) 
+\ar[d]
+\\
+\HHom_{\Ch(\Aa)}(E,D)\otimes\HHom_{\Ch(\Aa)}(C,D) 
+\ar[r]
+&
+\HHom_{\Ch(\Aa)}(C,F)
+\end{tikzcd}
+}
+\]
+(which encodes the associativities) and 
+\[
+\adjustbox{scale=0.8,center}{
+\begin{tikzcd}
+\ZZ\otimes\HHom_{\Ch(\Aa)}(C,D)\ar[dr,"{\cong}"']\ar[r]&
+\HHom_{\Ch(\Aa)}(D,D)\otimes\HHom_{\Ch(\Aa)}(C,D)\ar[d]\\&
+\HHom_{\Ch(\Aa)}(C,D)\\
+\HHom_{\Ch(\Aa)}(C,D)\otimes\ZZ\ar[ur,"{\cong}"]\ar[r]&
+\HHom_{\Ch(\Aa)}(C,D)\otimes\HHom_{\Ch(\Aa)}(C,C)\ar[u]
+\end{tikzcd}
+}
+\]
+(which encodes the identity laws).
+\end{proplist}
+%In another words, $\Ch(\Aa)$ is naturally a $\Ch$-enriched category 
+%and the homotopy data is encoded in the Hom-complex 
+%$\HHom_{\Ch(\Aa)}(-,-)$.
+}
+
+
+
+ 
+
+
+
+
+
+
+
+\clearpage
+\section{Dg-category theory}
+\para{
+Inspirited by previous section, the following definition arises. 
+
+A \bfblue{dg-category} is precisely a $\Ch$-enriched category. 
+(Of course, one can slightly generalize this notion 
+by replacing $\Ch$ with $\Ch(k)$). 
+More precisely, a dg-category $\Cc$ consists of
+\begin{itemize}
+\item 
+a collection of \itblue{objects} $\ob\Cc$;
+\item 
+for any two objects $C$ and $D$, 
+a \bfblue{Hom-complex} $\HHom_{\Cc}(C,D)\in\Ch$;
+\begin{itemize}
+\item 
+an element of $\HHom_{\Cc}(C,D)^n$ is called 
+a \bfblue{(general) morphism 
+of (cohomological) degree $n$};
+\item 
+a closed morphism of degree $1-n$ is called 
+a \bfblue{$n$-morphism} from $C$ to $D$, 
+denoted by $f\colon C\to D$;
+\item 
+a \bfblue{$n$-homotopy} $\phi\colon f\then g$ 
+is a morphism of degree $-n$ such that $\di\phi = g-f$;
+\end{itemize}
+\item 
+for any three objects $C$, $D$ and $E$, 
+a cochain map
+\[
+\HHom_{\Cc}(D,E)\otimes\HHom_{\Cc}(C,D)
+\To\HHom_{\Cc}(C,E)
+\]
+called the \itblue{composition rule};
+\item 
+for any object $C$, 
+a cochain map $\ZZ\to\HHom_{\Cc}(C,C)$ 
+called the \itblue{identity}.
+\end{itemize}
+Those data must satisfies the following axioms:
+\begin{enumerate}
+\item 
+for any objects $C,D,E,F$, the following diagram commutes;
+\[
+\adjustbox{scale=0.9,center}{
+\begin{tikzcd}
+\HHom_{\Cc}(E,F)\otimes\HHom_{\Cc}(D,E)
+\otimes\HHom_{\Cc}(C,D)
+\ar[r]\ar[d]
+&
+\HHom_{\Cc}(E,F)\otimes\HHom_{\Cc}(C,E) 
+\ar[d]
+\\
+\HHom_{\Cc}(E,D)\otimes\HHom_{\Cc}(C,D) 
+\ar[r]
+&
+\HHom_{\Cc}(C,F)
+\end{tikzcd}
+}
+\]
+\item 
+for any objects $C,D$, the following diagram commutes.
+\[
+\adjustbox{scale=0.9,center}{
+\begin{tikzcd}
+\ZZ\otimes\HHom_{\Cc}(C,D)\ar[dr,"{\cong}"']\ar[r]&
+\HHom_{\Cc}(D,D)\otimes\HHom_{\Cc}(C,D)\ar[d]\\&
+\HHom_{\Cc}(C,D)\\
+\HHom_{\Cc}(C,D)\otimes\ZZ\ar[ur,"{\cong}"]\ar[r]&
+\HHom_{\Cc}(C,D)\otimes\HHom_{\Cc}(C,C)\ar[u]
+\end{tikzcd}
+}
+\]
+\end{enumerate}
+
+Any dg-category $\Cc$ admits a (pre-additive) category $\Cc_0$ 
+(its \bfblue{underlying category}) obtained by applying the 
+\emph{change of base categories} $Z^0\colon\Ch\to\Ab$ 
+(or $Z^0\colon\Ch\to\Ab\to\Set$ if one insists on an ordinary category)
+and another $\h\Cc$ 
+(its \bfblue{homotopy category}) obtained by applying the 
+\emph{change of base categories} $H^0\colon\Ch\to\Ab$
+(or $H^0\colon\Ch\to\Ab\to\Set$).
+}
+
+\begin{Eg}
+Let $\Aa$ be an additive category. 
+Then $\Ch(\Aa)$ is automatically a dg-category. 
+The underlying category of $\Ch(\Aa)$ is 
+the ordinary category of complexes. 
+The homotopy category $\h\Ch(\Aa)$ is precisely $\Kk(\Aa)$.
+The similar conventions apply to the subcategories 
+$\Ch_{?}(\Aa)$ and $\Ch^{?}(\Aa)$ with 
+$?$ equals $c,\ge0,\le0,+,-,b$.
+\end{Eg}
+
+\para{
+A \bfblue{dg-functor} between dg-categories 
+$F\colon\Cc\to\Dd$ is an enriched functor. 
+Equivalently, a dg-functor $F$ consists of
+\begin{itemize}
+\item 
+a mapping between objects $F_0\colon\ob\Cc\to\ob\Dd$,
+\item 
+a family of cochain maps 
+$F_{C,D}\colon\HHom_{\Cc}(C,D)\to\HHom_{\Dd}(F(C),F(D))$, 
+indexed by $C, D\in\ob\Cc$,
+\end{itemize}
+satisfying the following associative and unitary laws:
+\begin{enumerate}
+\item 
+for any objects $C,D,E$, the following diagram commutes;
+\[
+\adjustbox{scale=0.9,center}{
+\begin{tikzcd}
+\HHom_{\Cc}(D,E)
+\otimes\HHom_{\Cc}(C,D)
+\ar[r]\ar{d}{F}
+&
+\HHom_{\Cc}(C,E)
+\ar{d}{F}
+\\
+\HHom_{\Dd}(F(D),F(E))
+\otimes\HHom_{\Cc}(F(C),F(D))
+\ar[r]
+&
+\HHom_{\Dd}(F(C),F(E)) 
+\end{tikzcd}
+}
+\]
+\item 
+for any object $C$, the following diagram commutes.
+\[
+\begin{tikzcd}
+\ZZ\ar[dr]\ar[r]&
+\HHom_{\Cc}(C,C)\ar{d}{F}\\&
+\HHom_{\Dd}(F(C),F(C))
+\end{tikzcd}
+\]
+\end{enumerate}
+
+Given two dg-functors 
+$F\colon\Cc\to\Dd$ and $G\colon\Dd\to\Ee$, 
+their \bfblue{composition} $G\circ F$ is given as follows:
+\begin{itemize}
+\item 
+the mapping $(G\circ F)_0\colon\ob\Cc\to\ob\Ee$ is the composition 
+$G_0\circ F_0$;
+\item 
+the cochain maps 
+$(G\circ F)_{C,D}\colon\HHom_{\Cc}(C,D)\to\HHom_{\Ee}(GF(C),GF(D))$ 
+is given by the composition of  
+$F_{C,D}\colon\HHom_{\Cc}(C,D)\to\HHom_{\Dd}(F(C),F(D))$ 
+and $G_{F(C),F(D)}\colon\HHom_{\Dd}(F(C),F(D))\to\HHom_{\Ee}(GF(C),GF(D))$.
+\end{itemize}
+Then the unity of the composition is the \bfblue{identity dg-functor} 
+$\Id$ which is identity on objects and each 
+cochain map $\Id_{C,D}$ is 
+just the identity map.
+
+One can then define the \bfblue{isomorphisms} of dg-categories 
+as those dg-functors admits an inverse. 
+It is clear that this condition is equivalent to say that
+the functor $F$ is \emph{surjective on objects} and 
+the cochain maps $F_{C,D}$ are chain \emph{isomorphisms}.
+
+Any dg-functor $F\colon\Cc\to\Dd$ admits a \bfblue{underlying functor} 
+$F_0\colon\Cc_0\to\Dd_0$ obtained by applying the 
+\emph{change of base categories} $Z^0\colon\Ch\to\Ab$ and 
+a \bfblue{homotopy functor} $\h{F}\colon\h\Cc\to\h\Dd$ 
+obtained by applying the 
+\emph{change of base categories} $H^0\colon\Ch\to\Ab$.
+}
+
+\para{
+Given two dg-functors $F,G\colon \Cc\to \Dd$. 
+A \bfblue{dg-transformation} $\alpha\colon F\then G$ consists of 
+a family of cochain maps $\alpha_C\colon\ZZ\to\HHom_{\Dd}(F(C),G(C))$ 
+indexed by objects of $\Cc$,
+satisfying that for any objects $C$ and $D$, 
+the following diagram commutes.
+\[
+\adjustbox{scale=0.95,center}{
+\begin{tikzcd}
+\ZZ\otimes\HHom_{\Cc}(C,D)\ar[r,"{\alpha_D\otimes F}"] & 
+\HHom_{\Dd}(F(D),G(D))\otimes\HHom_{\Dd}(F(C),F(D))\ar[d] \\
+\HHom_{\Cc}(C,D)\ar[u,"{\cong}"]\ar[d,"{\cong}"'] & 
+\HHom_{\Dd}(F(C),G(D)) \\
+\HHom_{\Cc}(C,D)\otimes\ZZ\ar[r,"{G\otimes\alpha_C}"] &
+\HHom_{\Dd}(G(C),G(D))\otimes\HHom_{\Dd}(F(D),G(D))\ar[u]
+\end{tikzcd}
+}
+\]
+
+Given two dg-transformations 
+$\alpha\colon F\then G$, $\beta\colon G\then H$, 
+their \bfblue{vertical composition} $\beta\cdot\alpha$ is given by 
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+\ZZ \\
+\otimes \\
+\ZZ
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+\alpha_C\\
+\\
+\beta_C
+\end{matrix}}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Dd}(F(C),G(C)) \\
+\otimes \\
+\HHom_{\Dd}(G(C),H(C))
+\end{matrix}
+}\ar[d]\\
+{\ZZ}\ar[u,"{\cong}"]\ar[r,dashed,"{(\beta\cdot\alpha)_C}"]&
+\HHom_{\Dd}(F(C),H(C)).
+\end{tikzcd}
+\]
+The unity of this composition is the 
+\bfblue{identity dg-transformation} $\id$ which gives the identity for 
+each object. 
+A dg-transformation $\alpha$ is called a \bfblue{natural isomorphism} 
+if it admits an inverse $\beta$, i.e. 
+$\alpha\cdot\beta=\id$, $\beta\cdot\alpha=\id$.
+It is called a \bfblue{natural equivalence} if it admits an 
+weak inverse $\beta$, i.e. 
+$\alpha\cdot\beta\simeq\id$, $\beta\cdot\alpha\simeq\id$.
+
+Given two dg-transformations 
+\[
+\begin{tikzcd}[column sep=large, row sep=large]
+{\Cc}
+\ar[r,bend left,"{F}",""{name=a,below}]
+\ar[r,bend right,"{G}"',""{name=b}]
+\ar[Rightarrow,from=a,to=b,"{\alpha}"]&
+{\Dd}
+\ar[r,bend left,"{F'}",""{name=a,below}]
+\ar[r,bend right,"{G'}"',""{name=b}]
+\ar[Rightarrow,from=a,to=b,"{\beta}"]&
+{\Ee}
+\end{tikzcd}
+\]
+their \bfblue{horizontal composition} $\beta\ast\alpha$ is given by
+the following two equivalent compositions.
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+\ZZ \\
+\otimes \\
+\ZZ
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+F'(\alpha_C)\\
+\\
+\beta_{G(C)}
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Ee}(F'F(C),F'G(C)) \\
+\otimes \\
+\HHom_{\Ee}(F'G(C),G'G(C))
+\end{matrix}
+}\ar[d]\\
+{\ZZ}\ar[u,"{\cong}"]\ar[d,"{\cong}"']
+\ar[r,dashed,"{(\beta\ast\alpha)_C}"description]&
+\HHom_{\Ee}(F'F(C),G'G(C)) \\
+{
+\begin{matrix}
+\ZZ \\
+\otimes \\
+\ZZ
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+\beta_{F(C)}\\
+\\
+G'(\alpha_C)
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Ee}(F'F(C),G'F(C)) \\
+\otimes \\
+\HHom_{\Ee}(G'F(C),G'G(C))
+\end{matrix}
+}\ar[u]
+\end{tikzcd}
+\]
+}
+
+\para{
+The previous abstract definition can be spelled out 
+elementary as follows. 
+\begin{proplist}
+\item 
+A cochain map from $\ZZ$ to a complex $C^{\bullet}$ is the 
+same as a $0$-cocycle of $C^{\bullet}$.
+Hence a \bfblue{dg-transformation} $\alpha\colon F\then G$ 
+is the same as a family of $1$-morphisms 
+$\alpha_C\colon F(C)\to F(D)$ in $\Dd$, (hence 
+morphisms in $\Dd_0$), satisfying that for any element
+$f\in\HHom_{\Cc}(C,D)$, the following diagram commutes.
+\[
+\begin{tikzcd}
+F(C)\ar{r}{\alpha_C}\ar{d}[swap]{F(f)}&
+G(C)\ar{d}{G(f)}\\
+F(D)\ar{r}{\alpha_D}&G(D)
+\end{tikzcd}
+\]
+Be aware that a natural transformation $\alpha\colon F_0\then G_0$ 
+requires merely above commutative diagrams for $1$-morphisms 
+$f\colon C\to D$. 
+\item 
+Given two dg-transformations 
+$\alpha\colon F\then G$, $\beta\colon G\then H$, 
+their \bfblue{vertical composition} $\beta\cdot\alpha$ is given by 
+the family $(\beta\cdot\alpha)_C:=\beta_C\circ\alpha_C$ viewed as 
+compositions of $1$-morphisms.
+\item 
+The \bfblue{identity dg-transformation} $\id$ is the same as 
+the family of identity morphisms $\id_{F(C)}\colon F(C)\to F(C)$. 
+Hence a dg-transformation $\alpha$ is 
+a \bfblue{natural isomorphism} if and only if its 
+each component $\alpha_C$ is an isomorphism in $\Dd_0$, 
+and a \bfblue{natural equivalence} if and only if its 
+each component $\alpha_C$ is an isomorphism in $\h\Dd$. 
+\item 
+Given two dg-transformations 
+\[
+\begin{tikzcd}[column sep=large, row sep=large]
+{\Cc}
+\ar[r,bend left,"{F}",""{name=a,below}]
+\ar[r,bend right,"{G}"',""{name=b}]
+\ar[Rightarrow,from=a,to=b,"{\alpha}"]&
+{\Dd}
+\ar[r,bend left,"{F'}",""{name=a,below}]
+\ar[r,bend right,"{G'}"',""{name=b}]
+\ar[Rightarrow,from=a,to=b,"{\beta}"]&
+{\Ee}
+\end{tikzcd}
+\]
+their \bfblue{horizontal composition} $\beta\ast\alpha$ is 
+the family $(\beta\ast\alpha)_C$ given by 
+two equivalent compositions which can be encoded into the following 
+commutative diagram of $1$-morphisms.
+\[
+\begin{tikzcd}
+{F'F(C)}\ar{r}{F'(\alpha_C)}
+\ar{d}[swap]{\beta_{F(C)}}&
+{F'G(C)}\ar{d}{\beta_{G(C)}}\\
+{G'F(C)}\ar{r}{G'(\alpha_C)}&{G'G(C)}
+\end{tikzcd}
+\]
+\item 
+Then one can verify that the \bfblue{interchange law} holds:
+whenever we have dg-transformations
+\[
+\begin{tikzcd}[column sep=large, row sep=large]
+{\Cc}
+\ar[r,bend left=75,"{F}",""{name=a,below}]
+\ar[r,,"{G}"description,""{name=b},""{name={a'},below}]
+\ar[r,bend right=75,"{H}"',""{name={b'}}]
+\ar[Rightarrow,from=a,to=b,"{\alpha}"]
+\ar[Rightarrow,from={a'},to={b'},"{\beta}"]&
+{\Dd}
+\ar[r,bend left=75,"{F'}",""{name=a,below}]
+\ar[r,,"{G'}"description,""{name=b},""{name={a'},below}]
+\ar[r,bend right=75,"{H'}"',""{name={b'}}]
+\ar[Rightarrow,from=a,to=b,"{\alpha'}"]
+\ar[Rightarrow,from={a'},to={b'},"{\beta'}"]&
+{\Ee}
+\end{tikzcd}
+\]
+the following two compositions are the same:
+\[
+(\beta'\cdot\alpha')\ast(\beta\cdot\alpha)
+\quad=\quad
+(\beta'\ast\beta)\cdot(\alpha'\ast\alpha).
+\]
+\item 
+Note that, as in ordinary category theory, 
+the identity transformation $\id_F$ in a formula of dg-transformations
+is usually denoted as $F$. 
+For example, $F'\ast\alpha$ means $\id_{F'}\ast\alpha$, 
+whose components are $F'(\alpha_C)$, 
+and $\beta\ast G$ means $\beta\ast\id_{G}$, 
+whose components are $\beta_{G(C)}$.
+Then the interchange law tells us 
+\[
+(\beta\ast G)\cdot(F'\ast\alpha) = \beta\ast\alpha.
+\]
+Likewise, we also have
+\[
+(G'\ast\alpha)\cdot(\beta\ast F) = \beta\ast\alpha.
+\]
+Hence the fact that the two ways of horizontal composition agree 
+is a special case of the interchange law.
+\end{proplist}
+}
+
+\para{
+Let $\Cc$ and $\Dd$ be two dg-categories. 
+The category \bfblue{$\Fun(\Cc,\Dd)$} consists of 
+\begin{itemize}
+\item dg-functors from $\Cc$ to $\Dd$ as its objects;
+\item dg-transformations between those dg-functors as its morphisms. 
+\end{itemize}
+The natural isomorphisms are precisely isomorphisms in this category. 
+Two dg-functors are said to be \bfblue{isomorphic} 
+if there is a natural isomorphism between them. 
+Note that Two dg-functors $F,G\colon\Cc\to\Dd$ are isomorphic 
+if and only if they are isomorphic in the category 
+$\Fun(\Cc,\Dd)$.
+
+Two dg-transformations $\alpha,\beta\colon F\then G$ are said to be 
+\bfblue{homotopic} if its components $\alpha_C$ and $\beta_C$ 
+are homotopic 
+(as cochain maps, using the abstract definition, 
+or equivalently, as $1$-morphisms in $\Dd$, 
+using the elementary description).
+Then the category \bfblue{$\hFun(\Cc,\Dd)$} consists of 
+\begin{itemize}
+\item dg-functors from $\Cc$ to $\Dd$ as its objects;
+\item homotopy classes of dg-transformations as its morphisms. 
+\end{itemize}
+The natural equivalences are precisely isomorphisms in this category. 
+Two dg-functors are said to be \bfblue{equivalent}
+if there is a natural equivalence between them. 
+Note that Two dg-functors $F,G\colon\Cc\to\Dd$ are \bfblue{equivalent}
+if and only if they are isomorphic in the category $\hFun(\Cc,\Dd)$.
+
+As the notations suggest, the above ordinary categories 
+$\Fun(\Cc,\Dd)$ and $\hFun(\Cc,\Dd)$ should be viewed as 
+the underlying category and the homotopy category of the  
+dg-category of dg-functors $\FFun(\Cc,\Dd)$ respectively.
+This dg-category will be constructed later.
+}
+
+\para{
+An \bfblue{adjunction of dg-functors} is a quadruple 
+$(F,G,\eta,\epsilon)$, where
+\begin{itemize}
+\item 
+$F\colon\Cc\to\Dd$ (the \bfblue{left adjoint}) and 
+$G\colon\Dd\to\Cc$ (the \bfblue{right adjoint}) 
+are two dg-functors,
+\item 
+$\eta\colon\Id_{\Cc}\then G\circ F$ (the \bfblue{unit}) and 
+$\epsilon\colon F\circ G\then\Id_{\Dd}$ (the \bfblue{counit}) 
+are two dg-transformations,
+\end{itemize}
+satisfying the following two commutative diagram 
+(the \bfblue{triangle identities})
+of dg-transformations.
+\[
+\begin{tikzcd}[column sep=0pt,row sep=large]
+&F\circ G\circ F\ar{dr}{\epsilon\ast F}&\\
+F\ar{ur}{F\ast\eta}\ar{rr}{\id_F}&&F
+\end{tikzcd}
+\qquad\qquad
+\begin{tikzcd}[column sep=0pt,row sep=large]
+&G\circ F\circ G\ar{dr}{G\ast\epsilon}&\\
+G\ar{ur}{\eta\ast G}\ar{rr}{\id_G}&&G
+\end{tikzcd}
+\]
+
+If this is the case, then the compositions 
+(of cochain maps)
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+\ZZ \\
+\otimes \\
+{\HHom_{\Dd}(F(C),D)}
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+\eta_C\\
+\\
+G
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Cc}(C,GF(C)) \\
+\otimes \\
+\HHom_{\Cc}(GF(C),G(D))
+\end{matrix}
+}\ar[d]\\
+{\HHom_{\Dd}(F(C),D)}
+\ar[u,"{\cong}"]\ar[r,dashed,"{\alpha_{C,D}}"]&
+\HHom_{\Cc}(C,G(D))
+\end{tikzcd}
+\]
+and
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+{\HHom_{\Cc}(C,G(D))} \\
+\otimes \\
+{\ZZ}
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+F\\
+\\
+\epsilon_D
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Dd}(F(C),FG(D)) \\
+\otimes \\
+\HHom_{\Dd}(FG(D),D)
+\end{matrix}
+}\ar[d]\\
+{\HHom_{\Cc}(C,G(D))}
+\ar[u,"{\cong}"]\ar[r,dashed,"{\beta_{C,D}}"]&
+{\HHom_{\Dd}(F(C),D)}
+\end{tikzcd}
+\]
+give rise to a pair of natural isomorphisms
+\[
+\HHom_{\Dd}(F(-),-)\cong\HHom_{\Cc}(-,G(-)).
+\]
+
+Conversely, if there is a pair of natural isomorphisms
+\[
+\begin{tikzcd}
+\HHom_{\Dd}(F(-),-)
+\ar[r,shift left,"{\alpha}"]&
+\ar[l,shift left,"{\beta}"]
+\HHom_{\Cc}(-,G(-)),
+\end{tikzcd}
+\]
+then the compositions
+\[
+\ZZ\to\HHom_{\Dd}(F(C),F(C))
+\markar{\alpha_{C,F(C)}}
+\HHom_{\Cc}(C,GF(C))
+\]
+and
+\[
+\ZZ\To\HHom_{\Cc}(G(D),G(D))
+\markar{\beta_{G(D),D}}
+\HHom_{\Dd}(FG(D),D)
+\]
+give rise to the unit $\eta$ and the counit $\eta$ making the 
+quadruple $(F,G,\eta,\epsilon)$ an adjunction of dg-functors.
+}
+
+\para{
+A dg-functor $F\colon\Cc\to\Dd$ is said to be 
+\begin{itemize}
+\item 
+\bfblue{fully faithful}, 
+if for any two objects $C,D$ of $\Cc$, the cochain map
+\[
+F_{C,D}\colon\HHom_{\Cc}(C,D)\to\HHom_{\Dd}(F(C),F(D))
+\]
+is an isomorphism;
+\item 
+\bfblue{homotopically fully faithful}, 
+if for any two objects $C,D$ of $\Cc$, the cochain map
+\[
+F_{C,D}\colon\HHom_{\Cc}(C,D)\to\HHom_{\Dd}(F(C),F(D))
+\]
+is a homotopy equivalence;
+\item 
+\bfblue{essentially surjective}, 
+if the {underlying functor} of it
+$F_0\colon\Cc_0\to\Dd_0$ is essentially surjective;
+\item 
+\bfblue{homotopically essentially surjective},  
+if the {homotopy functor} of it
+$\h F\colon\h\Cc\to\h\Dd$ is essentially surjective;
+\item 
+an \bfblue{equivalence}, 
+if there is another dg-functor $G\colon\Dd\to\Cc$ such that 
+$F\circ G\cong\Id_{\Dd}$ and $\Id_{\Cc}\cong G\circ F$ 
+($\cong$ denotes natural isomorphism);
+\item 
+a \bfblue{homotopically equivalence}, 
+if there exists another dg-functor $G\colon\Dd\to\Cc$ such that 
+$F\circ G\simeq\Id_{\Dd}$ and $\Id_{\Cc}\simeq G\circ F$
+($\simeq$ denotes natural equivalence);
+\item 
+an \bfblue{adjoint equivalence}, 
+if it admits a right adjoint $G$ such that the unit 
+$\eta\colon\Id_{\Cc}\then G\circ F$ and the counit
+$\epsilon\colon F\circ G\then\Id_{\Dd}$ are natural isomorphisms;
+\item 
+an \bfblue{adjoint homotopically equivalence}, 
+if it admits a right adjoint $G$ such that the unit 
+$\eta\colon\Id_{\Cc}\then G\circ F$ and the counit
+$\epsilon\colon F\circ G\then\Id_{\Dd}$ are natural equivalence.
+\end{itemize}
+}
+
+%As in ordinary category theory, assuming axiom of choices, 
+%we have the following proposition.
+\begin{proposition}\label{prop:equiv_of_dg_cats}
+Let $F\colon\Cc\to\Dd$ be a dg-functor. 
+Then the followings are equivalent.
+\begin{proplist}
+\item 
+$F$ is fully faithful and essentially surjective.
+\item 
+$F$ is an equivalence.
+\item 
+$F$ is an adjoint equivalence.
+\end{proplist}
+Moreover, the followings are equivalent.
+\begin{proplist}[resume]
+\item 
+$F$ is homotopically fully faithful and 
+homotopically essentially surjective.
+\item 
+$F$ is an homotopically equivalence.
+\item 
+$F$ is an adjoint homotopically equivalence.
+\end{proplist}
+\end{proposition}
+\begin{proof}
+Suppose (ii), let's prove (iii). 
+To do this, we need a lemma.
+\begin{sublemma}
+Let $\alpha\colon F\then \Id$ be a natural isomorphism between 
+dg-endofunctors. Then we have 
+\[
+(F\ast\alpha)\cdot(\alpha^{-1}\ast F)=
+(\alpha\ast F)\cdot(F\ast\alpha^{-1})=\id_F.
+\]
+\end{sublemma}
+\begin{proof}
+The result follows from the following commutative diagrams.
+\[
+\begin{tikzcd}
+{F(-)}\ar{d}[swap]{\alpha_{(-)}}
+\ar{r}{\alpha^{-1}_{F(-)}}&
+{FF(-)}\ar{d}{F(\alpha_{(-)})}\\
+{(-)}\ar{r}{\alpha^{-1}_{(-)}}&{F(-)}
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+{F(-)}\ar{d}[swap]{F(\alpha^{-1}_{(-)})}
+\ar{r}{\alpha_{(-)}}&
+{(-)}\ar{d}{\alpha^{-1}_{(-)}}\\
+{FF(-)}\ar{r}{\alpha_{F(-)}}&{F(-)}
+\end{tikzcd}
+\]
+\end{proof}
+
+Let $G\colon\Dd\to\Cc$ be the inverse of $F$ with natural isomorphisms 
+$\eta\colon\Id_{\Cc}\Isom{G\circ F}$ and 
+$\varepsilon\colon{F\circ G}\Isom\Id_{\Dd}$. 
+Then, let $\epsilon\colon{F\circ G}\then\Id_{\Dd}$ be the composition
+\[
+F\circ G\markar{F\circ G\ast\varepsilon^{-1}}
+F\circ G\circ F\circ G\markar{F\ast\eta^{-1}\ast G}
+F\circ G\markar{\varepsilon}
+\Id_{\Dd}.
+\]
+Then $\epsilon$ is a natural isomorphism and by 
+the following commutative diagrams
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+F(-)\ar{d}[swap]{F(\eta_{(-)})}\ar{r}{\varepsilon^{-1}_{F(-)}}&
+FGF(-)\ar{d}[swap]{FGF(\eta_{(-)})}\ar[dr,dashed,equal]&
+F(-)\\
+FGF(-)\ar{dr}[swap]{FG(\varepsilon^{-1}_{F(-)})}&
+FGFGF(-)\ar{l}[swap]{\varepsilon_{FGF(-)}}\ar[d,dashed,equal]&
+FGF(-)\ar{u}[swap]{\varepsilon_{F(-)}}\\&
+FGFGF(-)\ar{ur}[swap]{F(\eta^{-1}_{GF(-)})}&
+\end{tikzcd}
+\]
+(where the dashed identity transformations come from the lemma)
+and
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+G(-)\ar{r}{\eta_{G(-)}}\ar{d}[swap]{G(\varepsilon^{-1}_{(-)})} &
+GFG(-)\ar{d}{GFG(\varepsilon^{-1}_{(-)})}\\
+GFG(-)\ar{r}{\eta_{GFG(-)}}\ar[dr,dashed,equal]&
+GFGFG(-)\ar{d}{GF(\eta^{-1}_{G(-)})}\\
+G(-)&
+GFG(-)\ar{l}{G(\varepsilon_{(-)})}
+\end{tikzcd}
+\]
+(where the dashed identity transformation comes from the lemma), 
+the quadruple $(F,G,\eta,\epsilon)$ is an adjunction of dg-functors.
+
+Now, suppose (iii), let's prove (i). 
+First, $F$ is essentially surjective. 
+Indeed, for each object $D$ of $\Dd$, 
+the $1$-morphism $\epsilon_D\colon FG(D)\to D$ gives the 
+desired isomorphism.
+
+To show $F$ is fully faithful, 
+consider the following composition 
+which gives the inverse of the cochain map $F_{C,D}$.
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+\ZZ \\
+\otimes \\
+{\HHom_{\Dd}(F(C),F(D))}\\
+\otimes \\
+\ZZ
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+\eta_C\\
+\textstyle{\otimes}\\
+G\\
+\textstyle{\otimes}\\
+\eta^{-1}_D
+\end{matrix}
+}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Cc}(C,GF(C)) \\
+\otimes \\
+\HHom_{\Cc}(GF(C),GF(D)) \\
+\otimes \\
+\HHom_{\Cc}(GF(D),D)
+\end{matrix}
+}\ar[d]\\
+{\HHom_{\Dd}(F(C),F(D))}
+\ar[u,"{\cong}"]\ar[r,dashed,"{\alpha_{C,D}}"]&
+\HHom_{\Cc}(C,D)
+\end{tikzcd}
+\]
+Indeed, $\alpha_{C,D}\circ F_{C,D}=\id$ follows from the following 
+commutative diagram
+\[
+\begin{tikzcd}
+{\HHom_{\Dd}(F(C),F(D))}\ar{r}{G}&
+{\HHom_{\Cc}(GF(C),GF(D))}\ar{d}{\circ\eta_C}\\
+{\HHom_{\Cc}(C,D)}\ar{u}{F}\ar{r}{\eta_D\circ}&
+{\HHom_{\Cc}(C,GF(D))}
+\end{tikzcd}
+\]
+and $F_{C,D}\circ \alpha_{C,D}=\id$ follows from the following 
+commutative diagram
+\[
+\adjustbox{scale=0.75,center}{
+\begin{tikzcd}[row sep=large]
+{\HHom_{\Dd}(F(C),F(D))}\ar[blue]{d}{G}
+\ar[ddd,dotted,bend right=90,"{\circ\epsilon_{F(C)}}"]\\
+{\HHom_{\Cc}(GF(C),GF(D))}
+\ar[blue]{r}{\circ\eta_C}\ar{d}{F}&
+{\HHom_{\Cc}(C,GF(D))}
+\ar{d}{F}\ar[blue]{r}{\eta_D^{-1}\circ}&
+{\HHom_{\Cc}(C,D)}\ar[blue]{d}{F}\\
+{\HHom_{\Dd}(FGF(C),FGF(D))}
+\ar{r}{\circ F(\eta_C)}\ar{d}{\epsilon_{F(D)}\circ}&
+{\HHom_{\Dd}(F(C),FGF(D))}
+\ar{r}{F(\eta_D^{-1})\circ}\ar{d}{\epsilon_{F(D)}\circ}&
+{\HHom_{\Dd}(F(C),F(D))}\\
+{\HHom_{\Dd}(FGF(C),F(D))}\ar[dotted]{r}{\circ F(\eta_C)}&
+{\HHom_{\Dd}(F(C),F(D))}\ar[ur,bend right=15,dashed,equal]
+\end{tikzcd}
+}
+\]
+where the dashed identity as well as that 
+the composition of dotted arrow is identity 
+follows from the triangle identities, 
+and the blue arrows emphasize the desired composition.
+
+Next, suppose (i), let's prove (ii). 
+First, let's construct the dg-functor $G\colon\Dd\to\Cc$.
+\begin{enumerate}
+\item 
+For any object $D$ of $\Dd$, CHOOSE an object $C$ of $\Cc$ 
+such that $F(C)\cong D$. Then put $G(D)=C$ and denote 
+this isomorphism by $\epsilon_D$.
+\item 
+For any pair of objects $D,D'$ of $\Dd$, 
+the cochain map $G_{D,D'}$ 
+is given by the composition:
+\[
+\adjustbox{scale=0.85,center}{
+\begin{tikzcd}
+\HHom_{\Dd}(D,D')
+\ar[r,"{
+\begin{matrix}
+\circ\epsilon_D\\
+\\
+\epsilon_{D'}^{-1}\circ
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\circ}"description]&
+\HHom_{\Dd}(FG(D),FG(D'))\ar{r}{F^{-1}_{C,D}}&
+\HHom_{\Cc}(G(D),G(D')).
+\end{tikzcd}
+}
+\]
+\item 
+Then $G$ is a dg-functor by straightforward verification using elements.
+\item 
+Now $\epsilon$ form a dg-transformation by the construction of $G$ 
+and it is clear a natural isomorphism.
+\item 
+For each object $C$ of $\Cc$, define 
+$\eta_C\colon C\to GF(C)$ as the preimage of 
+$\epsilon^{-1}_{F(C)}\colon F(C)\to FGF(C)$ 
+under the cochain map 
+\[
+F_{C,GF(C)}\colon\HHom_{\Cc}(C,GF(C))\To\HHom_{\Dd}(F(C),FGF(C)).
+\]
+\item 
+Now $\eta$ form another dg-transformation since 
+$\epsilon^{-1}$ is a dg-transformation and $F$ is fully faithful. 
+It is clear that $\eta$ is a natural isomorphism.
+\end{enumerate}
+
+Finally, the proofs of (iv) implies (v) implies (vi) implies (iv) 
+are similar as above, but:
+\begin{enumerate}
+\item 
+instead of working in the category $\Fun(\Cc,\Dd)$,
+one works in the category $\hFun(\Cc,\Dd)$;
+\item 
+instead of using inverse dg-transformations, 
+one needs to use weak inverse;
+\item 
+instead of CHOOSE isomorphisms, 
+one has to CHOOSE homotopy equivalences.
+\end{enumerate}
+\end{proof}
+\begin{Rem}
+It would be helpful if one is familiar with 
+the proof of similar statements in ordinary category theory. 
+One can also try to use elements to drop above proof down to earth.
+\end{Rem}
+
+\para{
+Let $\Cc$ and $\Dd$ be two dg-categories, then their 
+\bfblue{(tensor) product} is the dg-category $\Cc\otimes\Dd$ 
+\begin{itemize}
+\item 
+whose collection of objects is the product $\ob\Cc\times\ob\Dd$, 
+\item 
+each Hom object $\HHom_{\Cc\otimes\Dd}((C,D),(C',D'))$ is 
+the tensor product 
+\[
+\HHom_{\Cc}(C,C')\otimes\HHom_{\Dd}(D,D'),
+\] 
+\item 
+the composition rule and the unity is given 
+by obverse constructions.
+\end{itemize}
+One should think $\Cc\otimes\Dd$ as a dg-version of $\Cc\times\Dd$. 
+This tensor product has a unit $\unit$, which is the dg-category 
+having one object $\ast$ with the Hom-complex 
+$\HHom_{\unit}(\ast,\ast)=\ZZ$, and 
+is symmetric with the braiding given by 
+the braiding $\gamma$ of $\Ch$. 
+In this way, the $2$-category $\dg\Cat$ 
+becomes a tensor $2$-category.
+
+The \bfblue{opposite dg-category} of 
+a dg-category $\Cc$, 
+denoted by $\Cc^{\opp}$, is the dg-category with 
+the same objects as $\Cc$ and Hom-complex 
+\[
+\HHom_{\Cc^{\opp}}(C,D):=\HHom_{\Cc}(D,C).
+\]
+Clearly, $(\Cc^{\opp})^{\opp} = \Cc$ 
+and $(\Cc\otimes\Dd)^{\opp}=\Cc^{\opp}\otimes\Dd^{\opp}$. 
+One should think $\Cc^{\opp}$ as a dg-version 
+of opposite category $\Cc^{\opp}$.
+In this way, $\dg\Cat$ becomes a 
+tensor $2$-category with an involution $(-)^{\opp}$.
+}
+
+\para{
+The change of base categories $Z^0$ and $H^0$ 
+gives rise to two $2$-functors between $2$-categories 
+$\dg\Cat\to\Cat$ (more precisely, 
+they land in the $2$-category of 
+pre-additive categories). 
+It is clear that $(\Cc^{\opp})_0 = \Cc^{\opp}_0$ 
+and that $\h(\Cc^{\opp}) = (\h\Cc)^{\opp}$. 
+So they respect the involution structures. 
+However, in general, 
+$(\Cc\otimes\Dd)_0$ is not isomorphic to 
+$\Cc_0\times\Dd_0$ (as product of categories) or 
+$\Cc_0\otimes\Dd_0$ (as product of pre-additive categories). 
+Similarly for $\h(\Cc\otimes\Dd)$. 
+
+However, there is a canonical additive functor
+\begin{align*}
+\Cc_0\otimes\Dd_0\To(\Cc\otimes\Dd)_0,\\
+\h\Cc\otimes\h\Dd\To\h(\Cc\otimes\Dd).
+\end{align*}
+Hence both $Z^0$ and $H^0$ induce 
+lax $2$-functors between tensor $2$-categories. 
+This is because $Z^0$ and $H^0$ 
+are lax functors, i.e. for any complexes 
+$C^{\bullet}$ and $D^{\bullet}$, there are 
+homomorphisms
+\[
+Z^0(C)\otimes Z^0(D) \To Z^0(C\otimes D),\qquad
+H^0(C)\otimes H^0(D) \To H^0(C\otimes D).
+\]
+Indeed, they are just the homomorphisms 
+induced by the inclusion 
+\[
+C^0\otimes D^0\To (C\otimes D)^0.
+\]
+
+}
+
+\para{
+A \bfblue{dg-bifunctor} is simply a dg-functor 
+from a product $\Cc\otimes\Dd$. One should think it as the 
+dg-version of bifunctor. 
+
+As in ordinary case, given two dg-functors $F\colon\Cc\to\Dd$ 
+and $G\colon\Cc'\to\Dd'$, 
+we always have the dg-functor 
+\[
+F\otimes G\colon \Cc\otimes\Cc'\To\Dd\otimes\Dd'.
+\]
+One should think it as the dg-version of $F\times G$.
+
+As in ordinary case, any dg-bifunctor 
+$T\colon\Cc\otimes\Dd\to\Ee$ 
+induces \bfblue{partial functors} 
+$T(C,-)\colon\Dd\to\Ee$ and 
+$T(-,D)\colon\Cc\to\Ee$ by evaluating $T$ 
+at objects $C$ of $\Cc$ and 
+$D$ of $\Dd$ respectively. 
+In other words, $T(C,-)$ is precisely the composition 
+\[
+\Dd\cong\unit\otimes\Dd
+\markar{C\otimes\Id_{\Dd}}
+\Cc\otimes\Dd\markar{T}\Ee,
+\]
+and $T(-,D)$ is the composition 
+\[
+\Cc\cong\Cc\otimes\unit
+\markar{\Id_{\Cc}\otimes D}
+\Cc\otimes\Dd\markar{T}\Ee.
+\]
+
+Conversely, if we have two families of dg-functors 
+$\{F_C\colon\Dd\to\Ee\}_{C\in\ob\Cc}$ and 
+$\{G_D\colon\Cc\to\Ee\}_{D\in\ob\Dd}$ 
+such that 
+\[
+F_C(D)=G_D(C)
+\]
+for any $C\in\ob\Cc$, $D\in\ob\Dd$. 
+Then we can put $T(C,D)=F_C(D)=G_D(C)$. 
+To make this a dg-functor, it remains to define cochain maps
+\[
+\HHom_{\Cc}(C,C')\otimes\HHom_{\Dd}(D,D')\To\HHom_{\Ee}(T(C,D),T(C',D')).
+\]
+There are two way to define it:
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+\HHom_{\Dd}(D,D')\\
+\otimes\\
+\HHom_{\Cc}(C,C')
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+F_{C}\\
+\\
+G_{D'}
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\otimes}"description]
+\ar[dd,leftrightarrow,"{\cong}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Ee}(T(C,D),T(C,D')) \\
+\otimes \\
+\HHom_{\Ee}(T(C,D'),T(C',D'))
+\end{matrix}
+}\ar[d]\\
+&\HHom_{\Ee}(T(C,D),T(C',D')) \\
+{
+\begin{matrix}
+\HHom_{\Cc}(C,C')\\
+\otimes\\
+\HHom_{\Dd}(D,D')
+\end{matrix}
+}
+\ar[r,"{
+\begin{matrix}
+G_D\\
+\otimes\\
+F_{C'}
+\end{matrix}
+}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Ee}(T(C,D),T(C',D)) \\
+\otimes \\
+\HHom_{\Ee}(T(C',D),T(C',D'))
+\end{matrix}
+}\ar[u]
+\end{tikzcd}
+\]
+Hence the two families defines a dg-bifunctor $T$ such that 
+$T(C,-)=F_C$ and $T(-,D)=G_D$ if and only if the above diagram commutes.
+
+Given two dg-bifunctors $T,S\colon \Cc\otimes\Dd\to\Ee$.
+Using above characterization of dg-bifunctors, 
+it is easy to show that 
+a family of $1$-morphisms 
+$\{\alpha_{C,D}\}_{(C,D)\in\ob(\Cc\otimes\Dd)}$ 
+forms a dg-transformation from $T$ to $S$ if and only if 
+\begin{enumerate}
+\item 
+for any $C\in\Cc$, 
+the family $\{\alpha_{C,D}\}_{D\in\ob\Dd}$ 
+forms a dg-transformation from $T(C,-)$ to $S(C,-)$, 
+and 
+\item
+for any $D\in\Dd$, 
+the family $\{\alpha_{C,D}\}_{C\in\ob\Cc}$ 
+forms a dg-transformation from $T(-,D)$ to $S(-,D)$.
+\end{enumerate}
+In other words, dg-transformation can be verified 
+variable by variable.
+}
+\begin{Rem}
+On can verify that: 
+if $T\colon\Cc\otimes\Dd\To\Ee$ is a dg-bifunctor, 
+then the partial functors of the bifunctor
+\[
+\Cc_0\times\Dd_0\To(\Cc\otimes\Dd)_0\markar{T_0}\Ee_0
+\]
+are precisely the underlying functors of 
+the partial functors of $T$.
+\end{Rem}
+
+\begin{example}
+For any dg-category $\Cc$, 
+there is a natural \emph{dg-bifunctor} 
+\[
+\HHom_{\Cc}(-,-)\colon\Cc^{\opp}\otimes\Cc\To\Ch.
+\]
+To see this, it suffices to give the canonical cochain maps
+\[
+\HHom_{\Cc^{\opp}\otimes\Cc}((C,D),(C',D'))
+\To
+[\HHom_{\Cc}(C,D),\HHom_{\Cc}(C',D')].
+\]
+But this is just the adjunct of 
+\[
+\HHom_{\Cc}(C',C)\otimes\HHom_{\Cc}(D,D')\otimes\HHom_{\Cc}(C,D)
+\To
+\HHom_{\Cc}(C',D').
+\]
+
+In this way, any dg-functor $F\colon\Cc\to\Dd$ gives 
+a dg-transformation 
+\[
+F_{-,-}\colon\HHom_{\Cc}(-,-)\To\HHom_{\Dd}(F(-),F(-)).
+\]
+\end{example}
+
+\para{
+Consider the category $\Fun(\Cc,\Dd)$ 
+of dg-functors from a small dg-category $\Cc$ 
+to another dg-category $\Dd$. 
+To enhance it into a dg-category, notice that 
+for any two dg-functors $F$ and $G$ and 
+any pair of objects $(C,D)$ in $\Cc$, there is a Hom-complex 
+\[
+\HHom_{\Dd}(F(C),G(D)).
+\]
+Hence the Hom-complex $\HHom_{\Fun(\Cc,\Dd)}(F,G)$ has to be certain 
+universal construction from them.
+
+Note that, the condition for a family $\{\alpha_C\}_{C\in\ob\Cc}$ 
+from a dg-transformation from $F$ to $G$ 
+can be translated into the following diagram 
+\[
+\begin{tikzcd}
+\ZZ\ar{d}[swap]{\alpha_C}\ar{r}{\alpha_D}&
+\HHom_{\Dd}(F(D),G(D))\ar{d}{\rho_{C,D}}\\
+\HHom_{\Dd}(F(C),G(C))\ar{r}{\lambda_{C,D}}&
+{[\HHom_{\Cc}(C,D),\HHom_{\Dd}(F(C),G(D))]}
+\end{tikzcd}
+\]
+where $\lambda_{C,D}$ is given by the adjunct of
+\[
+\HHom_{\Cc}(C,D)\otimes\HHom_{\Dd}(F(C),G(C))\To
+\HHom_{\Dd}(F(C),G(D)),
+\]
+which is the adjunct of
+\[
+\HHom_{\Cc}(C,D)\markar{\HHom_{\Dd}(F(C),G(-))}
+[\HHom_{\Dd}(F(C),G(C)),\HHom_{\Dd}(F(C),G(D))];
+\]
+similarly, $\rho_{C,D}$ is given by the adjunct of
+\[
+\HHom_{\Dd}(F(D),G(D))\otimes\HHom_{\Cc}(C,D)\To
+\HHom_{\Dd}(F(C),G(D)),
+\]
+which is the adjunct of
+\[
+\HHom_{\Cc}(C,D)\markar{\HHom_{\Dd}(F(-),G(D))}
+[\HHom_{\Dd}(F(D),G(D)),\HHom_{\Dd}(F(C),G(D))].
+\]
+
+Inspired by this, for $T(-,-)\colon\Cc^{\opp}\otimes\Cc\to\Ch$ 
+a bifunctor (for instant, $T(-,-)=\HHom_{\Dd}(F(-),G(-))$), 
+an \bfblue{extraordinary naturality} of $T$ 
+is a family of cochain maps $\{\alpha_C\}_{C\in\ob\Cc}$ fitting 
+the following commutative diagram
+\[
+\begin{tikzcd}
+X\ar{d}[swap]{\alpha_C}\ar{r}{\alpha_D}&
+T(D,D)\ar{d}{\rho_{C,D}}\\
+T(C,C)\ar{r}{\lambda_{C,D}}&
+{[\HHom_{\Cc}(C,D),T(C,D)]}
+\end{tikzcd}
+\]
+where $\lambda_{C,D}$ is given by the functor
+$T(C,-)$ and $\rho_{C,D}$ by $T(-,D)$. 
+Then the \bfblue{end} of $T$ is the universal extraordinary naturality 
+of $T$. The complex representing the end is 
+denoted by $\int_{C\in\Cc}T(C,C)$ and the canonical cochain maps 
+$\pi_C\colon\int_{C\in\Cc}T(C,C)\to T(C,C)$ is called the 
+\bfblue{counit} at $C$.
+
+One should notice that an extraordinary naturality is nothing than 
+a cone over the diagram consisting of $\lambda$ and $\rho$. 
+Hence, the universal extraordinary naturality 
+is the limit of this diagram. 
+Therefore we have the following equalizer diagram.
+\[
+\begin{tikzcd}
+{\displaystyle \int_{C\in\Cc}T(C,C)}
+\ar{r}{\alpha}&
+{\displaystyle \prod_{C\in\Cc}T(C,C)}
+\ar[shift left]{r}{\lambda}
+\ar[shift right]{r}[swap]{\rho}&
+{\displaystyle \prod_{C,D\in\Cc}[\HHom_{\Cc}(C,D),T(C,D)]}.
+\end{tikzcd}
+\]
+
+With the notion of ends, we can enhance $\Fun(\Cc,\Dd)$ 
+into a dg-category $\FFun(\Cc,\Dd)$ as follows. 
+\begin{proplist}
+\item 
+The Hom-complex is 
+\[
+\HHom_{\FFun(\Cc,\Dd)}(F,G):=
+\int_{C\in\Cc}\HHom_{\Dd}(F(C),G(C)).
+\]
+\item 
+The composition rule is given by the dashed arrow in
+the following commutative diagrams 
+(with $C$ goes through all the objects of $\Cc$)
+uniquely determined by the universal property of end.
+\[
+\begin{tikzcd}[column sep=huge, row sep=scriptsize]
+{
+\begin{matrix}
+\HHom_{\FFun(\Cc,\Dd)}(F,G) \\
+\otimes \\
+\HHom_{\FFun(\Cc,\Dd)}(G,H)
+\end{matrix}
+}
+\ar[d,dashed]
+\ar[r,"{
+\begin{matrix}
+\pi_C\\
+\\
+\pi_C
+\end{matrix}}"description]
+\ar[r,"\textstyle{\otimes}"description]
+&
+{
+\begin{matrix}
+\HHom_{\Dd}(F(C),G(C)) \\
+\otimes \\
+\HHom_{\Dd}(G(C),H(C))
+\end{matrix}
+}\ar[d]\\
+\HHom_{\FFun(\Cc,\Dd)}(F,H)
+\ar{r}{\pi_C}
+&\HHom_{\Dd}(F(C),H(C))
+\end{tikzcd}
+\]
+\item 
+The identity is determined similarly, 
+which turns out to be the \emph{identity dg-transformation}.
+\end{proplist}
+}
+
+\begin{proposition}
+The underlying category of $\FFun(\Cc,\Dd)$ is 
+$\Fun(\Cc,\Dd)$ while the homotopy category is 
+$\hFun(\Cc,\Dd)$.
+\end{proposition}
+\begin{proof}
+First we have
+\begin{align*}
+Z^0\HHom_{\FFun(\Cc,\Dd)}(F,G) &= 
+\Hom_{\Ch}\big(\ZZ,\HHom_{\Fun(\Cc,\Dd)}(F,G)\big),\\
+H^0\HHom_{\FFun(\Cc,\Dd)}(F,G) &= 
+\Hom_{K(\Ab)}\big(\ZZ,\HHom_{\FFun(\Cc,\Dd)}(F,G)\big).
+\end{align*}
+By the universal property of 
+$\int_{C\in\Cc}\HHom_{\Dd}(F(C),G(C))$, 
+a cochain map from $\ZZ$ to $\HHom_{\FFun(\Cc,\Dd)}(F,G)$ 
+is equivalent to a family of cochain maps $\{\alpha_C\}$ 
+fitting the commutative diagrams
+\[
+\begin{tikzcd}
+\ZZ\ar{d}[swap]{\alpha_C}\ar{r}{\alpha_D}&
+\HHom_{\Dd}(F(D),G(D))\ar{d}{\rho_{C,D}}\\
+\HHom_{\Dd}(F(C),G(C))\ar{r}{\lambda_{C,D}}&
+{[\HHom_{\Cc}(C,D),\HHom_{\Dd}(F(C),G(D))]}
+\end{tikzcd}
+\]
+hence a dg-transformation from $F$ to $G$. 
+Moreover, a cochain homotopy between such cochain maps 
+is equivalent to a family of cochain homotopies between 
+the components of the two families, hence 
+a homotopy between dg-transformations.
+\end{proof}
+
+\begin{proposition}
+We have natural equivalences of categories
+\[
+\Fun(\Cc\otimes\Dd,\Ee)\cong\Fun(\Cc,\FFun(\Dd,\Ee))
+\]
+for any dg-categories $\Cc$, $\Dd$ and $\Ee$ with $\Dd$ small. 
+Moreover, if both $\Cc$ and $\Dd$ are small, we have 
+natural equivalences of dg-categories
+\[
+\FFun(\Cc\otimes\Dd,\Ee)\cong\FFun(\Cc,\FFun(\Dd,\Ee)).
+\]
+\end{proposition}
+\begin{proof}
+We'll construct the an adjunction 
+of transformations as follows.
+\begin{enumerate}
+\item 
+The unit 
+$\eta\colon\Id\then\FFun(\Dd,-\otimes\Dd)$
+and 
+\item 
+the evaluation 
+$\ev\colon\FFun(\Dd,-)\otimes\Dd\then\Id$.
+\end{enumerate}
+Then natural equivalence are given by the pair
+\begin{align*}
+\alpha\colon 
+\FFun(\Cc\otimes\Dd,\Ee) & \longrightarrow 
+\FFun(\Cc,\FFun(\Dd,\Ee)) \\
+F & \longmapsto \widehat{F}, \\
+\beta\colon 
+\FFun(\Cc,\FFun(\Dd,\Ee)) & \longrightarrow 
+\FFun(\Cc\otimes\Dd,\Ee) \\
+G & \longmapsto \widetilde{G}.
+\end{align*}
+Where $\widehat{F}$ is the composition
+\[
+\Cc\markar{\eta_{\Cc}}
+\FFun(\Dd,\Cc\otimes\Dd)
+\markar{\FFun(\Dd,F)}
+\FFun(\Dd,\Ee)
+\]
+and $\widetilde{G}$ is the composition
+\[
+\Cc\otimes\Dd
+\markar{G\otimes\Dd}
+\Fun(\Dd,\Ee)\otimes\Dd
+\markar{\ev_{\Ee}}.
+\Ee
+\]
+
+The components of $\eta$ are dg-functors
+\[
+\eta_{\Cc}\colon\Cc\To\FFun(\Dd,\Cc\otimes\Dd)
+\]
+which takes an object $C$ of $\Cc$ to the dg-functor 
+\[
+\widehat{C}\colon\Dd\To\Cc\otimes\Dd
+\]
+which takes an object $D$ of $\Dd$ to the object
+\[
+(C,D)\in\ob(\Cc\otimes\Dd).
+\]
+For any $D,D'\in\ob\Dd$, the map 
+\[
+\widehat{C}_{D,D'}\colon
+\HHom_{\Dd}(D,D')\To
+\HHom_{\Cc}(C,C)\otimes\HHom_{\Dd}(D,D')
+\]
+is given by $g\mapsto\id_C\otimes{g}$.
+For any $C,C'\in\ob\Cc$, the map
+\[
+\eta_{\Cc,C,C'}\colon
+\HHom_{\Cc}(C,C')\To
+\int_{D\in\Dd}\HHom_{\Cc}(C,C')\otimes\HHom_{\Dd}(D,D)
+\]
+is induced by $f\mapsto{f}\otimes\id_D$.
+
+The components of $\ev$ are dg-functors
+\[
+\ev_{\Cc}\colon\FFun(\Dd,\Cc)\otimes\Dd\To\Cc
+\]
+which takes a pair of a dg-functor $F\colon\Dd\to\Cc$ 
+and an object $D$ of $\Dd$ 
+to the object $F(D)$ of $\Cc$. 
+For any pairs $(F_1,D_1)$ and $(F_2,D_2)$ 
+the map 
+\[
+\int_{D\in\Dd}\HHom_{\Cc}(F_1(D),F_2(D))
+\otimes\HHom_{\Dd}(D_1,D_2)
+\markar{\ev_{\Cc}}\HHom_{\Cc}(F_1(D_1),F_2(D_2))
+\]
+is induced by the map
+\[
+\int_{D\in\Dd}\HHom_{\Cc}(F_1(D),F_2(D))
+\To
+[\HHom_{\Dd}(D_1,D_2),\HHom_{\Cc}(F_1(D_1),F_2(D_2))]
+\]
+which is precisely the commutative diagram in 
+the definition of the end
+$\int_{D\in\Dd}\HHom_{\Cc}(F_1(D),F_2(D))$.
+
+Once finish above setup, it is straightforward 
+to verify that the pair $(\eta,\ev)$ exhibits the 
+adjunction $-\otimes\Dd\dashv\FFun(\Dd,-)$ 
+and then the fact that $(\alpha,\beta)$ form 
+an equivalence of dg-categories follows.
+\end{proof}
+
+\para{
+Let $\Cc$ be a dg-category. 
+A \bfblue{dg-module} over $\Cc$ is 
+a dg-functor $M\colon\Cc^{\opp}\to\Ch$. 
+In other words, it consists of 
+\begin{itemize}
+\item 
+complexes $M(C)$ for each $C\in\ob\Cc$,
+\item 
+cochain maps 
+\[
+M_{C,D}\colon\HHom_{\Cc}(C,D)\otimes M(D) \To M(C),
+\]
+\end{itemize}
+and satisfies certain axioms looks like those for modules.
+
+Let's denote the category of dg-modules over $\Cc$ by 
+$\dg(\Cc)$. 
+For any object $C$ of $\Cc$, 
+the construction $\HHom_{\Cc}(-,C)$ 
+can be made into a dg-module $\Upsilon(C)$ by 
+letting the cochain map $\Upsilon(C)_{C_1,C_2}$ be 
+\[
+\HHom_{\Cc}(C_1,C_2)\otimes\HHom_{\Cc}(C_2,C)\To\HHom_{\Cc}(C_1,C).
+\]
+
+This construction can be made into a dg-functor by 
+letting 
+\[
+\Upsilon_{C,D}\colon\HHom_{\Cc}(C,D)\To
+\HHom_{\dg(\Cc)}(\Upsilon(C),\Upsilon(D))
+\]
+be induced by the natural cochain maps (the adjunct of composition rule)
+\[
+\HHom_{\Cc}(C,D)\To[\HHom_{\Cc}(X,C),\HHom_{\Cc}(X,D)].
+\]
+
+
+We have the following Yoneda lemmas.
+}
+
+
+
+\begin{theorem}[Yoneda Lemma]\label{thm:Yoneda}
+Let $\Cc$ be a dg-category.
+For any object $C$ of $\Cc$ and any dg module $M$ over $\Cc$, 
+we have an isomorphism
+\[
+\HHom_{\dg(\Cc)}(\Upsilon(C),M) \cong M(C)
+\]
+both natural in $C$ and $M$.
+\end{theorem}
+\begin{proof}
+For any object $D$ of $\Cc$, we have a canonical cochain map
+\[
+M_{D,C}\colon\HHom_{\Cc}(D,C)\otimes M(C)\To M(D)
+\]
+hence a canonical cochain map
+\[
+M(C)\To[\HHom_{\Cc}(D,C), M(D)].
+\]
+It is easy to verify that these cochain maps 
+give rise to an extraordinary naturality of 
+$[\HHom_{\Cc}(-,C), M(-)]$. 
+Hence, it remains to show that 
+this extraordinary naturality 
+satisfies the universal property of 
+$\HHom_{\dg(\Cc)}(\Upsilon(C),M)$.
+
+Let $\alpha_{(-)}\colon X^{\bullet}\to[\HHom_{\Cc}(-,C), M(-)]$ 
+be any extraordinary naturality. 
+Then taking the composition of $\widehat{\alpha_C}$, 
+the adjunct of $\alpha_C$, with the identity of $C$, 
+we get a cochain map
+\[
+X^{\bullet}\cong 
+X^{\bullet}\otimes\ZZ\To
+X^{\bullet}\otimes\HHom_{\Cc}(C,C)
+\markar{\widehat{\alpha_C}}
+M(C).
+\]
+Then it is not difficult to show this is 
+the desired unique cochain map in the 
+universal property of $\HHom_{\dg(\Cc)}(\Upsilon(C),M)$. 
+\end{proof}
+\begin{corollary}
+The dg-functor 
+\[
+\Upsilon\colon\Cc\To\dg(\Cc)
+\]
+is fully faithful.
+\end{corollary}
+\begin{Rem}
+This dg-functor is called the \bfblue{dg-Yoneda embedding}.
+\end{Rem}
+
+\begin{corollary}
+For any objects $C$ and $D$ of $\Cc$ the followings are equivalent
+\begin{proplist}
+\item 
+$\Upsilon(C)$ and $\Upsilon(D)$ are isomorphic;
+\item 
+$\Upsilon(C)_0$ and $\Upsilon(D)_0$ are isomorphic;
+\item 
+$C$ and $D$ are isomorphic.
+\end{proplist}
+Moreover, if this is the case, 
+any natural isomorphism between 
+$\Upsilon(C)$ and $\Upsilon(D)$ 
+is induced by an isomorphism 
+between $C$ and $D$.
+\end{corollary}
+\begin{proof}
+Combine the dg-version of Yoneda lemma with 
+the ordinary Yoneda lemma, this is clear.
+\end{proof}
+
+\para{
+A dg-transformation $\alpha$ between dg-functors to $\Ch(\Aa)$ 
+is called a \bfblue{natural quasi-isomorphism} 
+if its each component $\alpha_C$ is a quasi-isomorphism. 
+Two dg-functors are said to be \bfblue{quasi-isomorphic} if 
+there is a zigzag of quasi-isomorphisms between them.
+
+Apply this notion to the dg-transformation given by a dg-functor, 
+we have the following notions:
+\begin{itemize}
+\item 
+a dg-functor $F\colon\Cc\to\Dd$ is
+\bfblue{quasi-fully faithful}, 
+if for any two objects $C,D$ of $\Cc$, the cochain map
+\[
+F_{C,D}\colon\HHom_{\Cc}(C,D)\To\HHom_{\Dd}(F(C),F(D))
+\]
+is a quasi-isomorphism;
+\item 
+a quasi-fully faithful and homotopically essentially surjective 
+dg-functor is called a \bfblue{quasi-equivalence}.
+\end{itemize}
+
+Note that since natural quasi-isomorphism are not 
+invertible, even up to homotopy, in the dg-category 
+of dg-functors, the notion of quasi-equivalences 
+doesn't have a similar characterization as in 
+\Cref{prop:equiv_of_dg_cats}. 
+This drawback suggests that $\FFun(\Cc,\Dd)$ 
+is not a good model for the full higher category of 
+functors.
+}
+
+\begin{proposition}\label{prop:homotopyYoneda}
+For any objects $C$ and $D$ of $\Cc$ the followings are equivalent
+\begin{proplist}
+\item 
+$\Upsilon(C)$ and $\Upsilon(D)$ are equivalent;
+\item 
+$\Upsilon(C)$ and $\Upsilon(D)$ are quasi-isomorphic;
+\item 
+$\h\Upsilon(C)$ and $\h\Upsilon(D)$ are isomorphic;
+\item 
+$C$ and $D$ are equivalent.
+\end{proplist}
+Moreover, if this is the case, 
+any natural equivalence between 
+$\Upsilon(C)$ and $\Upsilon(D)$ 
+is induced by an equivalence 
+between $C$ and $D$.
+\end{proposition}
+\begin{proof}
+(i) $\then$ (ii) $\then$ (iii) is clear. 
+
+(iii) $\Leftrightarrow$ (iv) follows by 
+apply the ordinary Yoneda to the category $\h\Cc$.
+
+(i) $\Leftrightarrow$ (iv) follows by 
+apply the dg-Yoneda to the category $\dg(\Cc)$, 
+and then apply the lax functor $H^0$.
+\end{proof}
+
+\para{
+A dg-module is said to be 
+\bfblue{representable} 
+(resp. \bfblue{weakly representable}, 
+\bfblue{quasi-representable}) if it is 
+isomorphic (resp. equivalent, quasi-isomorphic)
+to some $\Upsilon(C)$.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
+\section{Homotopy limits}
+\para{
+Let $\Cc$ be a dg-category. 
+A \bfblue{diagram} is a functor $D$
+from a small category $\Ii$ to the underlying category of $\Cc$. 
+We can simply denote it by $D\colon\Ii\to\Cc$. 
+One can then talk about the notions of limits/colimits in $\Cc$. 
+
+Of course $D$ is merely a functor not a dg-functor. 
+So how can one get a dg-functor from it? 
+This comes from the fact that taking underlying category admits 
+a left adjoint: taking the \bfblue{free dg-category} of an 
+ordinary/pre-additive category. 
+This operation can be easily built as long as one knows the 
+following adjunctions:
+\begin{align*}
+(\iota\dashv Z_0)\colon&\Ab\rightleftarrows\Ch,\\
+(\text{Free abelian group}\dashv\text{Forgetful})\colon&
+\Set\rightleftarrows\Ab.
+\end{align*}
+
+It may be ambiguous as we write the dg-functor 
+induced by the functor $D\colon\Ii\to\Cc_0$ also 
+by $D\colon\Ii\to\Cc$ since the free dg-category of 
+$\Ii$ usually has different underlying category than $\Ii$. 
+However, this notation is meaningful since 
+the dg-functor $D$ and the functor $D$ are just 
+a pair of adjuncts. 
+As a comparison, the functor 
+\[
+\Fun(\Cc,\Dd)\To\Fun(\Cc_0,\Dd_0)
+\]
+sending a dg-functor to its underlying functor 
+is neither fully faithful 
+nor essentially surjective.
+}
+
+\para{
+A \bfblue{dg-cone} 
+from an object $X$ of $\Cc$ to $D$ 
+is a dg-transformation from 
+the constant functor with value $X$, 
+hence also denoted by $X$, to $D$.
+Then the \bfblue{complex of dg-cones} 
+from $X$ to $D$ is 
+merely the complex 
+\[
+\HHom_{\FFun(\Ii,\Cc)}(X,D).
+\] 
+An object $L$ of $\Cc$ is said to be 
+a \bfblue{dg-limit} of $D$, if there is 
+a natural quasi-isomorphism
+\[
+\HHom_{\Cc}(-,L) \markar{qis} 
+\HHom_{\FFun(\Ii,\Cc)}(-,D).
+\]
+Note that, if this is the case, 
+then by Yoneda lemma (\ref{thm:Yoneda}), 
+this quasi-isomorphism is given by 
+a dg-cone $\phi$ from $L$ to $D$. 
+We say that $\phi$ \itblue{exhibits $L$ 
+as a dg-limit of $D$}.
+If the natural quasi-isomorphism $\phi_{\ast}$ 
+is a natural isomorphism, then we say $L$ is a 
+\bfblue{strong dg-limit}, or simply a \bfblue{limit}, of $D$. 
+Note that, by Yoneda lemma (\ref{prop:homotopyYoneda}), 
+the dg-limit of $D$ is unique up to equivalences and 
+the limit of $D$ is unique up to unique isomorphism. 
+In this since, we simply denote the dg-limit/limit of $D$ 
+by $\lim D$. 
+
+Dually, a \bfblue{dg-cocone} 
+from $D$ to an object $X$ of $\Cc$
+is a dg-transformation from $D$ to 
+the constant functor with value $X$.
+Then the \bfblue{complex of dg-cocones} 
+from $D$ to $X$ is 
+merely the complex 
+\[
+\HHom_{\FFun(\Ii,\Cc)}(D,X).
+\] 
+An object $C$ of $\Cc$ is said to be 
+a \bfblue{dg-colimit} of $D$, if there is 
+a natural quasi-isomorphism
+\[
+\HHom_{\Cc}(C,-) \markar{qis} 
+\HHom_{\FFun(\Ii,\Cc)}(D,-).
+\]
+Note that, if this is the case, 
+then by Yoneda lemma (\ref{thm:Yoneda}), 
+this quasi-isomorphism is given by 
+a dg-cocone $\psi$ from $D$ to $C$. 
+We say that $\psi$ \itblue{exhibits $C$ 
+as a dg-colimit of $D$}.
+If the natural quasi-isomorphism $\psi_{\ast}$ 
+is a natural isomorphism, then we say $C$ is a 
+\bfblue{strong dg-colimit}, or simply a \bfblue{colimit}, of $D$. 
+Note that, by Yoneda lemma (\ref{prop:homotopyYoneda}), 
+the dg-colimit of $D$ is unique up to equivalences and 
+the colimit of $D$ is unique up to unique isomorphism. 
+In this since, we simply denote the dg-colimit/colimit of $D$ 
+by $\colim D$. 
+
+Let $\phi$ be a dg-cone exhibits 
+an object $L$ as a limit of $D$, then 
+the following composition is an isomorphism.
+\[
+\Hom_{\Cc_0}(-,L)\markar{Z^0(\phi_\ast)}
+\Hom_{\Fun(\Ii,\Cc)}(-,D)\cong
+\Hom_{\Fun(\Ii,\Cc_0)}(-,D)
+\]
+(notice that the isomorphism comes from the adjunction 
+of building free dg-category and 
+taking underlying category). 
+Hence, a limit in $\Cc$ is just an ordinary limit in $\Cc_0$. 
+Similar holds for colimits.
+}
+
+\para{
+The notion of limits/colimits, or even dg-limits/dg-colimits 
+doesn't involve much higher structures: 
+limits/colimits are merely ordinary limits/colimits, 
+while dg-limits/dg-colimits are objects equivalent to 
+them. 
+
+Contrarily, \itblue{homotopy limits/colimits} 
+are rarely limits/colimits. 
+First, a \itblue{homotopy cone/cocone} of $D$ 
+is not a dg-transformation from/to a constant functor, 
+or a commutative diagram in more concrete words. 
+Rather, it is a diagram commuting only up to homotopy! 
+Then, a \itblue{homotopy limits/colimit} of $D$
+is the \emph{universal homotopy cone/cocone}.
+More precisely, there should be a notion of 
+\bfblue{homotopy cone} from an object $X$ to $D$ 
+and a complex $\mathrm{HoCone}(X,D)$ 
+of homotopy cones from $X$ to $D$. 
+Then the \bfblue{homotopy limit} of $D$ 
+is characterized by the quasi-isomorphism
+\[
+\HHom_{\Cc}(-,\holim D)
+\markar{qis} 
+\mathrm{HoCone}(-,D).
+\]
+Similarly, there should be a notion of 
+\bfblue{homotopy cocone} from $D$ to an object $X$ 
+and a complex $\mathrm{HoCocone}(D,X)$
+of homotopy cocones from $D$ to $X$. 
+Then the \bfblue{homotopy colimit} of $D$ 
+is characterized by the quasi-isomorphism
+\[
+\HHom_{\Cc}(\hocolim D,-)
+\markar{qis}  
+\mathrm{HoCocone}(D,-).
+\]
+
+Be aware that a homotopy cone/cocone in $\Cc$ is not 
+simply a cone/cocone in the homotopy category $\h\Cc$ 
+since the later forgets higher homotopies. 
+In practice is even worse, 
+there are many reasonable homotopy categories 
+just don't have enough limits/colimits!
+}
+
+\para{
+From now on, I'll spell out 
+some homotopy limits/colimits in details. 
+The general paten is like the following:
+\begin{proplist}
+\item 
+First, homotopies in $\Ch$ can be presented by cochain maps.
+\item 
+Hence, by spelling out the data of a homotopy cone 
+over a diagram $D$ of certain shape $\Ii$ in the 
+dg-category $\Ch$, we can translate it into 
+the data of a cone over certain diagram $\s D$ 
+in the ordinary category $\Ch$ 
+in a canonical way.
+\item 
+Then, we can spell out the 
+\itblue{strong homotopy limit} 
+$\holim D$ of $D$ by realize it as 
+the limit of $\s D$.
+\item 
+By the functoriality of $\lim \s D$, 
+the above construction 
+gives rise to a dg-functor 
+\[
+\holim\colon\FFun(\Ii,\Ch)\to\Ch.
+\]
+\item 
+Then the homotopy limits/colimts 
+can be be defined via the natural quasi-isomorphism 
+\begin{align*}
+\HHom_{\Cc}(-,\holim D) &\markar{qis} 
+\holim\HHom_{\Cc}(-,D), \\
+\HHom_{\Cc}(\hocolim D,-) &\markar{qis}  
+\holim\HHom_{\Cc}(D,-).
+\end{align*}
+\end{proplist}
+}
+
+\para{
+Consider the empty diagram. 
+Then a homotopy cone/cocone is merely an object without extra data. 
+Hence the complex of homotopy cones/cocones is 
+the complex of dg-cones/dg-cocones. 
+Hence, a homotopy limit of empty diagram is 
+an object equivalent to the terminal object 
+and is called a \bfblue{homotopy terminal object}.
+Dually, a homotopy colimit of empty diagram is 
+an object equivalent to the initial object 
+and is called a \bfblue{homotopy initial object}.
+}
+
+\para{
+Consider the diagram consisting of merely an object $D$.
+Then a homotopy cone is a $1$-morphism to $D$, 
+hence a dg-cone, and 
+a homotopy cocone is a $1$-morphism from $D$, 
+hence a dg-cocone. 
+Therefore, a homotopy limit/colimit of an object $D$ is 
+an object equivalent to $D$. 
+}
+
+\para{
+Consider a family of objects $\{D_i\}_{i\in I}$. 
+Then a homotopy cone is 
+a family of morphisms to each $D_i$ without extra data, 
+hence a dg-cone, and 
+a homotopy cocone is 
+a family of morphisms from each $D_i$ without extra data, 
+hence a dg-cocone. 
+Therefore, a homotopy limit of 
+a family of objects $\{D_i\}_{i\in I}$ 
+is an object equivalent to the product $\prod_{i\in I}D_i$ 
+and is called the \bfblue{homotopy product}.
+Dually, a homotopy colimit of 
+a family of objects $\{D_i\}_{i\in I}$ 
+is an object equivalent to the coproduct $\coprod_{i\in I}D_i$ 
+and is called the \bfblue{homotopy coproduct}.
+}
+
+\para{%\label{mapping_path}
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+be a cochain map between complexes of abelian groups. 
+Then the data of a homotopy cone 
+of this diagram 
+(a \itblue{homotopy triangle}) 
+consists of
+\begin{itemize}
+\item 
+a complex $X^{\bullet}$;
+\item 
+two cochain maps $x_1\colon X^{\bullet}\to C^{\bullet}$ 
+and $x_0\colon X^{\bullet}\to D^{\bullet}$; and
+\item 
+a homotopy $\Phi\colon x_0\then f\circ x_1$.
+\end{itemize}
+The above data can be organized 
+into the following commutative diagram 
+of complexes 
+\[
+\begin{tikzcd}
+X^{\bullet}\ar{d}[swap]{x_1}\ar{r}{\Phi} & 
+{\<I,D\>^{\bullet}}\ar{d}{\ev_1} \\
+C^{\bullet}\ar{r}{f} & D^{\bullet}
+\end{tikzcd}
+\]
+where the cochain map $x_0$ is hidden in 
+the diagram by $x_0=\ev_0\circ\Phi$. 
+Therefore, a homotopy triangle is equivalent to 
+a commutative square as above, 
+hence equivalent to a cochain map 
+\[
+x\colon X^{\bullet}\To\Path(f)^{\bullet}
+\] 
+where $\Path(f)^{\bullet}$ is the fiber product of 
+$C^{\bullet}$ and $\<I,D\>^{\bullet}$ over $D^{\bullet}$. 
+More elementarily, $\Path(f)^{\bullet}$ is the complex
+\begin{align*}
+\Path(f)^n &= 
+D^{n-1}e^{\ast}\oplus D^nv_0^{\ast}\oplus C^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -1 & f^n \\
+ & \di_D^n & \\
+ &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+Under this description, the cochain map $x$ has components
+\[
+x^n=(\phi^n,x_0^n,x_1^n)^{\rm t}
+\]
+where $\phi$ is the cochain homotopy presenting $\Phi$.
+One can think this as a kind of \itblue{universal property}: 
+whenever one has a homotopy triangle $(X,x_1,x_0,\phi)$, 
+one gets a unique cochain map 
+$x\colon X^{\bullet}\to\Path(f)^{\bullet}$ 
+such that the compositions of $x$ with the three projections 
+from $\Path(f)^{\bullet}$ give $\phi$, $x_0$ and $x_1$ 
+respectively. 
+Then the complex of homotopy triangles with vertex $X$ 
+is essentially the complex 
+\[
+[X,\Path(f)]^{\bullet}.
+\]
+Let $[X,f]$ denote the cochain map 
+\[
+[X,C]^{\bullet}\To[X,D]^{\bullet}
+\]
+induced by $f$. 
+Then it is easy to show that 
+\[
+[X,\Path(f)]^{\bullet} \cong \Path([X,f])^{\bullet}.
+\]
+
+Now, let $f\colon C\to D$ be a $1$-morphism in any dg-category $\Cc$. 
+For any object $X$, let $\HHom_{\Cc}(X,f)$ denote 
+the cochain map 
+\[
+\HHom_{\Cc}(X,C)\To\HHom_{\Cc}(X,D)
+\]
+induced by $f$. 
+Then a \bfblue{mapping path object} of $f$ 
+is an object $\Path(f)$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(-,\Path(f)\big)\markar{qis} 
+\Path\big(\HHom_{\Cc}(-,f)\big).
+\]
+By Yoneda lemma (\Cref{thm:Yoneda}), 
+this is equivalent to a $0$-cocycle $\pi$ of 
+$\Path\big(\HHom_{\Cc}(\Path(f),f)\big)$ 
+(called the \bfblue{universal homotopy triangle} 
+exhibiting $\Path(f)$ as a mapping path object of $f$),
+such that $\pi$ induces above natural quasi-isomorphism. 
+If the above natural quasi-isomorphism is further an 
+natural isomorphism, then we say $\Path(f)$ is 
+a \bfblue{strong mapping path object} of $f$.
+
+Dually, for any object $X$, let $\HHom_{\Cc}(f,X)$ denote 
+the cochain map 
+\[
+\HHom_{\Cc}(D,X)\To\HHom_{\Cc}(C,X)
+\]
+induced by $f$. 
+Then a \bfblue{mapping cylinder} of $f$ 
+is an object $\Cyl(f)$ of $\Cc$ together with 
+a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(\Cyl(f),-\big)\markar{qis} 
+\Path\big(\HHom_{\Cc}(f,-)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of 
+$\Cyl\big(\HHom_{\Cc}(f,\Cyl(f))\big)$ 
+(called the \bfblue{universal homotopy cotriangle} 
+exhibiting $\Cyl(f)$ as a mapping cylinder of $f$),
+such that $\pi$ induces above natural quasi-isomorphism. 
+If the above natural quasi-isomorphism is further an 
+natural isomorphism, then we say $\Cyl(f)$ is 
+a \bfblue{strong mapping cylinder} of $f$.
+
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+be a cochain morphism of complexes in arbitrary 
+abelian category $\Aa$. 
+Then, the \itblue{strong mapping path object} of $f$ 
+is the complex 
+\begin{align*}
+\Path(f)^n &= 
+D^{n-1}e^{\ast}\oplus D^nv_0^{\ast}\oplus C^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -1 & f^n \\
+ & \di_D^n & \\
+ &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+The \itblue{strong mapping cylinder} of $f$ 
+is the complex 
+\begin{align*}
+\Cyl(f)^n &= 
+C^{n+1}e\oplus C^nv_0\oplus D^nv_1, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_C^{n+1} & & \\
+-1 & \di_C^n & \\
+f^n &  & \di_D^n
+\end{pmatrix}.
+\end{align*}
+
+Dually, if $f\colon C_{\bullet}\to D_{\bullet}$ 
+is a chain morphism of complexes in $\Aa$, then 
+the \itblue{strong mapping path object} of $f$ 
+is the complex 
+\begin{align*}
+\Path(f)_n &= 
+D_{n+1}e^{\ast}\oplus D_nv_0^{\ast}\oplus C_nv_1^{\ast}, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^D_{n+1} & -1 & f_n \\
+ & \partial^D_n & \\
+ &  & \partial^C_n
+\end{pmatrix},
+\end{align*}
+and the \itblue{strong mapping cylinder} of $f$ 
+is the complex 
+\begin{align*}
+\Cyl(f)_n &= 
+C_{n-1}e\oplus C_nv_0\oplus D_nv_1, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^C_{n-1} & & \\
+-1 & \partial^C_n & \\
+f_n &  & \partial^D_n
+\end{pmatrix}.
+\end{align*}
+
+}
+
+\para{
+One can also consider the \emph{reversed} version of previous: 
+the data of a \itblue{reversed homotopy triangle} consists of
+\begin{itemize}
+\item 
+a complex $X^{\bullet}$;
+\item 
+two cochain maps $x_0\colon X^{\bullet}\to C^{\bullet}$ 
+and $x_1\colon X^{\bullet}\to D^{\bullet}$; and
+\item 
+a homotopy $\Phi\colon f\circ x_0\then x_1$.
+\end{itemize}
+The above data can be organized 
+into the following commutative diagram 
+of complexes 
+\[
+\begin{tikzcd}
+C^{\bullet}\ar{r}{f} & D^{\bullet} \\
+X^{\bullet}\ar{u}{x_0}\ar{r}{\Phi} & 
+{\<I,D\>^{\bullet}}\ar{u}[']{\ev_0} 
+\end{tikzcd}
+\]
+where the cochain map $x_1$ is hidden in 
+the diagram by $x_1=\ev_1\circ\Phi$. 
+Therefore, a homotopy triangle is equivalent to 
+a commutative square as above, 
+hence equivalent to a cochain map 
+\[
+x\colon X^{\bullet}\To\widetilde\Path(f)^{\bullet}
+\] 
+where $\widetilde\Path(f)^{\bullet}$ is the complex
+\begin{align*}
+\widetilde\Path(f)^n &= 
+D^{n-1}e^{\ast}\oplus C^nv_0^{\ast}\oplus D^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -f^n & 1 \\
+ & \di_C^n & \\
+ &  & \di_D^n
+\end{pmatrix}.
+\end{align*}
+Under this description, the cochain map $x$ has components
+\[
+x^n=(\phi^n,x_0^n,x_1^n)^{\rm t}
+\]
+where $\phi$ is the cochain homotopy presenting $\Phi$.
+One can think this as a kind of \itblue{universal property}: 
+whenever one has a homotopy triangle $(X,x_0,x_1,\phi)$, 
+one gets a unique cochain map 
+$x\colon X^{\bullet}\to\widetilde\Path(f)^{\bullet}$ 
+such that the compositions of $x$ with the three projections 
+from $\Path(f)^{\bullet}$ give $\phi$, $x_0$ and $x_1$ 
+respectively. 
+Then the complex of homotopy triangles with vertex $X$ 
+is essentially the complex 
+\[
+[X,\widetilde\Path(f)]^{\bullet}.
+\]
+Then it is easy to show that 
+\[
+[X,\widetilde\Path(f)]^{\bullet} \cong \widetilde\Path([X,f])^{\bullet}.
+\]
+
+Now, let $f\colon C\to D$ be a $1$-morphism in any dg-category $\Cc$. 
+Then a \bfblue{reversed mapping path object} of $f$ 
+is an object $\widetilde\Path(f)$ of $\Cc$ 
+together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(-,\widetilde\Path(f)\big)\markar{qis} 
+\widetilde\Path\big(\HHom_{\Cc}(-,f)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of 
+$\Path\big(\HHom_{\Cc}(\widetilde\Path(f),f)\big)$ 
+(called the \bfblue{universal reversed homotopy triangle} 
+exhibiting $\widetilde\Path(f)$ as a mapping path object of $f$),
+such that $\pi$ induces above natural quasi-isomorphism. 
+If the above natural quasi-isomorphism is further an 
+natural isomorphism, then we say $\widetilde\Path(f)$ is 
+a \bfblue{strong reversed mapping path object} of $f$.
+
+Dually, a \bfblue{reversed mapping cylinder} of $f$ 
+is an object $\widetilde\Cyl(f)$ of $\Cc$ together with 
+a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(\widetilde\Cyl(f),-\big)\markar{qis} 
+\widetilde\Path\big(\HHom_{\Cc}(f,-)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of 
+$\Cyl\big(\HHom_{\Cc}(f,\widetilde\Cyl(f))\big)$ 
+(called the \bfblue{universal reversed homotopy cotriangle} 
+exhibiting $\widetilde\Cyl(f)$ as a mapping cylinder of $f$),
+such that $\pi$ induces above natural quasi-isomorphism. 
+If the above natural quasi-isomorphism is further an 
+natural isomorphism, then we say $\widetilde\Cyl(f)$ is 
+a \bfblue{strong reversed mapping cylinder} of $f$.
+
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+be a cochain morphism of complexes in arbitrary 
+abelian category $\Aa$. 
+Then, the \itblue{strong reversed mapping path object} of $f$ 
+is the complex 
+\begin{align*}
+\widetilde\Path(f)^n &= 
+D^{n-1}e^{\ast}\oplus C^nv_0^{\ast}\oplus D^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -f^n & 1 \\
+ & \di_C^n & \\
+ &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+The \itblue{strong reversed mapping cylinder} of $f$ 
+is the complex 
+\begin{align*}
+\widetilde\Cyl(f)^n &= 
+C^{n+1}e\oplus D^nv_0\oplus C^nv_1, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_C^{n+1} & & \\
+-f^n & \di_D^n & \\
+1 &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+
+Dually, if $f\colon C_{\bullet}\to D_{\bullet}$ 
+is a chain morphism of complexes in $\Aa$, then 
+the \itblue{strong reversed mapping path object} of $f$ 
+is the complex 
+\begin{align*}
+\widetilde\Path(f)_n &= 
+D_{n+1}e^{\ast}\oplus C_nv_0^{\ast}\oplus D_nv_1^{\ast}, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^D_{n+1} & -f_n & 1 \\
+ & \partial^C_n & \\
+ &  & \partial^D_n
+\end{pmatrix},
+\end{align*}
+and the \itblue{strong reversed mapping cylinder} of $f$ 
+is the complex 
+\begin{align*}
+\widetilde\Cyl(f)_n &= 
+C_{n-1}e\oplus D_nv_0\oplus C_nv_1, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^C_{n-1} & & \\
+-f_n & \partial^D_n & \\
+1 &  & \partial^C_n
+\end{pmatrix}.
+\end{align*}
+
+}
+
+\para{\label{homotopy_pullback}
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+and $g\colon E^{\bullet}\to D^{\bullet}$
+be two cochain maps between complexes of abelian groups. 
+Then the data of a homotopy cone (a \itblue{homotopy square}) 
+consists of
+\begin{itemize}
+\item 
+a complex $X^{\bullet}$;
+\item 
+two cochain maps $x_1\colon X^{\bullet}\to C^{\bullet}$, 
+and $x_0\colon X^{\bullet}\to E^{\bullet}$; and
+\item 
+a homotopy $\Phi\colon g\circ x_0\then f\circ x_1$.
+\end{itemize}
+The above data can be organized 
+into the following commutative diagram 
+of complexes 
+\[
+\begin{tikzcd}
+E^{\bullet}\ar{r}{g}& D^{\bullet} \\
+X^{\bullet}\ar[r,"{\Phi}"description]
+\ar{d}[swap]{x_1}\ar{u}{x_0} & 
+{\<I,D\>^{\bullet}}\ar{u}[swap]{\ev_0}\ar{d}{\ev_1} \\
+C^{\bullet}\ar{r}{f} & D^{\bullet}
+\end{tikzcd}
+\]
+hence is equivalent to a cochain map
+\[
+x\colon X^{\bullet}\To (C\times^h_DE)^{\bullet}
+\]
+where $(C\times^h_DE)^{\bullet}$ is the limit of the diagram
+\[
+\begin{tikzcd}
+C^{\bullet}\ar{r}{f} & D^{\bullet} & 
+{\<I,D\>^{\bullet}}\ar{l}[swap]{\ev_1}\ar{r}{\ev_0} & 
+D^{\bullet} & E^{\bullet}\ar{l}[swap]{g}
+\end{tikzcd}
+\]
+More elementarily, $(C\times^h_DE)^{\bullet}$ is the complex
+\begin{align*}
+(C\times^h_DE)^n &= 
+D^{n-1}e^{\ast}\oplus E^nv_0^{\ast}\oplus C^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -g^n & f^n \\
+ & \di_E^n & \\
+ &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+Under this description, the cochain map $x$ has components
+\[
+x^n=(\phi^n,x_0^n,x_1^n)^{\rm t},
+\]
+where $\phi$ is the cochain homotopy presenting $\Phi$.
+Again, one can think this as a \itblue{universal property}:
+whenever one has a homotopy square $(X,x_1,x_0,\phi)$, 
+one gets a unique cochain map 
+$x\colon X^{\bullet}\to(C\times^h_DE)^{\bullet}$ 
+such that the compositions of $x$ with the three projections 
+from $(C\times^h_DE)^{\bullet}$ give $\phi$, $x_0$ and $x_1$ 
+respectively. 
+Then the complex of homotopy square with vertex $X$ is essentially 
+the complex 
+\[
+\big[X,C\times^h_DE\big]^{\bullet}.
+\]
+Then it is easy to show that 
+\[
+\big[X,C\times^h_DE\big]^{\bullet} \cong 
+\Big([X,C]\times^h_{[X,D]}[X,E]\Big)^{\bullet}.
+\]
+Let $g'$ and $f'$ 
+be the projections from $(C\times^h_DE)^{\bullet}$ 
+to $C^{\bullet}$ and $E^{\bullet}$ respectively. 
+Then we have 
+\[
+[X,f'] = [X,f]',
+\qquad\text{and}\qquad
+[X,g'] = [X,g]'.
+\]
+
+Now, let $f\colon C\to D$ 
+and $g\colon E\to D$ be 
+two $1$-morphisms in 
+any dg-category $\Cc$. 
+Then a \bfblue{homotopy fiber product} of $C$ and $E$ over $D$  
+is an object $C\times^h_DE$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\Big(-,C\times^h_DE\Big)\markar{qis} 
+\HHom_{\Cc}(-,C)\times^h_{\HHom_{\Cc}(-,D)}\HHom_{\Cc}(-,E).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\HHom_{\Cc}(-,C)\times^h_{\HHom_{\Cc}(-,D)}\HHom_{\Cc}(-,E)$ 
+(called the \bfblue{homotopy Cartesian diagram} 
+exhibiting $C\times^h_DE$ 
+as a homotopy fiber product 
+of $C$ and $D$ over $E$),
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $C\times^h_DE$ is 
+a \bfblue{strong homotopy fiber product}. 
+The $1$-morphism $g'\colon C\times^h_DE\to C$ 
+given by the projection 
+\[
+\HHom_{\Cc}(C\times^h_DE,C)
+\times^h_{\HHom_{\Cc}(C\times^h_DE,D)}
+\HHom_{\Cc}(C\times^h_DE,E)
+\To
+\HHom_{\Cc}(C\times^h_DE,C)
+\]
+is called the \bfblue{homotopy pullback of} $g$ along $f$.
+
+Dually, let $f\colon D\to C$ 
+and $g\colon D\to E$ be 
+two $1$-morphisms in $\Cc$. 
+Then a \bfblue{homotopy fiber coproduct} of $C$ and $E$ rel $D$  
+is an object $C\amalg^h_DE$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\Big(C\amalg^h_DE,-\Big)\markar{qis} 
+\HHom_{\Cc}(C,-)\times^h_{\HHom_{\Cc}(D,-)}\HHom_{\Cc}(E,-).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\HHom_{\Cc}(C,-)\times^h_{\HHom_{\Cc}(D,-)}\HHom_{\Cc}(E,-)$ 
+(called the \bfblue{homotopy co-Cartesian diagram} 
+exhibiting the object $C\amalg^h_DE$ 
+as a homotopy fiber coproduct 
+of $C$ and $D$ rel $E$),
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $C\amalg^h_DE$ is 
+a \bfblue{strong homotopy fiber coproduct}. 
+The $1$-morphism $g'\colon C\to C\amalg^h_DE$ 
+given by the projection 
+\[
+\HHom_{\Cc}(C,C\amalg^h_DE)
+\times^h_{\HHom_{\Cc}(D,C\amalg^h_DE)}
+\HHom_{\Cc}(E,C\amalg^h_DE)
+\To
+\HHom_{\Cc}(C,C\amalg^h_DE)
+\]
+is called the \bfblue{homotopy pushout of} $g$ along $f$.
+
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+and $g\colon E^{\bullet}\to D^{\bullet}$
+be two cochain morphisms between complexes in arbitrary 
+abelian category $\Aa$. 
+Then, the \itblue{strong homotopy fiber product} $C\times^h_DE$ 
+is the complex 
+\begin{align*}
+(C\times^h_DE)^n &= 
+D^{n-1}e^{\ast}\oplus E^nv_0^{\ast}\oplus C^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -g^n & f^n \\
+ & \di_E^n & \\
+ &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+Dually, let $f\colon D^{\bullet}\to C^{\bullet}$ 
+and $g\colon D^{\bullet}\to E^{\bullet}$
+be two cochain morphisms between complexes in $\Aa$. 
+Then, the \itblue{strong homotopy fiber coproduct} $C\amalg^h_DE$ 
+is the complex 
+\begin{align*}
+(C\amalg^h_DE)^n &= 
+D^{n+1}e\oplus E^nv_0\oplus C^nv_1, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n+1} & & \\
+-g^n & \di_E^n & \\
+f^n &  & \di_C^n
+\end{pmatrix}.
+\end{align*}
+
+Let $f\colon C_{\bullet}\to D_{\bullet}$ 
+and $g\colon E_{\bullet}\to D_{\bullet}$
+be two chain morphisms between complexes in $\Aa$. 
+Then, the \itblue{strong homotopy fiber product} $C\times^h_DE$ 
+is the complex 
+\begin{align*}
+(C\times^h_DE)_n &= 
+D_{n+1}e^{\ast}\oplus E_nv_0^{\ast}\oplus C_nv_1^{\ast}, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^D_{n+1} & -g_n & f_n \\
+ & \partial^E_n & \\
+ &  & \partial^C_n
+\end{pmatrix}.
+\end{align*}
+Dually, let $f\colon D^{\bullet}\to C^{\bullet}$ 
+and $g\colon D^{\bullet}\to E^{\bullet}$
+be two cochain maps between complexes in $\Aa$. 
+Then, the \itblue{strong homotopy fiber coproduct} $C\amalg^h_DE$ 
+is the complex 
+\begin{align*}
+(C\amalg^h_DE)_n &= 
+D_{n-1}e\oplus E_nv_0\oplus C_nv_1, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^D_{n-1} & & \\
+-g_n & \partial^E_n & \\
+f_n &  & \partial^C_n
+\end{pmatrix}.
+\end{align*}
+
+}
+
+\begin{proposition}[Pasting lemma]\label{prop:Pasting}
+Suppose we have the following diagram in a dg-category $\Cc$:
+\[
+\begin{tikzcd}
+\bullet\ar{r}\ar{d} & 
+\bullet\ar{r}\ar{d}\ar[dl,Rightarrow,dashed] & 
+\bullet\ar{d}\ar[dl,Rightarrow,dashed] \\
+\bullet\ar{r} & 
+\bullet\ar{r} & 
+\bullet
+\end{tikzcd}
+\]
+where the dashed arrows denote homotopies. 
+\begin{proplist}
+\item 
+If both square are homotopy Cartesian diagrams 
+(resp. homotopy co-Cartesian diagrams), 
+then so is the rectangle.
+\item 
+If both the right square and the rectangle 
+are homotopy Cartesian diagrams, 
+then so is the left square.
+\item 
+If both the left square and the rectangle 
+are homotopy co-Cartesian diagrams, 
+then so is the right square.
+\end{proplist}
+\end{proposition}
+\begin{proof}
+The key point is: the two squares and 
+the rectangle are homotopy squares. 
+Hence the statements follows from the 
+universal property. 
+If one is satisfied with this argument, 
+one can just skip the following proof.
+
+To spell out an explicit proof, 
+first note that it is sufficient 
+to prove the statements 
+of homotopy Cartesian diagrams in $\Ch$. 
+
+Suppose we have the diagram
+\[
+\begin{tikzcd}
+{C\times^h_D(D\times^h_EF)}\ar{r}{f'}\ar{d}[']{h''} & 
+{D\times^h_EF}\ar{r}{g'}\ar{d}[']{h'}
+\ar[dl,Rightarrow,dashed,"\alpha"description] & 
+F\ar{d}{h}
+\ar[dl,Rightarrow,dashed,"\beta"description] \\
+C\ar{r}[']{f} & 
+D\ar{r}[']{g} & 
+E
+\end{tikzcd}
+\]
+where both squares are 
+homotopy Cartesian diagrams. 
+Then, by composing 
+$g'$ with $f$, 
+$g$ with $f$ and
+$\alpha$ with $\beta$, 
+we get a homotopy square
+\[
+\begin{tikzcd}
+{C\times^h_D(D\times^h_EF)}\ar{r}{g'\circ f'}\ar{d}[']{h''} & 
+F\ar{d}{h}
+\ar[dl,Rightarrow,dashed,"{\Phi}"description] \\
+C\ar{r}[']{g\circ f} & 
+E
+\end{tikzcd}
+\]
+where the homotopy $\Phi$ is 
+\[
+(g\ast\alpha)\dotplus(\beta\ast f').
+\]
+Therefore, the corresponding cochain map 
+\[
+p\colon{C\times^h_D(D\times^h_EF)}\To{C\times^h_EF}
+\]
+is $(\phi,g'\circ f',h'')^{\rm t}$ which can be spelled out as
+\[
+p^n=
+\begin{pmatrix}
+g^n & 1 & & & \\
+& 0 & 1 & 0 & \\
+& & & & 1
+\end{pmatrix}
+\]
+under the decomposition
+\begin{align*}
+(C\times^h_D(D\times^h_EF))^n &=
+D^{n-1}e^{\ast}\oplus 
+E^{n-1}e^{\ast}v_0^{\ast}\oplus F^nv_0^{\ast}v_0^{\ast}
+\oplus D^nv_1^{\ast}v_0^{\ast}
+\oplus C^nv_1^{\ast},\\
+(C\times^h_EF)^n &=
+E^{n-1}e^{\ast}\oplus F^nv_0^{\ast}\oplus C^nv_1^{\ast}.
+\end{align*}
+
+Conversely, 
+suppose we have homotopy Cartesian diagrams. 
+\[
+\begin{tikzcd}
+{C\times^h_EF}\ar{r}{(g\circ f)'}\ar{d}[']{h'''} & 
+F\ar{d}{h}
+\ar[dl,Rightarrow,dashed,"{\Psi}"description] \\
+C\ar{r}[']{g\circ f} & 
+E
+\end{tikzcd}
+\qquad\qquad
+\begin{tikzcd}
+{D\times^h_EF}\ar{r}{g'}\ar{d}[']{h'} & 
+F\ar{d}{h}
+\ar[dl,Rightarrow,dashed,"{\beta}"description] \\
+D\ar{r}[']{g} & 
+E
+\end{tikzcd}
+\]
+Then, the left one gives a homotopy square
+\[
+\begin{tikzcd}
+{C\times^h_EF}\ar{r}{(g\circ f)'}\ar{d}[']{f\circ h'''} & 
+F\ar{d}{h}
+\ar[dl,Rightarrow,dashed,"{\Psi}"description] \\
+D\ar{r}[']{g} & 
+E
+\end{tikzcd}
+\]
+The corresponding cochain map
+\[
+f''\colon C\times^h_EF\To D\times^h_EF
+\]
+is $(\psi,(g\circ f)',f\circ h''')^{\rm t}$ 
+which can be spelled out as
+\[
+f^{\prime\prime n}=
+\begin{pmatrix}
+1 & & \\
+& 1 & \\
+& & f^n
+\end{pmatrix}
+\]
+under the decomposition
+\begin{align*}
+(C\times^h_EF)^n &=
+E^{n-1}e^{\ast}\oplus F^nv_0^{\ast}\oplus C^nv_1^{\ast},\\
+(D\times^h_EF)^n &=
+E^{n-1}e^{\ast}\oplus F^nv_0^{\ast}\oplus D^nv_1^{\ast}.
+\end{align*}
+Now, we have a commutative square 
+\[
+\begin{tikzcd}
+{C\times^h_EF}\ar{r}{f''}\ar{d}[']{h'''} & 
+{D\times^h_EF}\ar{d}{h'} \\
+C\ar{r}[']{f} & 
+D
+\end{tikzcd}
+\]
+Therefore, the corresponding cochain map 
+\[
+q\colon {C\times^h_EF}\To{C\times^h_D(D\times^h_EF)}
+\]
+is $(0,f'',h''')^{\rm t}$ which can be spelled out as 
+\[
+q^n=
+\begin{pmatrix}
+0 & & \\
+1 & & \\
+& 1 & \\
+& & f^n \\
+& & 1
+\end{pmatrix}.
+\] 
+Now, it is clear that 
+\[
+p\circ q = \id_{C\times^h_EF}
+\]
+On the other hand, $\alpha$ gives a homotopy 
+from $\id_{C\times^h_D(D\times^h_EF)}$ 
+to $q\circ p$ by composing with a section of $h'\circ f'$
+\end{proof}
+
+\para{\label{homotopy_fiber}
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+be a cochain map between complexes of abelian groups. 
+Consider the diagram 
+$C^{\bullet}\markar{f} D^{\bullet}\longleftarrow 0$. 
+Note that this is a special case of \ref{homotopy_pullback}. 
+However, since the special properties of $0$, 
+one expects a more concentrate expression of 
+the strong homotopy limit of this diagram.
+A homotopy cone of this diagram (a \itblue{homotopy annihilation}) 
+consists of the following data
+\begin{itemize}
+\item 
+a complex $X^{\bullet}$;
+\item 
+a cochain map $x_1\colon X^{\bullet}\to C^{\bullet}$; and
+\item 
+a homotopy $\Phi\colon 0\then f\circ x_0$.
+\end{itemize}
+The above data can be organized 
+into the following commutative diagram 
+of complexes 
+\[
+\begin{tikzcd}
+{}&D^{\bullet}\\
+X^{\bullet}\ar{ur}{0}\ar[r,"{\Phi}"description]
+\ar{d}[swap]{x_1} & 
+{\<I,D\>^{\bullet}}\ar{u}[']{\ev_0}\ar{d}{\ev_1} \\
+C^{\bullet}\ar{r}{f} & D^{\bullet}
+\end{tikzcd}
+\]
+hence is equivalent to a cochain map
+\[
+x\colon X^{\bullet}\To \Fib(f)^{\bullet}
+\]
+where $\Fib(f)^{\bullet}$ is the limit of the diagram
+\[
+\begin{tikzcd}
+C^{\bullet}\ar{r}{f} & D^{\bullet} & 
+{\<I,D\>^{\bullet}}\ar{l}[swap]{\ev_1}\ar{r}{\ev_0} & 
+D^{\bullet} & 0\ar{l}
+\end{tikzcd}
+\]
+More elementarily, $\Fib(f)^{\bullet}$ is the complex
+\begin{align*}
+\Fib(f)^n &= 
+D^{n-1}e^{\ast}\oplus C^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & f^n \\
+ & \di_C^n
+\end{pmatrix}.
+\end{align*}
+Under this description, the cochain map $x$ has components
+\[
+x^n=(\phi^n,x_1^n)^{\rm t},
+\]
+where $\phi$ is the cochain homotopy presenting $\Phi$.
+Again, one can think this as a \itblue{universal property}:
+whenever one has a homotopy annihilation $(X,x_1,\phi)$, 
+one gets a unique cochain map 
+$x\colon X^{\bullet}\to\Fib(f)^{\bullet}$ 
+such that the compositions of $x$ with the two projections 
+from $\Fib(f)^{\bullet}$ give $\phi$ and $x_1$ 
+respectively. 
+Then the complex of homotopy annihilation 
+with vertex $X$ is the complex 
+\[
+[X,\Fib(f)]^{\bullet}.
+\]
+Then it is easy to show that 
+\[
+[X,\Fib(f)]^{\bullet} \cong 
+\Fib([X,f])^{\bullet}.
+\]
+
+Now, let $f\colon C\to D$ be 
+a $1$-morphisms in 
+any dg-category $\Cc$. 
+Then a \bfblue{homotopy fiber} of $f$  
+is an object $\Fib(f)$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(-,\Fib(f)\big)\markar{qis} 
+\Fib\big(\HHom_{\Cc}(-,f)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\Fib\big(\HHom_{\Cc}(-,f)\big)$
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $\Fib(f)$ is 
+a \bfblue{strong homotopy fiber}. 
+
+Dually, a \bfblue{homotopy cofiber}, 
+or \bfblue{mapping cone} of $f$ 
+is an object $\Cofib(f)$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(\Cofib(f),-\big)\markar{qis} 
+\Fib\big(\HHom_{\Cc}(f,-)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\Fib\big(\HHom_{\Cc}(f,-)\big)$ 
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $\Cofib(f)$ is 
+a \bfblue{strong homotopy cofiber}.
+
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+be a cochain morphism between complexes 
+in arbitrary abelian category $\Aa$. 
+Then, the \itblue{strong homotopy fiber} $\Fib(f)$ 
+is the complex 
+\begin{align*}
+\Fib(f)^n &= 
+D^{n-1}e^{\ast}\oplus C^nv_1^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & f^n \\
+ & \di_C^n
+\end{pmatrix},
+\end{align*}
+and the \itblue{strong homotopy cofiber} $\Cofib(f)$ 
+is the complex 
+\begin{align*}
+\Cofib(f)^n &= 
+C^{n+1}e\oplus D^nv_1, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_C^{n+1} & \\
+f^n & \di_D^n
+\end{pmatrix}.
+\end{align*}
+
+Dually, let $f\colon C_{\bullet}\to D_{\bullet}$ 
+be a chain morphism between complexes in $\Aa$. 
+Then, the \itblue{strong homotopy fiber} $\Fib(f)$ 
+is the complex 
+\begin{align*}
+\Fib(f)_n &= 
+D_{n+1}e^{\ast}\oplus C_nv_1^{\ast}, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^D_{n+1} & f_n \\
+ & \partial^C_n
+\end{pmatrix},
+\end{align*}
+and the \itblue{strong homotopy cofiber} $\Cofib(f)$ 
+is the complex 
+\begin{align*}
+\Cofib(f)_n &= 
+C_{n-1}e\oplus D_nv_1, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^C_{n-1} & \\
+f_n & \partial^D_n
+\end{pmatrix}.
+\end{align*}
+
+}
+
+\para{
+One can also consider the \emph{reversed} version of \ref{homotopy_fiber}: 
+now the diagram is $0 \To D^{\bullet} \markal{f} C^{\bullet}$. 
+So, the data of a \itblue{reversed homotopy annihilation} consists of 
+the following data
+\begin{itemize}
+\item 
+a complex $X^{\bullet}$;
+\item 
+a cochain map $x_0\colon X^{\bullet}\to C^{\bullet}$; and
+\item 
+a homotopy $\Phi\colon f\circ x_0\then 0$.
+\end{itemize}
+The above data can be organized 
+into the following commutative diagram 
+of complexes 
+\[
+\begin{tikzcd}
+C^{\bullet}\ar{r}{f} & D^{\bullet}\\
+X^{\bullet}\ar{dr}{0}\ar[r,"{\Phi}"description]
+\ar{u}{x_0} & 
+{\<I,D\>^{\bullet}}\ar{u}[']{\ev_0}\ar{d}{\ev_1} \\
+& D^{\bullet}
+\end{tikzcd}
+\]
+hence is equivalent to a cochain map
+\[
+x\colon X^{\bullet}\To \widetilde\Fib(f)^{\bullet}
+\]
+where $\widetilde\Fib(f)^{\bullet}$ is the limit of the diagram
+\[
+\begin{tikzcd}
+C^{\bullet}\ar{r}{f} & D^{\bullet} & 
+{\<I,D\>^{\bullet}}\ar{l}[swap]{\ev_0}\ar{r}{\ev_1} & 
+D^{\bullet} & 0\ar{l}
+\end{tikzcd}
+\]
+More elementarily, $\widetilde\Fib(f)^{\bullet}$ is the complex
+\begin{align*}
+\widetilde\Fib(f)^n &= 
+D^{n-1}e^{\ast}\oplus C^nv_0^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & -f^n \\
+ & \di_C^n
+\end{pmatrix}.
+\end{align*}
+Under this description, the cochain map $x$ has components
+\[
+x^n=(\phi^n,x_0^n)^{\rm t},
+\]
+where $\phi$ is the cochain homotopy presenting $\Phi$.
+Again, one can think this as a \itblue{universal property}:
+whenever one has a homotopy annihilation $(X,x_0,\phi)$, 
+one gets a unique cochain map 
+$x\colon X^{\bullet}\to\widetilde\Fib(f)^{\bullet}$ 
+such that the compositions of $x$ with the two projections 
+from $\widetilde\Fib(f)^{\bullet}$ give $\phi$ and $x_0$ 
+respectively. 
+Then the complex of homotopy annihilation 
+with vertex $X$ is the complex 
+\[
+[X,\widetilde\Fib(f)]^{\bullet}.
+\]
+Then it is easy to show that 
+\[
+[X,\widetilde\Fib(f)]^{\bullet} \cong 
+\widetilde\Fib([X,f])^{\bullet}.
+\]
+
+Now, let $f\colon C\to D$ be 
+a $1$-morphisms in 
+any dg-category $\Cc$. 
+Then a \bfblue{reversed homotopy fiber} of $f$  
+is an object $\widetilde\Fib(f)$ of $\Cc$ 
+together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(-,\widetilde\Fib(f)\big)\markar{qis} 
+\widetilde\Fib\big(\HHom_{\Cc}(-,f)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\widetilde\Fib\big(\HHom_{\Cc}(-,f)\big)$
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $\widetilde\Fib(f)$ is 
+a \bfblue{strong reversed homotopy fiber}. 
+
+Dually, a \bfblue{reversed homotopy cofiber}, 
+or \bfblue{reversed mapping cone} of $f$ 
+is an object $\widetilde\Cofib(f)$ of $\Cc$ \
+together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}\big(\widetilde\Cofib(f),-\big)\markar{qis} 
+\widetilde\Fib\big(\HHom_{\Cc}(f,-)\big).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\widetilde\Fib\big(\HHom_{\Cc}(f,-)\big)$ 
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $\widetilde\Cofib(f)$ is 
+a \bfblue{strong reversed homotopy cofiber}.
+
+Let $f\colon C^{\bullet}\to D^{\bullet}$ 
+be a cochain morphism between complexes 
+in arbitrary abelian category $\Aa$. 
+Then, the \itblue{strong reversed homotopy fiber} $\Fib(f)$ 
+is the complex 
+\begin{align*}
+\widetilde\Fib(f)^n &= 
+D^{n-1}e^{\ast}\oplus C^nv_0^{\ast}, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_D^{n-1} & f^n \\
+ & \di_C^n
+\end{pmatrix},
+\end{align*}
+and the \itblue{strong reversed homotopy cofiber} $\Cofib(f)$ 
+is the complex 
+\begin{align*}
+\widetilde\Cofib(f)^n &= 
+C^{n+1}e\oplus D^nv_0, \\
+\di^n &= 
+\begin{pmatrix}
+-\di_C^{n+1} & \\
+f^n & \di_D^n
+\end{pmatrix}.
+\end{align*}
+
+Dually, let $f\colon C_{\bullet}\to D_{\bullet}$ 
+be a chain morphism between complexes in $\Aa$. 
+Then, the \itblue{strong reversed homotopy fiber} $\Fib(f)$ 
+is the complex 
+\begin{align*}
+\widetilde\Fib(f)_n &= 
+D_{n+1}e^{\ast}\oplus C_nv_0^{\ast}, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^D_{n+1} & f_n \\
+ & \partial^C_n
+\end{pmatrix},
+\end{align*}
+and the \itblue{strong reversed homotopy cofiber} $\Cofib(f)$ 
+is the complex 
+\begin{align*}
+\widetilde\Cofib(f)_n &= 
+C_{n-1}e\oplus D_nv_0, \\
+\partial_n &= 
+\begin{pmatrix}
+-\partial^C_{n-1} & \\
+f_n & \partial^D_n
+\end{pmatrix}.
+\end{align*}
+}
+
+\para{
+Let $C^{\bullet}$ 
+be a cochain complex of abelian groups. 
+Consider the diagram 
+$0\to C^{\bullet}\from 0$. 
+Note that this is a special case of \ref{homotopy_fiber}. 
+However, since the special properties of $0$, 
+one expects a more concentrated expression of 
+the strong homotopy limit of this diagram.
+A homotopy cone of this diagram (a \itblue{homotopy loop}) 
+consists of the following data
+\begin{itemize}
+\item 
+a complex $X^{\bullet}$; and
+\item 
+a homotopy $\Phi\colon 0\then 0\colon X^{\bullet}\to C^{\bullet}$.
+\end{itemize}
+The above data can be organized 
+into the following commutative diagram 
+of complexes 
+\[
+\begin{tikzcd}
+& C^{\bullet} \\
+X^{\bullet}\ar{ur}{0}\ar[r,"{\Phi}"description]
+\ar{dr}[']{0} & 
+{\<I,C\>^{\bullet}}\ar{u}[']{\ev_0}\ar{d}{\ev_1} \\
+& C^{\bullet}
+\end{tikzcd}
+\]
+hence is equivalent to a cochain map
+\[
+x\colon X^{\bullet}\To \Omega C^{\bullet}
+\]
+where $\Omega C^{\bullet}$ is the limit of the diagram
+\[
+\begin{tikzcd}
+{\<I,C\>^{\bullet}}\ar{d}[swap]{\ev_1}\ar{r}{\ev_0} &
+C^{\bullet} \\
+C^{\bullet} & 0\ar{l}\ar{u}
+\end{tikzcd}
+\]
+More elementarily, $\Omega C^{\bullet}$ is the complex
+\[
+\Omega C^n = 
+C^{n-1}e^{\ast}, \qquad
+\di^n = -\di_C^{n-1}.
+\]
+In other words, $\Omega C^{\bullet} = C[-1]^{\bullet}$. 
+Under this description, the cochain map $x$ is precisely 
+the cochain homotopy presenting $\Phi$.
+Then the complex of homotopy loops 
+with vertex $X$ is the complex 
+\[
+[X,\Omega C]^{\bullet}.
+\]
+Then it is easy to show that 
+\[
+[X,\Omega C]^{\bullet} \cong 
+\Omega[X,C]^{\bullet}.
+\]
+
+Now, let $C$ be 
+an object in a dg-category $\Cc$. 
+Then a \bfblue{loop space object}, 
+or \bfblue{looping}, of $C$  
+is an object $\Omega C$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}(-,\Omega C)\markar{qis} 
+\Omega\HHom_{\Cc}(-,C).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\Omega\HHom_{\Cc}(-,C)$
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $\Omega C$ is 
+a \bfblue{strong loop space object}. 
+
+Dually, a \bfblue{suspension} of $C$ 
+is an object $\Sigma C$ of $\Cc$ together with a natural quasi-isomorphism 
+\[
+\HHom_{\Cc}(\Sigma C,-)\markar{qis} 
+\Omega\HHom_{\Cc}(C,-).
+\]
+This is equivalent to a $0$-cocycle $\pi$ of the complex
+$\Omega\HHom_{\Cc}(C,-)$ 
+such that $\pi$ induces above 
+natural quasi-isomorphism. 
+If the above natural quasi-isomorphism 
+is further an natural isomorphism, 
+then we say $\Sigma C$ is 
+a \bfblue{strong suspension}.
+
+Let $C^{\bullet}$ be a cochain complex 
+in arbitrary abelian category $\Aa$. 
+Then, the \itblue{strong loop space object} $\Omega C$ 
+is the complex 
+\[
+\Omega C^n = C^{n-1}e^{\ast}, \qquad
+\di^n = -\di_C^{n-1}, 
+\]
+i.e. $\Omega C^{\bullet}=C[-1]^{\bullet}$. 
+The \itblue{strong suspension} $\Sigma C$ 
+is the complex 
+\[
+\Sigma C^n = C^{n+1}e, \qquad
+\di^n = -\di_C^{n+1}, 
+\]
+i.e. $\Sigma C^{\bullet}=C[1]^{\bullet}$. 
+
+Dually, let $C_{\bullet}$ 
+be a chain complex in $\Aa$. 
+Then, the \itblue{strong loop space object} $\Omega C$ 
+is the complex 
+\[
+\Omega C_n = C_{n+1}e^{\ast},\qquad
+\partial_n = -\partial^C_{n+1},
+\]
+i.e. $\Omega C_{\bullet}=C[1]_{\bullet}$.
+The \itblue{strong suspension} $\Sigma C$ 
+is the complex 
+\[
+\Sigma C_n = C_{n-1}e, \qquad
+\partial_n = -\partial^C_{n-1},
+\]
+i.e. $\Sigma C_{\bullet}=C[-1]_{\bullet}$.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
+\section{Fiber sequences and exact sequences}
+\para{
+Let $\Cc$ be a dg-category.
+A sequence 
+$C\markar{f} D\markar{g} E$ is called a 
+\bfblue{fiber sequence} 
+(resp. \bfblue{cofiber sequence}) if $E$ is a homotopy fiber of $g$ 
+(resp. $E$ is a homotopy cofiber of $f$). 
+A \bfblue{long fiber sequence} 
+(resp. \bfblue{long cofiber sequence}) 
+is a sequence in which any two adjoining morphisms 
+form a fiber sequence (resp. cofiber sequence).
+
+Suppose $C\markar{f} D\markar{g} E$ is a fiber sequence.
+Consider the following diagram
+\[
+\begin{tikzcd}
+\widetilde\Fib(f)\ar{r}{h}\ar{d} & 
+C\ar{r}\ar{d}{f}
+\ar[dl,Rightarrow,dashed] & 
+0\ar{d}
+\ar[dl,Rightarrow,dashed] \\
+0\ar{r} & 
+D\ar{r}[']{g} & 
+E
+\end{tikzcd}
+\]
+where both squares are homotopy Cartesian diagrams. 
+By pasting lemma (\ref{prop:Pasting}), 
+the rectangle is also a homotopy Cartesian diagram. 
+Hence we have equivalence 
+\[
+\widetilde\Fib(f)\simeq \Omega E.
+\]
+Furthermore, consider the following diagram 
+\[
+\begin{tikzcd}
+\Fib(h)\ar{d}[']{\pi}\ar{r}
+&0\ar[dl,Rightarrow,dashed]\ar{d}\\
+\widetilde\Fib(f)\ar{r}{h}\ar{d} & 
+C\ar{d}{f}
+\ar[dl,Rightarrow,dashed]  \\
+0\ar{r} & 
+D
+\end{tikzcd}
+\]
+with both squares are homotopy Cartesian diagrams. 
+By pasting lemma (\ref{prop:Pasting}), 
+the rectangle is also a homotopy Cartesian diagram. 
+Hence we have equivalence
+\[
+\Fib(h)\simeq \Omega D.
+\]
+By the functoriality of $\Omega$ and since we have reversed 
+$\Fib(f)$, the morphism $\pi$ is precisely $-\Omega g$.
+Keep the previous processes, we get a long fiber sequence
+\[
+\cdots\To \Omega C
+\markar{-\Omega f}\Omega D
+\markar{-\Omega g}\Omega E
+\markar{h}C
+\markar{f}D
+\markar{g}E.
+\]
+
+Dually, suppose $C\markar{f} D\markar{g} E$ is a cofiber sequence. 
+Then we get a long cofiber sequence
+\[
+C\markar{f}
+D\markar{g}
+E\markar{h}
+\Sigma C\markar{-\Sigma f}
+\Sigma D\markar{-\Sigma g}
+\Sigma E\To\cdots.
+\]
+
+Combine the aboves, for any morphism $f\colon C\to D$, 
+we have a sequence
+\[
+\Fib(f)\To C\markar{f} D\To\Cofib(f)
+\]
+extending to both directions.
+}
+
+
+
+
+
+
+
+
+\printbibliography
+\clearpage
+\appendix
+\section*{Abandoned drafts}
+\begin{proposition}
+Let $f\colon C\to D$ be a $1$-morphism in a dg-category. 
+Let $f_{\ast}$ be the induced dg-transformation
+\[
+f_{\ast}\colon\HHom_{\Cc}(-,C)\To\HHom_{\Cc}(-,D).
+\]
+Then the followings are equivalent.
+\begin{proplist}
+\item 
+$f_{\ast}$ is a natural equivalence.
+\item 
+$f_{\ast}$ is a natural quasi-isomorphism.
+\item 
+$H^0(f_{\ast})$ is a natural isomorphism.
+\item 
+$f$ is a homotopy equivalence.
+\end{proplist}
+The similar statement also holds for $f^{\ast}$.
+\end{proposition}
+\begin{proof}
+Let's first prove (iii) implies (iv). 
+Indeed, if $H^0(f_{\ast})$ is a natural isomorphism, then 
+in particular we have isomorphisms
+\begin{align*}
+\Hom_{\h\Cc}(D,C) &\markar{f_{\ast}} \Hom_{\h\Cc}(D,D),\\
+\Hom_{\h\Cc}(C,C) &\markar{f_{\ast}} \Hom_{\h\Cc}(C,D).
+\end{align*}
+The first isomorphism gives a $1$-morphism $g\colon D\to C$ 
+such that $f\circ g\simeq\id_D$. 
+The second isomorphism deduces $g\circ f\simeq\id_C$ 
+from $f\circ g\circ f\simeq f$.
+
+It remains to prove (iv) implies (i). 
+So, let $f\colon C\to D$ be a homotopy equivalence with 
+weak inverse $g\colon D\to C$ and a pair of homotopies 
+$\phi\colon\id\then g\circ f$ and 
+$\psi\colon f\circ g\then\id$.
+Then let's prove that $\phi_{\ast}$ and $\psi_{\ast}$ 
+are cochain homotopies. 
+
+Indeed, for any object $X$ and any general morphism 
+$h\colon X\to C$ of degree $n$, we have
+(note that the composition rule in $\Cc$ is a cochain map 
+and that $\phi$ is of degree $-1$)
+\begin{align*}
+&\quad
+(\di_{\HHom_{\Cc}(X,D)}^{n-1}\circ\phi_{\ast}^n+
+\phi_{\ast}^{n+1}\circ\di_{\HHom_{\Cc}(X,C)}^n)
+(h)\\
+&= 
+\di_{\HHom_{\Cc}(X,D)}^{n-1}(\phi\circ h) + 
+\phi\circ\di_{\HHom_{\Cc}(X,C)}^n(h) \\
+&= 
+\di_{\HHom_{\Cc}(C,D)}^{-1}(\phi)\circ h - 
+\phi\circ\di_{\HHom_{\Cc}(X,C)}^n(h) + 
+\phi\circ\di_{\HHom_{\Cc}(X,C)}^n(h) \\
+&=
+\di_{\HHom_{\Cc}(C,D)}^{-1}(\phi)\circ h\\
+&=
+(g\circ f-\id)\circ h\\
+&=
+(g_{\ast}\circ f_{\ast} - \id_{\HHom_{\Cc}(X,X)})(h).
+\end{align*}
+Hence $\phi_{\ast}$ is a cochain homotopy 
+from $\id$ to $g_{\ast}\circ f_{\ast}$. 
+The proof for $\psi_{\ast}$ being cochain homotopy 
+is similar. 
+\end{proof}
+\end{document}

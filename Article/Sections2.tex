@@ -1,0 +1,37 @@
+% !Mode:: "TeX:UTF-8"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 Section Setting File Made by Gau, Syu                  %
+%                                version = 2017.314                                 %
+%                        contact = GauSyu@Gmail.com                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% @ Section name
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalfont\Large\bfseries}
+{\S\ \thesection}
+{1em}
+{}
+%	\titleformat{<command>}[<shape>]{<format>}{<label>}{<sep>}{<before-code>}[<after-code>]
+%%	<command>: the sectioning command to be redefined
+%%	<shape>: (optional) paragraph shape
+%%	<format>: the format to be applied to the whole title
+%%	<label>: the label with numbering
+%%	<sep>: the horizontal separation between label and title body
+%%	<before-code>: code preceding the title body
+%%	<after-code>: (optional) code following the title body
+%
+% @ Section Numbering
+%\renewcommand{\thesubsection}{\thesection.\roman{subsection}}	%	abbrev and romanize the counter labels
+%	The following code remove the whole label part of subsection if it doesn't have number, otherwise there will be an empty label at head
+\makeatletter
+\def\@subseccntformat#1{\csname #1ignore\expandafter\endcsname\csname the#1\endcsname\quad}
+\let\subsectionignore\@gobbletwo
+\let\latex@numberline\numberline
+\def\numberline#1{\if\relax#1\relax\else\latex@numberline{#1}\fi}
+\makeatother
+%
+% @ Set the depths
+\setcounter{secnumdepth}{2}			%	depth of section numbering levels
+%	0=chapter, 1=section, 2=subsection
+\setcounter{tocdepth}{2}				% 	depth of contents
